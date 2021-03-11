@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client'
 import axios from 'axios';
-var socket = io();
+var socket = io("https://messenger-sever.herokuapp.com/");
 
 class messenger extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: {}
+            data: {},
+            data2:{}
         }
     }
 
@@ -16,6 +17,13 @@ class messenger extends Component {
             (data) => {
                 this.setState({
                     data: data.data
+                });
+            }
+        )
+        axios.get("/test2").then(
+            (data) => {
+                this.setState({
+                    data2: data.data
                 });
             }
         )
