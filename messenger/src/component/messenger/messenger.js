@@ -36,7 +36,7 @@ class messenger extends Component {
                                             <span className="online_icon" />
                                         </div>
                                         <div className="user_info">
-                                            <span>Chat with Khalid</span>
+                                            <span>Trang óc cặc</span>
                                             <p>1767 Messages</p>
                                         </div>
                                         <div className="video_cam">
@@ -60,13 +60,13 @@ class messenger extends Component {
                                             <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" className="rounded-circle user_img_msg" />
                                         </div>
                                         <div className="msg_cotainer">
-                                            Hi, how are you samim?
+                                            Cường ...
                                         <span className="msg_time">8:40 AM, Today</span>
                                         </div>
                                     </div>
                                     <div className="d-flex justify-content-end mb-4">
                                         <div className="msg_cotainer_send">
-                                            Hi Khalid i am good tnx how about you?
+                                            Chang óc cặc ...
                                         <span className="msg_time_send">8:55 AM, Today</span>
                                         </div>
                                         <div className="img_cont_msg">
