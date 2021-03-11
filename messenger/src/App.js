@@ -18,7 +18,7 @@ class App extends Component {
   }
   render() {
     const a = () =>{
-      if(this.state.data != ''){
+      if(this.state.data !== ''){
         return(
           <div>
               {this.state.data}
