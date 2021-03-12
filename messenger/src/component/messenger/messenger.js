@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client'
 import axios from 'axios';
-var socket =io("https://messenger-sever.herokuapp.com/");
- //io("http://localhost:4000/");
+var socket =
+    io("https://messenger-sever.herokuapp.com/");
+    // io("http://localhost:4000/");
 
 
 class messenger extends Component {
@@ -37,6 +38,10 @@ class messenger extends Component {
                     value_messenger: results
                 });
             })
+
+            socket.on("out-rooms",data =>{
+                alert(data)
+            })
         }
         )
 
@@ -67,12 +72,28 @@ class messenger extends Component {
             password: this.state.txt_password,
             currentRoom: currentRoom
         }
-        socket.emit("create-rooms", values)
-        this.setState({
-            name: this.state.txt_name,
-            auth: false,
-            currentRoom: currentRoom
-        });
+        // socket.emit("create-rooms", values)
+        // this.setState({
+        //     name: this.state.txt_name,
+        //     auth: false,
+        //     currentRoom: currentRoom
+        // });
+        if (this.state.txt_password !== "trangoccho") {
+            alert("Nhập có cái Password củng sai ... ")
+        } else {
+            const values = {
+                name: this.state.txt_name,
+                password: this.state.txt_password,
+                currentRoom: currentRoom
+            }
+            socket.emit("create-rooms", values)
+            this.setState({
+                name: this.state.txt_name,
+                auth: false,
+                currentRoom: currentRoom
+            });
+        }
+
     }
     render() {
         const rooms = () => {
@@ -83,7 +104,7 @@ class messenger extends Component {
                             onClick={() => { this.authPassword(this.state.rooms[0].roomName) }}
                             type="button"
                             class="btn btn-danger">
-                            rooms {this.state.rooms[0].roomName}
+                             Múc 
                         </button>
                     )
                 }
@@ -95,7 +116,7 @@ class messenger extends Component {
                     <div>
 
                         <div style={{ marginLeft: "20%" }} className="form-group">
-                            <label for="usr">Name :</label>
+                            <label for="usr">Mày muốn tên thằng kia là gì :</label>
                             <input onChange={(event) => { this.getValue(event) }} style={{
                                 width: "200px",
                             }} type="text" className="form-control" name="txt_name" id="usr" />
@@ -112,10 +133,25 @@ class messenger extends Component {
                 )
             }
         }
+        const name_chat = ()=>{
+
+        }
         const value_messenger = () => {
             if (this.state.value_messenger.length > 0) {
                 return this.state.value_messenger.map(element => {
                     if (element.name === this.state.name) {
+                        return (
+                            <div className="d-flex justify-content-end mb-4">
+                                <div className="msg_cotainer_send">
+                                    {element.messenger}
+                                    {/* <span className="msg_time_send">8:55 AM, Today</span> */}
+                                </div>
+                                <div className="img_cont_msg">
+                                    <img src="https://vcdn-ngoisao.vnecdn.net/2019/09/25/ANH-1-9778-1569408745.png" className="rounded-circle user_img_msg" />
+                                </div>
+                            </div>
+                        )
+                    } else {
                         return (
                             <div className="d-flex justify-content-start mb-4">
                                 <div className="img_cont_msg">
@@ -123,21 +159,10 @@ class messenger extends Component {
                                 </div>
                                 <div className="msg_cotainer">
                                     {element.messenger}
-                                <span className="msg_time">8:40 AM, Today</span>
+                                    {/* <span className="msg_time">8:40 AM, Today</span> */}
                                 </div>
                             </div>
-                        )
-                    } else {
-                        return (
-                            <div className="d-flex justify-content-end mb-4">
-                                <div className="msg_cotainer_send">
-                                {element.messenger}
-                                        <span className="msg_time_send">8:55 AM, Today</span>
-                                </div>
-                                <div className="img_cont_msg">
-                                    <img src="https://vcdn-ngoisao.vnecdn.net/2019/09/25/ANH-1-9778-1569408745.png" className="rounded-circle user_img_msg" />
-                                </div>
-                            </div>
+
                         )
                     }
 
@@ -160,8 +185,9 @@ class messenger extends Component {
                                                 <span className="online_icon" />
                                             </div>
                                             <div className="user_info">
-                                                <span>Trang óc cặc</span>
-                                                <p>1767 Messages</p>
+                                                {/* {name_chat()} */}
+                                                <span>{this.state.name}</span>
+                                                <p>:))</p>
                                             </div>
                                             <div className="video_cam">
                                                 <span><i className="fas fa-video" /></span>
@@ -200,6 +226,7 @@ class messenger extends Component {
                 )
             }
         }
+        
         return (
 
             <div className="messenger">
