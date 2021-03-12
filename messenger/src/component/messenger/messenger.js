@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client'
 import axios from 'axios';
-var socket = io("http://localhost:4000/");
+var socket =
+io("https://messenger-sever.herokuapp.com/");
+ //io("http://localhost:4000/");
 
-// io("https://messenger-sever.herokuapp.com/");
 
 class messenger extends Component {
     constructor(props) {
