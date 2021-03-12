@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client'
 import axios from 'axios';
-var socket =
-io("https://messenger-sever.herokuapp.com/");
+var socket =io("https://messenger-sever.herokuapp.com/");
  //io("http://localhost:4000/");
 
 
