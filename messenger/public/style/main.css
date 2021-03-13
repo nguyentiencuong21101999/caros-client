@@ -16,7 +16,6 @@ body,html{
 .card{
     word-break: break-word;
     height: 620px;
-    width: 645px;
     border-radius: 15px !important;
     background-color: rgba(0,0,0,0.4) !important;
 }
