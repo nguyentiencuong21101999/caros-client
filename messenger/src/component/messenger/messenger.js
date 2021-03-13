@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import io from 'socket.io-client'
 import axios from 'axios';
 var socket =
-    io("https://messenger-sever.herokuapp.com/");
-    // io("http://localhost:4000/");
+     io("https://messenger-sever.herokuapp.com/");
+    //io("http://localhost:4000/");
 
 
 class messenger extends Component {
@@ -23,12 +23,26 @@ class messenger extends Component {
     }
 
     componentDidMount() {
-
+        
         socket.on('connect', () => {
-
+         
             socket.on("list-rooms", (results) => {
+                console.log();
                 this.setState({
-                    rooms: results
+                    rooms: results,
+                    value_messenger: results[0].data
+
+                });
+                if(!this.state.auth){
+                    this.scrollToBottom()
+                }
+            })
+            socket.on("upload-rooms", (results) => {
+                console.log();
+                this.setState({
+                    rooms: results,
+                    value_messenger: results[0].data
+
                 });
             })
 
@@ -37,16 +51,25 @@ class messenger extends Component {
                 this.setState({
                     value_messenger: results
                 });
+                if(!this.state.auth){
+                    this.scrollToBottom()
+                }
             })
 
-            socket.on("out-rooms",data =>{
+            socket.on("out-rooms", data => {
                 alert(data)
             })
         }
         )
 
     }
+    scrollToBottom() {
+        this.el.scrollIntoView({ behavior: 'smooth' });
+    }
     sendMessenger = (event) => {
+        if (!this.state.auth) {
+            this.scrollToBottom();
+        }
         const value = document.getElementById("messenger").value;
         const values = {
             messenger: value,
@@ -57,7 +80,6 @@ class messenger extends Component {
         this.setState({
             txt_messenger: ""
         });
-
     }
 
     getValue = (event) => {
@@ -67,18 +89,7 @@ class messenger extends Component {
         });
     }
     authPassword = (currentRoom) => {
-        const values = {
-            name: this.state.txt_name,
-            password: this.state.txt_password,
-            currentRoom: currentRoom
-        }
-        // socket.emit("create-rooms", values)
-        // this.setState({
-        //     name: this.state.txt_name,
-        //     auth: false,
-        //     currentRoom: currentRoom
-        // });
-        if (this.state.txt_password !== "trangoccho") {
+        if (this.state.txt_password !== "a") {
             alert("Nhập có cái Password củng sai ... ")
         } else {
             const values = {
@@ -104,7 +115,7 @@ class messenger extends Component {
                             onClick={() => { this.authPassword(this.state.rooms[0].roomName) }}
                             type="button"
                             class="btn btn-danger">
-                             Múc 
+                            Múc
                         </button>
                     )
                 }
@@ -117,15 +128,15 @@ class messenger extends Component {
 
                         <div style={{ marginLeft: "20%" }} className="form-group">
                             <label for="usr">Mày muốn tên thằng kia là gì :</label>
-                            <input onChange={(event) => { this.getValue(event) }} style={{
+                            <input autoComplete="off" onChange={(event) => { this.getValue(event) }} style={{
                                 width: "200px",
                             }} type="text" className="form-control" name="txt_name" id="usr" />
                         </div>
                         <div style={{ marginLeft: "20%" }} className="form-group">
                             <label for="usr">Password :</label>
-                            <input onChange={(event) => { this.getValue(event) }} style={{
+                            <input autoComplete="off" onChange={(event) => { this.getValue(event) }} style={{
                                 width: "200px",
-                            }} type="text" className="form-control" name='txt_password' id="usr" /> <br></br>
+                            }} type="password" className="form-control" name='txt_password' id="usr" /> <br></br>
                             {rooms()}
 
                         </div>
@@ -133,10 +144,8 @@ class messenger extends Component {
                 )
             }
         }
-        const name_chat = ()=>{
-
-        }
         const value_messenger = () => {
+
             if (this.state.value_messenger.length > 0) {
                 return this.state.value_messenger.map(element => {
                     if (element.name === this.state.name) {
@@ -166,11 +175,10 @@ class messenger extends Component {
                         )
                     }
 
-                })
 
+                })
             }
         }
-
         const messenger = () => {
             if (!this.state.auth) {
                 return (
@@ -206,13 +214,21 @@ class messenger extends Component {
                                     </div>
                                     <div className="card-body msg_card_body">
                                         {value_messenger()}
+                                        <br></br>
+                                        <div style={{
+                                         marginTop:"-80px",clear: "both",height:"1px",
+                                            //color: "rgba(0,0,0,.03)" 
+                                        }} id="scroll" ref={el => { this.el = el; }} >asdadasd</div>
+                                        {/* {this.scrollToBottom()} */}
                                     </div>
+
                                     <div className="card-footer">
+
                                         <div className="input-group">
                                             <div className="input-group-append">
                                                 <span className="input-group-text attach_btn"><i className="fas fa-paperclip" /></span>
                                             </div>
-                                            <input onChange={(event) => { this.getValue(event) }} style={{ width: "200px" }} id="messenger" value={this.state.txt_messenger} name="txt_messenger" type="text" className="form-control" />
+                                            <input autoComplete="off" onChange={(event) => { this.getValue(event) }} style={{ width: "200px" }} id="messenger" value={this.state.txt_messenger} name="txt_messenger" type="text" className="form-control" />
                                             <div className="input-group-append">
                                                 {/* <i className="fas fa-location-arrow" /> */}
                                                 <input onClick={(event) => { this.sendMessenger(event) }} value="send" type="submit" className="input-group-text send_btn"></input>
@@ -225,8 +241,10 @@ class messenger extends Component {
                     </div>
                 )
             }
+
+
         }
-        
+
         return (
 
             <div className="messenger">

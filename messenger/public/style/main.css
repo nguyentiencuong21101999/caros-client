@@ -33,6 +33,9 @@ body,html{
 border-radius: 0 0 15px 15px !important;
     border-top: 0 !important;
 }
+.card-footer .scroll{
+    scroll-behavior: smooth;
+}
 .container{
     align-content: center;
 }
