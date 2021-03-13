@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import io from 'socket.io-client'
 import axios from 'axios';
 var socket =
-     io("https://messenger-sever.herokuapp.com/");
+    io("https://messenger-sever.herokuapp.com/");
     //io("http://localhost:4000/");
 
 
@@ -17,33 +17,38 @@ class messenger extends Component {
             rooms: [],
             currentRoom: -1,
             value_messenger: [],
-            name: ""
+            name: "",
+            user: ["a", "b"]
 
         }
     }
 
     componentDidMount() {
-        
+
         socket.on('connect', () => {
-         
-            socket.on("list-rooms", (results) => {
-                console.log();
+            // socket.on("list-rooms", (results) => {
+            //     console.log("a");
+            //     this.setState({
+            //         rooms: results,
+            //         value_messenger: results[0].data
+
+            //     });
+            //     if (!this.state.auth) {
+            //         console.log("a");
+            //         this.scrollToBottom()
+            //     }
+            // })
+            socket.on("upload-rooms", (results) => {
+                console.log(results);
                 this.setState({
                     rooms: results,
                     value_messenger: results[0].data
 
                 });
-                if(!this.state.auth){
+                if (!this.state.auth) {
+                    console.log("a");
                     this.scrollToBottom()
                 }
-            })
-            socket.on("upload-rooms", (results) => {
-                console.log();
-                this.setState({
-                    rooms: results,
-                    value_messenger: results[0].data
-
-                });
             })
 
             socket.on("value-messenger", results => {
@@ -51,7 +56,7 @@ class messenger extends Component {
                 this.setState({
                     value_messenger: results
                 });
-                if(!this.state.auth){
+                if (!this.state.auth) {
                     this.scrollToBottom()
                 }
             })
@@ -67,19 +72,22 @@ class messenger extends Component {
         this.el.scrollIntoView({ behavior: 'smooth' });
     }
     sendMessenger = (event) => {
-        if (!this.state.auth) {
-            this.scrollToBottom();
+        if (this.state.txt_messenger !== "") {
+
+            if (!this.state.auth) {
+                this.scrollToBottom();
+            }
+            const value = document.getElementById("messenger").value;
+            const values = {
+                messenger: value,
+                currentRoom: this.state.currentRoom,
+                name: this.state.txt_name
+            }
+            socket.emit("send-messenger", values)
+            this.setState({
+                txt_messenger: ""
+            });
         }
-        const value = document.getElementById("messenger").value;
-        const values = {
-            messenger: value,
-            currentRoom: this.state.currentRoom,
-            name: this.state.txt_name
-        }
-        socket.emit("send-messenger", values)
-        this.setState({
-            txt_messenger: ""
-        });
     }
 
     getValue = (event) => {
@@ -89,36 +97,50 @@ class messenger extends Component {
         });
     }
     authPassword = (currentRoom) => {
-        if (this.state.txt_password !== "a") {
-            alert("Nhập có cái Password củng sai ... ")
-        } else {
-            const values = {
-                name: this.state.txt_name,
-                password: this.state.txt_password,
-                currentRoom: currentRoom
+        let dem = 0;
+        this.state.user.map(element => {
+            if (element === this.state.txt_name) {
+                dem++;
             }
-            socket.emit("create-rooms", values)
-            this.setState({
-                name: this.state.txt_name,
-                auth: false,
-                currentRoom: currentRoom
-            });
+        })
+        console.log(dem);
+        if (dem === 0) {
+            alert("Nhập cho đúng cái tên coi...")
+        } else {
+            if (this.state.txt_password !== "a") {
+                alert("Sao ngu zữ vậy ! Cái pass kìa ...")
+            } else {
+                const values = {
+                    name: this.state.txt_name,
+                    password: this.state.txt_password,
+                    currentRoom: currentRoom
+                }
+                socket.emit("create-rooms", values)
+                this.setState({
+                    name: this.state.txt_name,
+                    auth: false,
+                    currentRoom: currentRoom
+                });
+            }
         }
+
+
+
 
     }
     render() {
         const rooms = () => {
             if (this.state.txt_name !== "" && this.state.txt_password !== "") {
-                if (this.state.rooms.length > 0) {
-                    return (
-                        <button
-                            onClick={() => { this.authPassword(this.state.rooms[0].roomName) }}
-                            type="button"
-                            class="btn btn-danger">
-                            Múc
-                        </button>
-                    )
-                }
+
+                return (
+                    <button
+                        onClick={() => { this.authPassword(0) }}
+                        type="button"
+                        class="btn btn-danger">
+                        Múc
+                    </button>
+                )
+
             }
         }
         const password = () => {
@@ -150,19 +172,19 @@ class messenger extends Component {
                 return this.state.value_messenger.map(element => {
                     if (element.name === this.state.name) {
                         return (
-                            <div className="d-flex justify-content-end mb-4">
+                            <div className="d-flex justify-content-end mb-2">
                                 <div className="msg_cotainer_send">
                                     {element.messenger}
                                     {/* <span className="msg_time_send">8:55 AM, Today</span> */}
                                 </div>
-                                <div className="img_cont_msg">
+                                {/* <div className="img_cont_msg">
                                     <img src="https://vcdn-ngoisao.vnecdn.net/2019/09/25/ANH-1-9778-1569408745.png" className="rounded-circle user_img_msg" />
-                                </div>
+                                </div> */}
                             </div>
                         )
                     } else {
                         return (
-                            <div className="d-flex justify-content-start mb-4">
+                            <div className="d-flex justify-content-start mb-2">
                                 <div className="img_cont_msg">
                                     <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" className="rounded-circle user_img_msg" />
                                 </div>
@@ -216,9 +238,9 @@ class messenger extends Component {
                                         {value_messenger()}
                                         <br></br>
                                         <div style={{
-                                         marginTop:"-80px",clear: "both",height:"1px",
-                                            //color: "rgba(0,0,0,.03)" 
-                                        }} id="scroll" ref={el => { this.el = el; }} >asdadasd</div>
+                                            marginTop: "-60px", clear: "both", height: "1px",
+                                            color: "rgba(0,0,0,.03)"
+                                        }} id="scroll" ref={el => { this.el = el; }} >.</div>
                                         {/* {this.scrollToBottom()} */}
                                     </div>
 
@@ -228,7 +250,7 @@ class messenger extends Component {
                                             <div className="input-group-append">
                                                 <span className="input-group-text attach_btn"><i className="fas fa-paperclip" /></span>
                                             </div>
-                                            <input autoComplete="off" onChange={(event) => { this.getValue(event) }} style={{ width: "200px" }} id="messenger" value={this.state.txt_messenger} name="txt_messenger" type="text" className="form-control" />
+                                            <textarea autoComplete="off" onChange={(event) => { this.getValue(event) }} style={{ width: "200px",height:"35px",wordWrap: "break-word" }} id="messenger" value={this.state.txt_messenger} name="txt_messenger" type="text" className="form-control" />
                                             <div className="input-group-append">
                                                 {/* <i className="fas fa-location-arrow" /> */}
                                                 <input onClick={(event) => { this.sendMessenger(event) }} value="send" type="submit" className="input-group-text send_btn"></input>
