@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client'
-import axios from 'axios';
 var socket =
     io("https://messenger-sever.herokuapp.com/");
     //io("http://localhost:4000/");
@@ -18,7 +17,7 @@ class messenger extends Component {
             currentRoom: -1,
             value_messenger: [],
             name: "",
-            user: ["a", "b"]
+            user: ["chang", "@@"]
 
         }
     }
@@ -26,18 +25,7 @@ class messenger extends Component {
     componentDidMount() {
 
         socket.on('connect', () => {
-            // socket.on("list-rooms", (results) => {
-            //     console.log("a");
-            //     this.setState({
-            //         rooms: results,
-            //         value_messenger: results[0].data
 
-            //     });
-            //     if (!this.state.auth) {
-            //         console.log("a");
-            //         this.scrollToBottom()
-            //     }
-            // })
             socket.on("upload-rooms", (results) => {
                 console.log(results);
                 this.setState({
@@ -46,7 +34,6 @@ class messenger extends Component {
 
                 });
                 if (!this.state.auth) {
-                    console.log("a");
                     this.scrollToBottom()
                 }
             })
@@ -60,7 +47,20 @@ class messenger extends Component {
                     this.scrollToBottom()
                 }
             })
+            socket.on("leave-rooms-success", data => {
+                if (data) {
+                    this.setState({
+                        auth: true,
+                        txt_name: "",
+                        txt_password: "",
+                        name: "",
+                        rooms: [],
+                        currentRoom: -1,
+                        txt_messenger: ""
 
+                    });
+                }
+            })
             socket.on("out-rooms", data => {
                 alert(data)
             })
@@ -89,7 +89,19 @@ class messenger extends Component {
             });
         }
     }
-
+    deleteMessenger = () => {
+        const values = {
+            currentRoom: 0
+        }
+        socket.emit("remove-messenger", values)
+    }
+    signOut = () => {
+        const values = {
+            currentRoom: 0,
+            name: this.state.name
+        }
+        socket.emit("leave-rooms", values)
+    }
     getValue = (event) => {
         const { name, value } = event.target;
         this.setState({
@@ -102,12 +114,12 @@ class messenger extends Component {
             if (element === this.state.txt_name) {
                 dem++;
             }
+            return null;
         })
-        console.log(dem);
         if (dem === 0) {
             alert("Nhập cho đúng cái tên coi...")
         } else {
-            if (this.state.txt_password !== "a") {
+            if (this.state.txt_password !== "changml") {
                 alert("Sao ngu zữ vậy ! Cái pass kìa ...")
             } else {
                 const values = {
@@ -147,15 +159,22 @@ class messenger extends Component {
             if (this.state.auth) {
                 return (
                     <div>
-
-                        <div style={{ marginLeft: "20%" }} className="form-group">
-                            <label for="usr">Mày muốn tên thằng kia là gì :</label>
+                        <img style={{
+                            position:"absolute",
+                            marginTop:"10%",
+                            marginLeft:"33%",
+                            borderRadius:"25px",
+                            height:"120px",
+                            width:"120px"
+                        }} src="https://sieupet.com/sites/default/files/cho-pug-mat-xe-hinh-anh-cho-mat-xe-cho-mat-xe-de-thuong-1.jpg" alt="" />
+                        <div style={{ marginLeft: "25%", paddingTop: "50%" }} className="form-group">
+                            <label for="usr">Mày Là ai : </label>
                             <input autoComplete="off" onChange={(event) => { this.getValue(event) }} style={{
                                 width: "200px",
                             }} type="text" className="form-control" name="txt_name" id="usr" />
                         </div>
-                        <div style={{ marginLeft: "20%" }} className="form-group">
-                            <label for="usr">Password :</label>
+                        <div style={{ marginLeft: "25%" }} className="form-group">
+                            <label for="usr">Xin Cái password :</label>
                             <input autoComplete="off" onChange={(event) => { this.getValue(event) }} style={{
                                 width: "200px",
                             }} type="password" className="form-control" name='txt_password' id="usr" /> <br></br>
@@ -186,7 +205,7 @@ class messenger extends Component {
                         return (
                             <div className="d-flex justify-content-start mb-2">
                                 <div className="img_cont_msg">
-                                    <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" className="rounded-circle user_img_msg" />
+                                    <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" className="rounded-circle user_img_msg" alt="" />
                                 </div>
                                 <div className="msg_cotainer">
                                     {element.messenger}
@@ -211,7 +230,7 @@ class messenger extends Component {
                                     <div className="card-header msg_head">
                                         <div className="d-flex bd-highlight">
                                             <div className="img_cont">
-                                                <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" className="rounded-circle user_img" />
+                                                <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" className="rounded-circle user_img" alt="" />
                                                 <span className="online_icon" />
                                             </div>
                                             <div className="user_info">
@@ -224,15 +243,27 @@ class messenger extends Component {
                                                 <span><i className="fas fa-phone" /></span>
                                             </div>
                                         </div>
-                                        <span id="action_menu_btn"><i className="fas fa-ellipsis-v" /></span>
-                                        <div className="action_menu">
-                                            <ul>
-                                                <li><i className="fas fa-user-circle" /> View profile</li>
-                                                <li><i className="fas fa-users" /> Add to close friends</li>
-                                                <li><i className="fas fa-plus" /> Add to group</li>
-                                                <li><i className="fas fa-ban" /> Block</li>
-                                            </ul>
+
+                                        <div className="btn-group dropleft">
+                                            <button type="button" className="btn btn-secondary " id="action_menu_btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i className="fas fa-ellipsis-v drop" />
+                                            </button>
+                                            <div className="dropdown-menu action_menu" id="action_menu">
+                                                <div className="ul">
+                                                    <div style={{ color: "red" }} onClick={() => { this.deleteMessenger() }} className="li"  >Xóa Tin   &ensp; <i class="fas fa-trash delete"></i> </div>
+                                                    <hr style={{ width: "80%", margin: "0px", marginLeft: "17px ", backgroundColor: "white" }}></hr>
+                                                    <div className="li" onClick={() => { this.signOut() }} >Đăng Xuất<i class="fas fa-sign-out-alt signout"></i> </div>
+                                                </div>
+
+                                            </div>
                                         </div>
+                                        {/* <span id="action_menu_btn"><i className="fas fa-ellipsis-v drop" /></span>
+                                        <div className="action_menu" id="action_menu">
+                                            <ul>
+                                                <li ><i class="fas fa-trash"></i> Xóa</li>
+                                                <li><i class="fas fa-sign-out-alt"></i> Đăng Xuất</li>
+                                            </ul>
+                                        </div> */}
                                     </div>
                                     <div className="card-body msg_card_body">
                                         {value_messenger()}
@@ -250,17 +281,17 @@ class messenger extends Component {
                                             <div className="input-group-append">
                                                 <span className="input-group-text attach_btn"><i className="fas fa-paperclip" /></span>
                                             </div>
-                                            <textarea autoComplete="off" onChange={(event) => { this.getValue(event) }} style={{ width: "200px",height:"35px",wordWrap: "break-word" }} id="messenger" value={this.state.txt_messenger} name="txt_messenger" type="text" className="form-control" />
+                                            <textarea autoComplete="off" onChange={(event) => { this.getValue(event) }} style={{ width: "200px", height: "35px", wordWrap: "break-word" }} id="messenger" value={this.state.txt_messenger} name="txt_messenger" type="text" className="form-control" />
                                             <div className="input-group-append">
                                                 {/* <i className="fas fa-location-arrow" /> */}
-                                                <input onClick={(event) => { this.sendMessenger(event) }} value="send" type="submit" className="input-group-text send_btn"></input>
+                                                <div onClick={(event) => { this.sendMessenger(event) }} value=">" className="input-group-text send_btn"><i style={{ transform: "rotate(-90deg)" }} class="fab fa-vuejs"></i></div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div >
                 )
             }
 
