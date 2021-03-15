@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import io from 'socket.io-client'
 var socket =
     io("https://messenger-sever.herokuapp.com/");
-    //io("http://localhost:4000/");
+//io("http://localhost:4000/");
 
 
 class messenger extends Component {
@@ -27,26 +27,29 @@ class messenger extends Component {
         })
     }
     componentDidMount() {
-        navigator.serviceWorker.register('sw.js');
-        if (Notification.permission === 'granted') {
-            this.showNotication()
-        } else if (Notification.permission !== 'denied') {
-            Notification.requestPermission().then(permission => {
-                if (Notification.permission === 'granted') {
-                    this.showNotication()
-                }
-                if (permission === 'granted') {
-                    navigator.serviceWorker.ready.then(function(registration) {
-                      registration.showNotification('Notification with ServiceWorker');
-                    });
-                  }
+        // navigator.serviceWorker.register('../../../public/index.html');
+        // if (Notification.permission === 'granted') {
+        //     navigator.serviceWorker.ready.then(function (registration) {
+        //         registration.showNotification('Notification with ServiceWorker');
+        //     });
+        //     // this.showNotication()
+        // } else if (Notification.permission !== 'denied') {
+        //     Notification.requestPermission().then(permission => {
+        //         console.log(permission);
+        //         // if (Notification.permission === 'granted') {
+        //         //     this.showNotication()
+        //         // }
+        //         if (permission === 'granted') {
+        //             navigator.serviceWorker.ready.then(function (registration) {
+        //                 registration.showNotification('Notification with ServiceWorker');
+        //             });
+        //         }
 
-            })
-        }
+        //     })
+        // }
         //  const not = new Notification.permission("new messenger",{
         //      body:"abv"
         //  })
-        console.log(Notification.permission);
         socket.on('connect', () => {
 
             socket.on("upload-rooms", (results) => {
