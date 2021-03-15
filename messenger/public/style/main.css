@@ -229,7 +229,7 @@ margin-bottom: 5px;
 .msg_cotainer_send:hover .msg_time_send {
     display: block;
 }
-.msg_cotainer:hover  .msg_time {
+.msg_cotainer:hover .msg_time {
     display: block;
 }
 .msg_time {

@@ -3,10 +3,10 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 module.exports = function(app) {
     console.log("a");
   app.use(
-    "/test",
+    "/messsenger",
     createProxyMiddleware({
-      //target: 'http://localhost:4000 ',
-       target: 'https://messenger-sever.herokuapp.com ',
+      target: 'http://localhost:4000 ',
+       //target: 'https://messenger-sever.herokuapp.com ',
       changeOrigin: true,
     })
   );

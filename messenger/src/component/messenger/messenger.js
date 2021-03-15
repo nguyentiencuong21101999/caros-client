@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import io from 'socket.io-client'
 var socket =
     io("https://messenger-sever.herokuapp.com/");
-   // io("http://localhost:4000/");
+   //io("http://localhost:4000/");
 
 
 class messenger extends Component {
@@ -17,7 +17,7 @@ class messenger extends Component {
             currentRoom: -1,
             value_messenger: [],
             name: "",
-            user: ["chang", "cuong"]
+            user: ["chang", "a"]
 
         }
     }
@@ -27,6 +27,7 @@ class messenger extends Component {
         })
     }
     componentDidMount() {
+        //#region 
         console.log(new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString());
         // navigator.serviceWorker.register('../../../public/index.html');
         // if (Notification.permission === 'granted') {
@@ -48,6 +49,7 @@ class messenger extends Component {
 
         //     })
         // }
+        //#endregion
 
         socket.on('connect', () => {
 
@@ -105,13 +107,20 @@ class messenger extends Component {
             const value = document.getElementById("messenger").value;
             const date = new Date().toLocaleDateString();
             const time = new Date().toLocaleTimeString();
-
-            const values = {
+         
+            const value_messenger = this.state.value_messenger;
+            console.log(value_messenger);
+            const values = [{
+                
                 dateTime: date + " " + time,
                 messenger: value,
                 currentRoom: this.state.currentRoom,
                 name: this.state.txt_name
+            },
+            {
+                value_messenger:this.state.value_messenger
             }
+        ]
             socket.emit("send-messenger", values)
             this.setState({
                 txt_messenger: ""
@@ -148,7 +157,7 @@ class messenger extends Component {
         if (dem === 0) {
             alert("Nhập cho đúng cái tên coi...")
         } else {
-            if (this.state.txt_password !== "changml") {
+            if (this.state.txt_password !== "a") {
                 alert("Sao ngu zữ vậy ! Cái pass kìa ...")
             } else {
                 const values = {
@@ -215,8 +224,9 @@ class messenger extends Component {
             }
         }
         const value_messenger = () => {
-
+            console.log(this.state.value_messenger);
             if (this.state.value_messenger.length > 0) {
+                console.log(this.state.value_messenger);
                 return this.state.value_messenger.map(element => {
                     if (element.name === this.state.name) {
                         return (
