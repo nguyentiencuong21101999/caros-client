@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import io from 'socket.io-client'
 var socket =
     io("https://messenger-sever.herokuapp.com/");
-//io("http://localhost:4000/");
+   // io("http://localhost:4000/");
 
 
 class messenger extends Component {
@@ -17,7 +17,7 @@ class messenger extends Component {
             currentRoom: -1,
             value_messenger: [],
             name: "",
-            user: ["chang", "@@"]
+            user: ["chang", "cuong"]
 
         }
     }
@@ -27,12 +27,13 @@ class messenger extends Component {
         })
     }
     componentDidMount() {
+        console.log(new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString());
         // navigator.serviceWorker.register('../../../public/index.html');
         // if (Notification.permission === 'granted') {
-        //     navigator.serviceWorker.ready.then(function (registration) {
-        //         registration.showNotification('Notification with ServiceWorker');
-        //     });
-        //     // this.showNotication()
+        //     // navigator.serviceWorker.ready.then(function (registration) {
+        //     //     registration.showNotification('Notification with ServiceWorker');
+        //     // });
+        //     this.showNotication()
         // } else if (Notification.permission !== 'denied') {
         //     Notification.requestPermission().then(permission => {
         //         console.log(permission);
@@ -47,9 +48,7 @@ class messenger extends Component {
 
         //     })
         // }
-        //  const not = new Notification.permission("new messenger",{
-        //      body:"abv"
-        //  })
+
         socket.on('connect', () => {
 
             socket.on("upload-rooms", (results) => {
@@ -104,7 +103,11 @@ class messenger extends Component {
                 this.scrollToBottom();
             }
             const value = document.getElementById("messenger").value;
+            const date = new Date().toLocaleDateString();
+            const time = new Date().toLocaleTimeString();
+
             const values = {
+                dateTime: date + " " + time,
                 messenger: value,
                 currentRoom: this.state.currentRoom,
                 name: this.state.txt_name
@@ -220,7 +223,7 @@ class messenger extends Component {
                             <div className="d-flex justify-content-end mb-2">
                                 <div className="msg_cotainer_send">
                                     {element.messenger}
-                                    {/* <span className="msg_time_send">8:55 AM, Today</span> */}
+                                    <span className="msg_time_send">{element.dateTime}</span>
                                 </div>
                                 {/* <div className="img_cont_msg">
                                     <img src="https://vcdn-ngoisao.vnecdn.net/2019/09/25/ANH-1-9778-1569408745.png" className="rounded-circle user_img_msg" />
@@ -235,7 +238,8 @@ class messenger extends Component {
                                 </div>
                                 <div className="msg_cotainer">
                                     {element.messenger}
-                                    {/* <span className="msg_time">8:40 AM, Today</span> */}
+                                    <span className="msg_time">{element.dateTime}</span>
+
                                 </div>
                             </div>
 
