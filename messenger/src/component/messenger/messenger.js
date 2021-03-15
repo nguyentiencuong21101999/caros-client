@@ -21,9 +21,26 @@ class messenger extends Component {
 
         }
     }
-
+    showNotication = () => {
+        const notification = new Notification("new messenger", {
+            body: "New Messenger ?"
+        })
+    }
     componentDidMount() {
+        if (Notification.permission === 'granted') {
+            this.showNotication()
+        } else if (Notification.permission !== 'denied') {
+            Notification.requestPermission().then(permission => {
+                if (Notification.permission === 'granted') {
+                    this.showNotication()
+                }
 
+            })
+        }
+        //  const not = new Notification.permission("new messenger",{
+        //      body:"abv"
+        //  })
+        console.log(Notification.permission);
         socket.on('connect', () => {
 
             socket.on("upload-rooms", (results) => {
@@ -160,12 +177,12 @@ class messenger extends Component {
                 return (
                     <div>
                         <img style={{
-                            position:"absolute",
-                            marginTop:"10%",
-                            marginLeft:"33%",
-                            borderRadius:"25px",
-                            height:"120px",
-                            width:"120px"
+                            position: "absolute",
+                            marginTop: "10%",
+                            marginLeft: "33%",
+                            borderRadius: "25px",
+                            height: "120px",
+                            width: "120px"
                         }} src="https://sieupet.com/sites/default/files/cho-pug-mat-xe-hinh-anh-cho-mat-xe-cho-mat-xe-de-thuong-1.jpg" alt="" />
                         <div style={{ marginLeft: "25%", paddingTop: "50%" }} className="form-group">
                             <label for="usr">Mày Là ai : </label>
