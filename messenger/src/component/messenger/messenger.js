@@ -17,7 +17,7 @@ class messenger extends Component {
             currentRoom: -1,
             value_messenger: [],
             name: "",
-            user: ["chang", "a"]
+            user: ["chang", "cuong"]
 
         }
     }
@@ -157,7 +157,7 @@ class messenger extends Component {
         if (dem === 0) {
             alert("Nhập cho đúng cái tên coi...")
         } else {
-            if (this.state.txt_password !== "a") {
+            if (this.state.txt_password !== "changml") {
                 alert("Sao ngu zữ vậy ! Cái pass kìa ...")
             } else {
                 const values = {
