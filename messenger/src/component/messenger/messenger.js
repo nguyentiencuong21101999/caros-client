@@ -27,6 +27,7 @@ class messenger extends Component {
         })
     }
     componentDidMount() {
+        navigator.serviceWorker.register('sw.js');
         if (Notification.permission === 'granted') {
             this.showNotication()
         } else if (Notification.permission !== 'denied') {
@@ -34,6 +35,11 @@ class messenger extends Component {
                 if (Notification.permission === 'granted') {
                     this.showNotication()
                 }
+                if (permission === 'granted') {
+                    navigator.serviceWorker.ready.then(function(registration) {
+                      registration.showNotification('Notification with ServiceWorker');
+                    });
+                  }
 
             })
         }
