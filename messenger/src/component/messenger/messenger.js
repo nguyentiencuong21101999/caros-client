@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client'
 var socket =
-    io("https://messenger-sever.herokuapp.com/");
-   //io("http://localhost:4000/");
+    //io("https://messenger-sever.herokuapp.com/");
+   io("http://localhost:4000/");
 
 
 class messenger extends Component {
@@ -10,7 +10,7 @@ class messenger extends Component {
         super(props);
         this.state = {
             txt_messenger: "",
-            auth: true,
+            auth: false,
             txt_name: "",
             txt_password: "",
             rooms: [],
@@ -51,7 +51,15 @@ class messenger extends Component {
         // }
         //#endregion
 
+
         socket.on('connect', () => {
+
+            const values = {
+                name: this.state.txt_name,
+                password: this.state.txt_password,
+                currentRoom: 0
+            }
+            socket.emit("create-rooms", values)
 
             socket.on("upload-rooms", (results) => {
                 console.log(results);
@@ -341,7 +349,7 @@ class messenger extends Component {
         return (
 
             <div className="messenger">
-                {password()}
+                {/* {password()} */}
                 {messenger()}
             </div>
         )
