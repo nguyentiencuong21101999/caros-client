@@ -1,6 +1,6 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
 let local ="http://localhost:4000"
-let host = "https://messenger-sever.herokuapp.com"
+let host = "https://messengers-server.herokuapp.com"
 module.exports = function(app) {
   app.use(
     "/messsenger",
