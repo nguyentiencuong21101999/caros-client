@@ -1,0 +1,22 @@
+.modal-body{
+   
+}
+.info{
+    position: absolute;
+    margin-top: -47px;
+    margin-left: 54px;
+}
+.name{
+    font-weight: bold;
+}
+.role{
+    font-size: 13px;
+}
+.add-friend{
+    padding: 4px;
+    border: 1px solid;
+    position: absolute;
+    margin-top: -42px;
+    margin-left: 249px;
+    border-radius: 10px;
+}

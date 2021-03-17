@@ -2,52 +2,76 @@ import React, { Component } from 'react';
 import Cookies from 'js-cookie'
 import axios from 'axios'
 import { Redirect } from 'react-router';
-import DataListUser from './dataListUser';
+import Modal from './modal'
 class listUser extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            listUser: []
+            txtSearch: "",
+            listUser: [],
+            listSearch: [],
+            massage_errors:""
 
         }
     }
     componentDidMount() {
-        console.log("a");
         const values = {
             username: "tiencuong",
             password: "cuong"
         }
-        axios.post("/user/login", values)
-            .then(
-                results => {
-                    console.log(results);
-                })
         axios.get("/user/listUser")
             .then(
                 results => {
-                    console.log(results)
                     this.setState({
                         listUser: results.data
                     });
                 })
     }
+
+    postTxtSearch = () => {
+        const values = {
+            txtSearch: this.state.txtSearch
+        }
+        axios.post("/user/getUserByFullname", values)
+            .then(
+                results => {
+                 
+                    this.setState({
+                        listSearch: results.data
+                    });
+                }
+            )
+    }
+
     render() {
         if (!Cookies.get("user")) {
             return <Redirect to="/" />
         }
-        if (this.state.listUser.length > 0) {
-            return (
+
+        const btnSearch = () => {
+            if (this.state.txtSearch !== "") {
+                return (
+                    <button onClick={() => { this.postTxtSearch() }} type="button" className="input-group-text search_btn " data-toggle="modal" data-target="#exampleModal">
+                        <i className="fas fa-search" />
+                    </button>
+                )
+            }
+        }
+        return (
+            <div>
                 <div className="container-fluid h-100">
                     <div className="row justify-content-center h-100">
                         <div className="col-md-4 col-xl-3 chat"><div className="card mb-sm-3 mb-md-0 contacts_card">
                             <div className="card-header">
+                                {/* Modal */}
+                                <Modal listSearch={this.state.listSearch} 
+                                />
+                                {/* end Modal */}
                                 <div className="input-group">
-                                    <input type="text" list="search" placeholder="Search..." name className="form-control search " />
-                                    <DataListUser location={this.props}
-                                        listUser={this.state.listUser}
-                                    />
+                                    <input onChange={(event) => { this.setState({ txtSearch: event.target.value }); }} type="text" placeholder="Search..." name className="form-control search " />
                                     <div className="input-group-prepend">
-                                        <span className="input-group-text search_btn"><i className="fas fa-search" /></span>
+                                        {btnSearch()}
+                                        {/* //<span className="input-group-text search_btn"></span> */}
                                     </div>
                                 </div>
                             </div>
@@ -81,10 +105,8 @@ class listUser extends Component {
                             </div>
                         </div>
                         </div></div></div>
-
-            );
-        }
-        return null;
+            </div>
+        )
     }
 }
 
