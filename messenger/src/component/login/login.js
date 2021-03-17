@@ -31,6 +31,7 @@ class login extends Component {
                             user: {},
                             redirect: true
                         });
+                        alert(Cookies.get("user"))
                     }
                 }
             )

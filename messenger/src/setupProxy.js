@@ -10,6 +10,7 @@ module.exports = function(app) {
       changeOrigin: true,
     })
   );
+  //Register
   app.use(
     "/user/register",
     createProxyMiddleware({
@@ -18,8 +19,18 @@ module.exports = function(app) {
       changeOrigin: true,
     })
   );
+  //Login
   app.use(
     "/user/login",
+    createProxyMiddleware({
+      target: 'http://localhost:4000',
+      //target: 'https://messengers-server.herokuapp.com',
+      changeOrigin: true,
+    })
+  );
+  //listUser
+  app.use(
+    "/user/listUser",
     createProxyMiddleware({
       //target: 'http://localhost:4000',
       target: 'https://messengers-server.herokuapp.com',
