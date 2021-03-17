@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import { Redirect } from 'react-router-dom';
+
 class login extends Component {
     constructor(props) {
         super(props);
@@ -24,7 +25,14 @@ class login extends Component {
                     if (results.data.status === "error") {
                         alert(results.data.message)
                     } else {
-                        Cookies.set("user", results.data, { expires: new Date(new Date().getTime() + 60 * 60 * 1000) })
+                        console.log(results);
+                        const values = {
+                            id: results.data.id,
+                            fullname: results.data.fullname,
+                            username: results.data.username,
+                            image: results.data.image
+                        }
+                        Cookies.set("user", values, { expires: new Date(new Date().getTime() + 60 * 60 * 1000) })
                         this.setState({
                             username: "",
                             password: "",

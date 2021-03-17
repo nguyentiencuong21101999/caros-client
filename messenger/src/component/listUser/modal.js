@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import Cookies from 'js-cookie';
 class modal extends Component {
     constructor(props) {
         super(props);
@@ -8,29 +8,35 @@ class modal extends Component {
 
         }
     }
+    addFriend = (friendId) => {
+        console.log(friendId);
+    }
 
     render() {
         const infoUser = () => {
-            console.log(this.props.listSearch.status);
             if (this.props.listSearch.status === "error") {
                 return (
                     <div className="modal-body">
                         <p>{this.props.listSearch.message}</p>
                     </div>
                 )
-
             } else {
-                return this.props.listSearch.map(elment => {
-                    return (
-                        <div className="modal-body">
-                            <img alt="" src={elment.image} style={{ width: "40px", height: "40px", borderRadius: "25px" }}></img>
-                            <div className="info">
-                                <lable className="name">{elment.fullname}</lable>
-                                <div className="role">Bạn bè</div>
+                const user = JSON.parse(Cookies.get("user"));
+                return this.props.listSearch.map(element => {
+                    if (user.fullname !== element.fullname) {
+                        return (
+                            <div className="modal-body">
+                                <img alt="" src={element.image} style={{ width: "40px", height: "40px", borderRadius: "25px" }}></img>
+                                <div className="info">
+                                    <lable className="name">{element.fullname}</lable>
+                                    <div className="role">Bạn bè</div>
+                                </div>
+                                <label onClick={() => { this.addFriend(element._id) }} className="add-friend">Thêm Bạn Bè</label>
                             </div>
-                            <label className="add-friend">Thêm Bạn Bè</label>
-                        </div>
-                    )
+                        )
+                    }
+                    return null;
+
                 })
             }
 

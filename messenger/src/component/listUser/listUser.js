@@ -3,6 +3,12 @@ import Cookies from 'js-cookie'
 import axios from 'axios'
 import { Redirect } from 'react-router';
 import Modal from './modal'
+import Friend from './friend.js'
+import io from 'socket.io-client'
+import friend from './friend.js';
+var socket =
+    //io("https://messenger-sever.herokuapp.com/");
+    io("http://localhost:4000/");
 class listUser extends Component {
     constructor(props) {
         super(props);
@@ -10,22 +16,22 @@ class listUser extends Component {
             txtSearch: "",
             listUser: [],
             listSearch: [],
-            massage_errors:""
+            listFriend: [],
+            massage_errors: ""
 
         }
     }
     componentDidMount() {
-        const values = {
-            username: "tiencuong",
-            password: "cuong"
-        }
-        axios.get("/user/listUser")
-            .then(
-                results => {
-                    this.setState({
-                        listUser: results.data
-                    });
-                })
+        var user = JSON.parse(Cookies.get("user"));
+        // socket.on('connect', () => { })
+
+        axios.post("/user/getFriend", { userId: user.id }).then(
+            results => {
+                this.setState({
+                    listFriend: results.data
+                });
+            }
+        )
     }
 
     postTxtSearch = () => {
@@ -35,14 +41,13 @@ class listUser extends Component {
         axios.post("/user/getUserByFullname", values)
             .then(
                 results => {
-                 
+
                     this.setState({
                         listSearch: results.data
                     });
                 }
             )
     }
-
     render() {
         if (!Cookies.get("user")) {
             return <Redirect to="/" />
@@ -57,6 +62,15 @@ class listUser extends Component {
                 )
             }
         }
+        const friend = () => {
+            if (this.state.listFriend.length > 0) {
+                return (
+                    <Friend listFriend={this.state.listFriend} />
+                )
+            }
+
+        }
+
         return (
             <div>
                 <div className="container-fluid h-100">
@@ -64,7 +78,7 @@ class listUser extends Component {
                         <div className="col-md-4 col-xl-3 chat"><div className="card mb-sm-3 mb-md-0 contacts_card">
                             <div className="card-header">
                                 {/* Modal */}
-                                <Modal listSearch={this.state.listSearch} 
+                                <Modal listSearch={this.state.listSearch}
                                 />
                                 {/* end Modal */}
                                 <div className="input-group">
@@ -75,34 +89,7 @@ class listUser extends Component {
                                     </div>
                                 </div>
                             </div>
-                            <div className="card-body contacts_body">
-                                <ui className="contacts">
-                                    <li className="active">
-                                        <div className="d-flex bd-highlight">
-                                            <div className="img_cont">
-                                                <img alt="" src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" className="rounded-circle user_img" />
-                                                <span className="online_icon" />
-                                            </div>
-                                            <div className="user_info">
-                                                <span>Khalid</span>
-                                                <p>Kalid is online</p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div className="d-flex bd-highlight">
-                                            <div className="img_cont">
-                                                <img alt="" src="https://static.turbosquid.com/Preview/001214/650/2V/boy-cartoon-3D-model_D.jpg" className="rounded-circle user_img" />
-                                                <span className="online_icon offline" />
-                                            </div>
-                                            <div className="user_info">
-                                                <span>Rashid Samim</span>
-                                                <p>Rashid left 50 mins ago</p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ui>
-                            </div>
+                            {friend()}
                         </div>
                         </div></div></div>
             </div>
