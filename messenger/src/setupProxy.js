@@ -1,12 +1,12 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
-
+let local ="http://localhost:4000"
+let host = "https://messenger-sever.herokuapp.com"
 module.exports = function(app) {
-    console.log("a");
   app.use(
     "/messsenger",
     createProxyMiddleware({
-      target: 'http://localhost:4000 ',
-       //target: 'https://messenger-sever.herokuapp.com ',
+      //target: 'http://localhost:4000 ',
+       target: 'https://messenger-sever.herokuapp.com ',
       changeOrigin: true,
     })
   );
@@ -15,7 +15,7 @@ module.exports = function(app) {
     "/user/register",
     createProxyMiddleware({
       //target: 'http://localhost:4000',
-      target: 'https://messengers-server.herokuapp.com',
+      target: host,
       changeOrigin: true,
     })
   );
@@ -24,7 +24,7 @@ module.exports = function(app) {
     "/user/login",
     createProxyMiddleware({
       //target: 'http://localhost:4000',
-      target: 'https://messengers-server.herokuapp.com',
+      target: host,
       changeOrigin: true,
     })
   );
@@ -33,7 +33,7 @@ module.exports = function(app) {
     "/user/listUser",
     createProxyMiddleware({
       //target: 'http://localhost:4000',
-      target: 'https://messengers-server.herokuapp.com',
+      target: host,
       changeOrigin: true,
     })
   );

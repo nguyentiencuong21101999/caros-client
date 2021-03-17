@@ -24,14 +24,13 @@ class login extends Component {
                     if (results.data.status === "error") {
                         alert(results.data.message)
                     } else {
-                        Cookies.set("user", results.data)
+                        Cookies.set("user", results.data, { expires: new Date(new Date().getTime() + 60 * 60 * 1000) })
                         this.setState({
                             username: "",
                             password: "",
                             user: {},
                             redirect: true
-                        });
-                        alert(Cookies.get("user"))
+                        })
                     }
                 }
             )
@@ -39,8 +38,8 @@ class login extends Component {
     }
 
     render() {
-        if(this.state.redirect){
-            return <Redirect  to={"/messenger"}></Redirect>
+        if (this.state.redirect) {
+            return <Redirect to={"/messenger"}></Redirect>
         }
         return (
             <div>
