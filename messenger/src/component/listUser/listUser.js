@@ -17,6 +17,8 @@ class listUser extends Component {
             listUser: [],
             listSearch: [],
             listFriend: [],
+            checkAddFriend: [],
+            listAcceptFriend: [],
             massage_errors: ""
 
         }
@@ -27,26 +29,74 @@ class listUser extends Component {
 
         axios.post("/user/getFriend", { userId: user.id }).then(
             results => {
+
                 this.setState({
                     listFriend: results.data
                 });
             }
         )
+
     }
 
-    postTxtSearch = () => {
+    postTxtSearch = async () => {
+        var user = JSON.parse(Cookies.get("user"));
         const values = {
             txtSearch: this.state.txtSearch
         }
-        axios.post("/user/getUserByFullname", values)
+
+        await axios.post("/user/getUserByFullname", values)
             .then(
-                results => {
+                async results => {
 
                     this.setState({
                         listSearch: results.data
-                    });
-                }
-            )
+                    })
+                    console.log(results);
+                    if (!results.data.status) {
+                        results.data.map(element => {
+                            const value = {
+                                userId: user.id,
+                                friendId: element.id
+                            }
+                            axios.post("/user/checkAddFriend", value).then(
+                                results => {
+                                    let checkAddFriend = [];
+                                    const values = {
+                                        friendId: JSON.parse(results.config.data).friendId,
+                                        message: results.data.message
+                                    }
+                                    checkAddFriend.push(values);
+
+                                    if (this.state.checkAddFriend.length < 1) {
+                                        console.log("chua co gi");
+                                        this.setState({
+                                            checkAddFriend: checkAddFriend
+                                        });
+                                    } else {
+                                        console.log(checkAddFriend[0]);
+                                       const pos = this.state.checkAddFriend.map(function (e) { return e.friendId; }).indexOf(checkAddFriend[0].friendId);
+                                        console.log(pos);
+                                        if(pos < 0){
+                                            this.state.checkAddFriend.push(checkAddFriend[0])
+                                            this.setState({
+                                                checkAddFriend:this.state.checkAddFriend
+                                            });
+                                        }else{
+                                            this.state.checkAddFriend.splice(pos,1) 
+                                            this.state.checkAddFriend.push(checkAddFriend[0])
+                                            this.setState({
+                                                checkAddFriend:this.state.checkAddFriend
+                                            }); 
+                                        }
+
+                                    }
+                                }
+                            )
+                        })
+
+                    }
+
+                })
     }
     render() {
         if (!Cookies.get("user")) {
@@ -70,7 +120,6 @@ class listUser extends Component {
             }
 
         }
-
         return (
             <div>
                 <div className="container-fluid h-100">
@@ -79,6 +128,7 @@ class listUser extends Component {
                             <div className="card-header">
                                 {/* Modal */}
                                 <Modal listSearch={this.state.listSearch}
+                                        checkAddFriend={this.state.checkAddFriend}
                                 />
                                 {/* end Modal */}
                                 <div className="input-group">

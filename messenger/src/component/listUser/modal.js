@@ -1,18 +1,59 @@
 import React, { Component } from 'react';
 import Cookies from 'js-cookie';
+import axios from 'axios';
+import friend from './friend';
 class modal extends Component {
     constructor(props) {
         super(props);
         this.state = {
             listSearch: this.props.listSearch,
-
+            accept: 0
         }
     }
-    addFriend = (friendId) => {
-        console.log(friendId);
+    addFriend = (element, massage) => {
+        console.log(massage);
+        if (massage === "Gửi lời mời") {
+            console.log(element);
+            const user = JSON.parse(Cookies.get("user"))
+            const values_user = {
+                userId: user.id,
+                friendId: element.id,
+                send: user.id
+            }
+            const values_friend = {
+                userId: element.id,
+                friendId: user.id,
+                send: user.id
+            }
+
+
+            axios.post("/user/addFriend", [values_user, values_friend]).then(
+                () => {
+                    alert("Gửi thành công lời mời kết bạn ...")
+                    this.setState({ accept: 1 })
+                }
+
+            )
+        }
+        if (massage === "Gửi lời mời") {
+
+        }
+
+
+    }
+    acceptFriend = (user, friend) => {
+        const value = {
+            userId: user,
+            friendId: friend
+        }
+        axios.post("/user/acceptFriend", value)
+        console.log("element", user);
+        console.log("element", friend);
+
     }
 
     render() {
+
         const infoUser = () => {
             if (this.props.listSearch.status === "error") {
                 return (
@@ -23,24 +64,49 @@ class modal extends Component {
             } else {
                 const user = JSON.parse(Cookies.get("user"));
                 return this.props.listSearch.map(element => {
-                    if (user.fullname !== element.fullname) {
-                        return (
-                            <div className="modal-body">
-                                <img alt="" src={element.image} style={{ width: "40px", height: "40px", borderRadius: "25px" }}></img>
-                                <div className="info">
-                                    <lable className="name">{element.fullname}</lable>
-                                    <div className="role">Bạn bè</div>
-                                </div>
-                                <label onClick={() => { this.addFriend(element._id) }} className="add-friend">Thêm Bạn Bè</label>
-                            </div>
-                        )
-                    }
-                    return null;
+                    return this.props.checkAddFriend.map(results => {
+                        console.log("search", element);
+                        console.log("check", results);
+                        console.log(element.id === results.friendId);
+                        if (element.id === results.friendId) {
+                            if (user.fullname !== element.fullname) {
+                                if (results.message === "Đã Gửi Lời Mời") {
+                                    return (
+                                        <div className="modal-body">
+                                            <img alt="" src={element.image} style={{ width: "40px", height: "40px", borderRadius: "25px" }}></img>
+                                            <div className="info">
+                                                <lable className="name">{element.fullname}</lable>
+                                                <div className="role">Bạn bè</div>
+                                            </div>
+                                            {/* {accept(element)} */}
+                                            <button className="add-friend">{results.message} </button>
+
+                                        </div>
+                                    )
+                                } else {
+                                    return (
+                                        <div className="modal-body">
+                                            <img alt="" src={element.image} style={{ width: "40px", height: "40px", borderRadius: "25px" }}></img>
+                                            <div className="info">
+                                                <lable className="name">{element.fullname}</lable>
+                                                <div className="role">Bạn bè</div>
+                                            </div>
+                                            {/* {accept(element)} */}
+                                            <button onClick={() => { this.addFriend(element, results.message) }} className="add-friend">{results.message} </button>
+
+                                        </div>
+                                    )
+                                }
+                            }
+                        }
+
+                        return null;
+
+                    })
+
 
                 })
             }
-
-
         }
         return (
             <div>
