@@ -11,10 +11,11 @@ class modal extends Component {
         }
     }
     addFriend = (element, massage) => {
+        const user = JSON.parse(Cookies.get("user"))
         console.log(massage);
         if (massage === "Gửi lời mời") {
             console.log(element);
-            const user = JSON.parse(Cookies.get("user"))
+
             const values_user = {
                 userId: user.id,
                 friendId: element.id,
@@ -27,15 +28,20 @@ class modal extends Component {
             }
 
 
-            axios.post("/user/addFriend", [values_user, values_friend]).then(
-                () => {
+            axios.post("/user/addFriend", [values_user, values_friend]).then(          
                     alert("Gửi thành công lời mời kết bạn ...")
-                    this.setState({ accept: 1 })
-                }
-
             )
         }
-        if (massage === "Gửi lời mời") {
+        if (massage === "Chấp Nhận") {
+            console.log(element);
+            const values = {
+                userId: user.id,
+                friendId: element.id
+            }
+            axios.post("/user/acceptFriend",values)
+            .then(
+                alert("Chấp Nhận Thành Công")
+            )
 
         }
 
@@ -70,7 +76,7 @@ class modal extends Component {
                         console.log(element.id === results.friendId);
                         if (element.id === results.friendId) {
                             if (user.fullname !== element.fullname) {
-                                if (results.message === "Đã Gửi Lời Mời") {
+                                if (results.message === "Đã Gửi Lời Mời" ) {
                                     return (
                                         <div className="modal-body">
                                             <img alt="" src={element.image} style={{ width: "40px", height: "40px", borderRadius: "25px" }}></img>
@@ -80,7 +86,6 @@ class modal extends Component {
                                             </div>
                                             {/* {accept(element)} */}
                                             <button className="add-friend">{results.message} </button>
-
                                         </div>
                                     )
                                 } else {
