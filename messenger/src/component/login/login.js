@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios'
 import Cookies from 'js-cookie'
-import { Redirect } from 'react-router-dom';
+import { NavLink, Redirect } from 'react-router-dom';
 
 class login extends Component {
     constructor(props) {
@@ -55,7 +55,7 @@ class login extends Component {
                     <div className="container-login100" style={{ backgroundImage: 'url("images/bg-01.jpg")' }}>
                         <div className="wrap-login100 p-t-30 p-b-50">
                             <span className="login100-form-title p-b-41">
-                                Login
+                               Đăng Nhập
                             </span>
                             <div className="login100-form validate-form p-b-33 p-t-5">
                                 <div className="wrap-input100 validate-input" data-validate="Enter username">
@@ -68,8 +68,12 @@ class login extends Component {
                                 </div>
                                 <div className="container-login100-form-btn m-t-32">
                                     <button onClick={() => { this.submitLogin() }} className="login100-form-btn">
-                                        Login
+                                    Đăng Nhập
                                     </button>
+                                </div>
+                                <div>
+                                    <NavLink to="/registers" className="btnRegister">Đăng Kí Tài Khoản</NavLink>
+                                    <label className="btnForgot" >Quên Mật Khẩu </label>
                                 </div>
                             </div>
                         </div>

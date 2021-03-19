@@ -2,14 +2,16 @@ import React, { Component } from 'react';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import friend from './friend';
+import { Button, Modal } from 'react-bootstrap'
 class modal extends Component {
     constructor(props) {
         super(props);
         this.state = {
             listSearch: this.props.listSearch,
-            accept: 0
+            accept: 0,
         }
     }
+
     addFriend = (element, massage) => {
         const user = JSON.parse(Cookies.get("user"))
         console.log(massage);
@@ -28,8 +30,8 @@ class modal extends Component {
             }
 
 
-            axios.post("/user/addFriend", [values_user, values_friend]).then(          
-                    alert("Gửi thành công lời mời kết bạn ...")
+            axios.post("/user/addFriend", [values_user, values_friend]).then(
+                alert("Gửi thành công lời mời kết bạn ...")
             )
         }
         if (massage === "Chấp Nhận") {
@@ -38,10 +40,10 @@ class modal extends Component {
                 userId: user.id,
                 friendId: element.id
             }
-            axios.post("/user/acceptFriend",values)
-            .then(
-                alert("Chấp Nhận Thành Công")
-            )
+            axios.post("/user/acceptFriend", values)
+                .then(
+                    alert("Chấp Nhận Thành Công")
+                )
 
         }
 
@@ -76,7 +78,7 @@ class modal extends Component {
                         console.log(element.id === results.friendId);
                         if (element.id === results.friendId) {
                             if (user.fullname !== element.fullname) {
-                                if (results.message === "Đã Gửi Lời Mời" ) {
+                                if (results.message === "Đã Gửi Lời Mời") {
                                     return (
                                         <div className="modal-body">
                                             <img alt="" src={element.image} style={{ width: "40px", height: "40px", borderRadius: "25px" }}></img>

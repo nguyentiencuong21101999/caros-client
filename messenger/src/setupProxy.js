@@ -7,7 +7,7 @@ module.exports = function(app) {
     "/user/register",
     createProxyMiddleware({
       //target: 'http://locallocal:4000',
-      target: url_local,
+      target: url_host,
       changeOrigin: true,
     })
   );
@@ -16,7 +16,7 @@ module.exports = function(app) {
     "/user/login",
     createProxyMiddleware({
       //target: 'http://locallocal:4000',
-      target: url_local,
+      target: url_host,
       changeOrigin: true,
     })
   );
@@ -25,7 +25,7 @@ module.exports = function(app) {
     "/user/listUser",
     createProxyMiddleware({
       //target: 'http://locallocal:4000',
-      target: url_local,
+      target: url_host,
       changeOrigin: true,
     })
   );
@@ -33,7 +33,7 @@ module.exports = function(app) {
     "/user/getUserByFullname",
     createProxyMiddleware({
       //target: 'http://locallocal:4000',
-      target: url_local,
+      target: url_host,
       changeOrigin: true,
     })
   );
@@ -41,7 +41,7 @@ module.exports = function(app) {
     "/user/addFriend",
     createProxyMiddleware({
       //target: 'http://locallocal:4000',
-      target: url_local,
+      target: url_host,
       changeOrigin: true,
     })
   );
@@ -49,7 +49,7 @@ module.exports = function(app) {
     "/user/getAccept",
     createProxyMiddleware({
       //target: 'http://locallocal:4000',
-      target: url_local,
+      target: url_host,
       changeOrigin: true,
     })
   );
@@ -57,7 +57,7 @@ module.exports = function(app) {
     "/user/getFriend",
     createProxyMiddleware({
       //target: 'http://locallocal:4000',
-      target: url_local,
+      target: url_host,
       changeOrigin: true,
     })
   );
@@ -65,7 +65,7 @@ module.exports = function(app) {
     "/user/acceptFriend",
     createProxyMiddleware({
       //target: 'http://locallocal:4000',
-      target: url_local,
+      target: url_host,
       changeOrigin: true,
     })
   );
@@ -74,7 +74,7 @@ module.exports = function(app) {
     "/user/checkAddFriend",
     createProxyMiddleware({
       //target: 'http://locallocal:4000',
-      target: url_local,
+      target: url_host,
       changeOrigin: true,
     })
   );

@@ -4,8 +4,8 @@ import axios from 'axios'
 import { Redirect } from 'react-router';
 import Modal from './modal'
 import Friend from './friend.js'
+import User from './user'
 import io from 'socket.io-client'
-import friend from './friend.js';
 var socket =
     //io("https://messenger-sever.herokuapp.com/");
     io("http://localhost:4000/");
@@ -19,6 +19,7 @@ class listUser extends Component {
             listFriend: [],
             checkAddFriend: [],
             listAcceptFriend: [],
+            user: JSON.parse(Cookies.get("user")),
             massage_errors: ""
 
         }
@@ -38,20 +39,20 @@ class listUser extends Component {
 
     }
 
-    postTxtSearch = async () => {
+    postTxtSearch = async (event) => {
         var user = JSON.parse(Cookies.get("user"));
+
         const values = {
             txtSearch: this.state.txtSearch
         }
 
         await axios.post("/user/getUserByFullname", values)
             .then(
-                async results => {
 
+                async results => {
                     this.setState({
                         listSearch: results.data
                     })
-                    console.log(results);
                     if (!results.data.status) {
                         results.data.map(element => {
                             const value = {
@@ -74,19 +75,19 @@ class listUser extends Component {
                                         });
                                     } else {
                                         console.log(checkAddFriend[0]);
-                                       const pos = this.state.checkAddFriend.map(function (e) { return e.friendId; }).indexOf(checkAddFriend[0].friendId);
+                                        const pos = this.state.checkAddFriend.map(function (e) { return e.friendId; }).indexOf(checkAddFriend[0].friendId);
                                         console.log(pos);
-                                        if(pos < 0){
+                                        if (pos < 0) {
                                             this.state.checkAddFriend.push(checkAddFriend[0])
                                             this.setState({
-                                                checkAddFriend:this.state.checkAddFriend
+                                                checkAddFriend: this.state.checkAddFriend
                                             });
-                                        }else{
-                                            this.state.checkAddFriend.splice(pos,1) 
+                                        } else {
+                                            this.state.checkAddFriend.splice(pos, 1)
                                             this.state.checkAddFriend.push(checkAddFriend[0])
                                             this.setState({
-                                                checkAddFriend:this.state.checkAddFriend
-                                            }); 
+                                                checkAddFriend: this.state.checkAddFriend
+                                            });
                                         }
 
                                     }
@@ -106,7 +107,7 @@ class listUser extends Component {
         const btnSearch = () => {
             if (this.state.txtSearch !== "") {
                 return (
-                    <button onClick={() => { this.postTxtSearch() }} type="button" className="input-group-text search_btn " data-toggle="modal" data-target="#exampleModal">
+                    <button onClick={(event) => { this.setState(() => { this.postTxtSearch() }); }} type="button" className="input-group-text search_btn " data-toggle="modal" data-target="#exampleModal">
                         <i className="fas fa-search" />
                     </button>
                 )
@@ -124,19 +125,46 @@ class listUser extends Component {
             <div>
                 <div className="container-fluid h-100">
                     <div className="row justify-content-center h-100">
+
                         <div className="col-md-4 col-xl-3 chat"><div className="card mb-sm-3 mb-md-0 contacts_card">
+
                             <div className="card-header">
                                 {/* Modal */}
                                 <Modal listSearch={this.state.listSearch}
-                                        checkAddFriend={this.state.checkAddFriend}
+                                    checkAddFriend={this.state.checkAddFriend}
                                 />
                                 {/* end Modal */}
+
                                 <div className="input-group">
-                                    <input onChange={(event) => { this.setState({ txtSearch: event.target.value }); }} type="text" placeholder="Search..." name className="form-control search " />
+                                    {/* <User user={this.state.user} /> */}
+
+                                    <input onChange={(event) => { this.setState({ txtSearch: event.target.value }); }} type="text" placeholder="Search..." name className="form-control search  " />
                                     <div className="input-group-prepend">
                                         {btnSearch()}
                                         {/* //<span className="input-group-text search_btn"></span> */}
+
                                     </div>
+
+                                </div>
+                                <div className="icon-messenger"><i class="fab fa-facebook-messenger icon"></i>
+                                    <div className="btn-group dropleft">
+                                        <button type="button" className="btn btn-secondary " id="action_menu_btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i className="fas fa-ellipsis-v drop" />
+                                        </button>
+                                        <div className="dropdown-menu action_menu" id="action_menu">
+                                            <div className="ul">
+                                                <div style={{ color: "red" }} onClick={() => { this.deleteMessenger() }} className="li"  >Xóa Tin   &ensp; <i class="fas fa-trash delete"></i> </div>
+                                                <hr style={{ width: "80%", margin: "0px", marginLeft: "17px ", backgroundColor: "white" }}></hr>
+                                                <div className="li" onClick={() => { this.signOut() }} >Đăng Xuất<i class="fas fa-sign-out-alt signout"></i> </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+
+
+
                                 </div>
                             </div>
                             {friend()}

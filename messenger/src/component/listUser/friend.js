@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 
 class friend extends Component {
-
+    
     render() {
         const listFriend = () => {
-
             return this.props.listFriend.map(element => {
                 return (
                     <li 
