@@ -1,9 +1,8 @@
 // import React, { Component } from 'react';
 // import io from 'socket.io-client'
 // var socket =
-//     //io("https://messenger-sever.herokuapp.com/");
-//    io("http://localhost:4000/");
-
+//     io("https://messengers-server.herokuapp.com/");
+    //io("http://localhost:4000/");
 
 // class messenger extends Component {
 //     constructor(props) {

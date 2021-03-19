@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import Cookies from 'js-cookie';
 import axios from 'axios';
-import friend from './friend';
-import { Button, Modal } from 'react-bootstrap'
-import io from 'socket.io-client'
-var socket =
-    //io("https://messenger-sever.herokuapp.com/");
-    io("http://localhost:4000/");
+// import friend from './friend';
+// import { Button, Modal } from 'react-bootstrap'
+// import io from 'socket.io-client'
+// // var socket =
+// //     //io("https://messenger-sever.herokuapp.com/");
+// //     io("http://localhost:4000/");
 
 class modal extends Component {
     constructor(props) {
