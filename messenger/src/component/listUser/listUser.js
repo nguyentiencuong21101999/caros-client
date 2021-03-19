@@ -6,6 +6,7 @@ import Modal from './modal'
 import Friend from './friend.js'
 import User from './user'
 import io from 'socket.io-client'
+import Messenger from './messenger'
 var socket =
     //io("https://messengers-server.herokuapp.com/");
     io("http://localhost:4000/");
@@ -20,6 +21,8 @@ class listUser extends Component {
             checkAddFriend: [],
             listAcceptFriend: [],
             user: {},
+            firend: {},
+            show_messenger: false,
             massage_errors: ""
 
         }
@@ -38,7 +41,7 @@ class listUser extends Component {
                 }
             )
             socket.on('connect', () => {
-                const rooms = this.state.user.username + "s";
+                const rooms = this.state.user.username;
                 socket.emit("rooms-addfriend", rooms);
 
                 socket.on("request-invation", results => {
@@ -154,71 +157,98 @@ class listUser extends Component {
         const friend = () => {
             if (this.state.listFriend.length > 0) {
                 return (
-                    <Friend listFriend={this.state.listFriend} />
+                    <Friend
+                        socket={socket}
+                        listFriend={this.state.listFriend}
+                        showMessenger={(element, results) => {
+                            this.setState({
+                                show_messenger: element,
+                               friend: results
+                            })
+                        }}
+                    />
                 )
             }
 
         }
+        const messenger = () => {
+            if (this.state.show_messenger) {
+                return <Messenger
+                    socket={socket}
+                    showMessenger={(element,) => { this.setState({ show_messenger: element }); }}
+                    friend={this.state.friend}
+
+                />
+            }
+        }
+        const listUser = () => {
+            if (!this.state.show_messenger) {
+                return (
+                    <div className="container-fluid h-100">
+                        <div className="row justify-content-center h-100">
+                            <div className="col-md-4 col-xl-3 chat"><div className="card mb-sm-3 mb-md-0 contacts_card">
+
+                                <div className="card-header">
+                                    {/* Modal */}
+                                    <Modal listSearch={this.state.listSearch}
+                                        checkAddFriend={this.state.checkAddFriend}
+                                        socket={socket}
+                                        txtSearch={this.state.txtSearch}
+                                    />
+                                    {/* end Modal */}
+
+                                    <div className="input-group">
+                                        <User user={this.state.user} />
+
+                                        <input onChange={(event) => { this.setState({ txtSearch: event.target.value }); }} type="text" placeholder="Search..." name className="form-control search  " />
+                                        <div className="input-group-prepend">
+                                            {btnSearch()}
+                                            {/* //<span className="input-group-text search_btn"></span> */}
+
+                                        </div>
+
+                                    </div>
+                                    <div className="icon-messenger"><i class="fab fa-facebook-messenger icon"></i>
+                                        <div className="btn-group dropleft">
+                                            <button type="button" className="btn btn-secondary " id="action_menu_btn1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i className="fas fa-ellipsis-v drop1" />
+                                            </button>
+                                            <div className="dropdown-menu action_menu1" id="action_menu">
+                                                <div className="ul">
+                                                    <div style={{ color: "red" }} onClick={() => { }} className="li"  >Xóa Tin   &ensp; <i class="fas fa-trash delete"></i> </div>
+                                                    <hr style={{ width: "80%", margin: "0px", marginLeft: "17px ", backgroundColor: "white" }}></hr>
+                                                    <div className="li"
+                                                        onClick={() => {
+                                                            Cookies.remove('user')
+                                                            this.setState({
+                                                                txtSearch: "",
+
+                                                            });
+                                                        }}>
+                                                        Đăng Xuất
+                                                <i class="fas fa-sign-out-alt signout"></i>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                {friend()}
+                            </div>
+                            </div></div></div>
+                )
+            }
+        }
         if (!Cookies.get("user")) {
-            console.log("a");
             return <Redirect to="/" />
         }
         return (
             <div>
-                <div className="container-fluid h-100">
-                    <div className="row justify-content-center h-100">
-                        <div className="col-md-4 col-xl-3 chat"><div className="card mb-sm-3 mb-md-0 contacts_card">
-
-                            <div className="card-header">
-                                {/* Modal */}
-                                <Modal listSearch={this.state.listSearch}
-                                    checkAddFriend={this.state.checkAddFriend}
-                                    socket={socket}
-                                    txtSearch={this.state.txtSearch}
-                                />
-                                {/* end Modal */}
-
-                                <div className="input-group">
-                                    <User user={this.state.user} />
-
-                                    <input onChange={(event) => { this.setState({ txtSearch: event.target.value }); }} type="text" placeholder="Search..." name className="form-control search  " />
-                                    <div className="input-group-prepend">
-                                        {btnSearch()}
-                                        {/* //<span className="input-group-text search_btn"></span> */}
-
-                                    </div>
-
-                                </div>
-                                <div className="icon-messenger"><i class="fab fa-facebook-messenger icon"></i>
-                                    <div className="btn-group dropleft">
-                                        <button type="button" className="btn btn-secondary " id="action_menu_btn1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i className="fas fa-ellipsis-v drop1" />
-                                        </button>
-                                        <div className="dropdown-menu action_menu1" id="action_menu">
-                                            <div className="ul">
-                                                <div style={{ color: "red" }} onClick={() => { }} className="li"  >Xóa Tin   &ensp; <i class="fas fa-trash delete"></i> </div>
-                                                <hr style={{ width: "80%", margin: "0px", marginLeft: "17px ", backgroundColor: "white" }}></hr>
-                                                <div className="li"
-                                                    onClick={() => {
-                                                        Cookies.remove('user')
-                                                        this.setState({
-                                                            txtSearch: "",
-                                                           
-                                                        });
-                                                    }}>
-                                                    Đăng Xuất
-                                                    <i class="fas fa-sign-out-alt signout"></i>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                            {friend()}
-                        </div>
-                        </div></div></div>
+                {messenger()}
+                {listUser()}
             </div>
         )
     }

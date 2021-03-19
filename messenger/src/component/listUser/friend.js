@@ -2,6 +2,12 @@ import React, { Component } from 'react';
 
 class friend extends Component {
 
+    submitFriend = (element) => {
+        console.log(element);
+        this.props.showMessenger(true, element);
+        this.props.socket.emit("join-rooms", element.username)
+    }
+
     render() {
         const listFriend = () => {
             if (this.props.listFriend.length > 0) {
@@ -10,12 +16,16 @@ class friend extends Component {
                         <li
                         // className="active"
                         >
-                            <div className="d-flex bd-highlight">
+                            <div onClick={() => {
+                                this.submitFriend(element)
+                                //this.props.showMessenger(true, element);
+                            }}
+                                className="d-flex bd-highlight">
                                 <div className="img_cont">
                                     <img alt="" src={element.image} className="rounded-circle user_img" />
                                     <span className="online_icon" />
                                 </div>
-                                <div className="user_info">
+                                <div className="user_info1">
                                     <span>{element.fullname}</span>
                                     <p> online</p>
                                 </div>
