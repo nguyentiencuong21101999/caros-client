@@ -16,9 +16,17 @@ html {
     cursor: pointer;
     font-size: 20px;
     z-index: 1;
+    margin-top: -90px;
+}
+.drop1 {
+    position: absolute;
+    margin-top: 70px;
+}
+action_menu_2 {
+    margin-top: 48px !important;
 }
 .input-group {
-    width: 80% !important;
+    width: 83% !important;
 }
 .form-control {
     border-radius: 30px !important;
@@ -294,6 +302,17 @@ margin-bottom: auto; */
     background-color: rgba(0, 0, 0, 0.03) !important;
     border: none;
 }
+.action_menu1 {
+    z-index: 1;
+    position: absolute;
+    /* padding: 10px 0; */
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border-radius: 15px;
+    top: 80px !important;
+    left: 16px !important;
+    display: none;
+}
 .action_menu {
     z-index: 1;
     position: absolute;
@@ -324,6 +343,29 @@ margin-bottom: auto; */
     padding-left: 24px;
 }
 .action_menu .ul .li:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+/* lisstUSer */
+.action_menu1 .ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.action_menu1 .ul .li {
+    color: red;
+    width: 100%;
+    padding: 10px 15px;
+    margin: 5px;
+}
+.action_menu1 .ul .li .delete {
+    padding-left: 28px;
+    color: red;
+}
+.action_menu1 .ul .li .signout {
+    padding-left: 24px;
+}
+.action_menu1 .ul .li:hover {
     cursor: pointer;
     background-color: rgba(0, 0, 0, 0.2);
 }

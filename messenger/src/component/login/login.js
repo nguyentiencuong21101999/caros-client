@@ -32,7 +32,7 @@ class login extends Component {
                             username: results.data.username,
                             image: results.data.image
                         }
-                        Cookies.set("user", values, { expires: new Date(new Date().getTime() + 60 * 60 * 1000) })
+                        Cookies.set("user", values)
                         this.setState({
                             username: "",
                             password: "",

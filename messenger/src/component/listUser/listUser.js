@@ -5,10 +5,7 @@ import { Redirect } from 'react-router';
 import Modal from './modal'
 import Friend from './friend.js'
 import User from './user'
-import io from 'socket.io-client'
-var socket =
-    //io("https://messenger-sever.herokuapp.com/");
-    io("http://localhost:4000/");
+
 class listUser extends Component {
     constructor(props) {
         super(props);
@@ -19,18 +16,17 @@ class listUser extends Component {
             listFriend: [],
             checkAddFriend: [],
             listAcceptFriend: [],
-            user: {},
+            user: JSON.parse(Cookies.get("user")),
             massage_errors: ""
 
         }
     }
     componentDidMount() {
-        
+
         var user = JSON.parse(Cookies.get("user"));
         this.setState({
-            user:user
+            user: user
         });
-        // socket.on('connect', () => { })
 
         axios.post("/user/getFriend", { userId: user.id }).then(
             results => {
@@ -139,7 +135,7 @@ class listUser extends Component {
                                 {/* end Modal */}
 
                                 <div className="input-group">
-                                    {/* <User user={this.state.user} /> */}
+                                    <User user={this.state.user} />
 
                                     <input onChange={(event) => { this.setState({ txtSearch: event.target.value }); }} type="text" placeholder="Search..." name className="form-control search  " />
                                     <div className="input-group-prepend">
@@ -152,13 +148,13 @@ class listUser extends Component {
                                 <div className="icon-messenger"><i class="fab fa-facebook-messenger icon"></i>
                                     <div className="btn-group dropleft">
                                         <button type="button" className="btn btn-secondary " id="action_menu_btn1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i className="fas fa-ellipsis-v drop" />
+                                            <i className="fas fa-ellipsis-v drop1" />
                                         </button>
-                                        <div className="dropdown-menu action_menu" id="action_menu">
+                                        <div className="dropdown-menu action_menu1   " id="action_menu">
                                             <div className="ul">
-                                                <div style={{ color: "red" }} onClick={() => {  }} className="li"  >Xóa Tin   &ensp; <i class="fas fa-trash delete"></i> </div>
+                                                <div style={{ color: "red" }} onClick={() => { }} className="li"  >Xóa Tin   &ensp; <i class="fas fa-trash delete"></i> </div>
                                                 <hr style={{ width: "80%", margin: "0px", marginLeft: "17px ", backgroundColor: "white" }}></hr>
-                                                <div className="li" onClick={() => {  }} >Đăng Xuất<i class="fas fa-sign-out-alt signout"></i> </div>
+                                                <div className="li" onClick={() => { }} >Đăng Xuất<i class="fas fa-sign-out-alt signout"></i> </div>
                                             </div>
 
                                         </div>
