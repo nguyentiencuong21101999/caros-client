@@ -19,13 +19,17 @@ class listUser extends Component {
             listFriend: [],
             checkAddFriend: [],
             listAcceptFriend: [],
-            user: JSON.parse(Cookies.get("user")),
+            user: {},
             massage_errors: ""
 
         }
     }
     componentDidMount() {
+        
         var user = JSON.parse(Cookies.get("user"));
+        this.setState({
+            user:user
+        });
         // socket.on('connect', () => { })
 
         axios.post("/user/getFriend", { userId: user.id }).then(
