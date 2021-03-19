@@ -7,7 +7,7 @@ import Friend from './friend.js'
 import User from './user'
 import io from 'socket.io-client'
 var socket =
-    io("https://messenger-servers.herokuapp.com/");
+    io("https://messengers-server.herokuapp.com/");
     //io("http://localhost:4000/");
 class listUser extends Component {
     constructor(props) {
