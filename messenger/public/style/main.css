@@ -6,13 +6,24 @@ html {
     background: -webkit-linear-gradient(to right, #91eae4, #86a8e7, #7f7fd5);
     background: linear-gradient(to right, #91eae4, #86a8e7, #7f7fd5);
 }
-.input-group{
+#action_menu_btn1 {
+    background-color: rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    position: absolute;
+    /* margin-left: 286px;
+    margin-top: -110px; */
+    color: white;
+    cursor: pointer;
+    font-size: 20px;
+    z-index: 1;
+}
+.input-group {
     width: 80% !important;
 }
-.form-control{
+.form-control {
     border-radius: 30px !important;
 }
-.search  {
+.search {
     height: 35px !important;
     border-radius: 30px !important;
 }
@@ -215,7 +226,7 @@ html {
 .msg_cotainer {
     /* margin-top: auto;
 margin-bottom: auto; */
-margin-bottom: 5px; 
+    margin-bottom: 5px;
     margin-left: 7px;
     border-radius: 10px;
     background-color: #82ccdd;
@@ -225,8 +236,8 @@ margin-bottom: 5px;
     word-wrap: break-word;
 }
 .msg_cotainer_send {
-     /* margin-top: auto; */
-margin-bottom: 5px; 
+    /* margin-top: auto; */
+    margin-bottom: 5px;
     word-wrap: break-word;
     margin-right: -10px;
     border-radius: 10px;

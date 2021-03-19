@@ -125,7 +125,6 @@ class listUser extends Component {
             <div>
                 <div className="container-fluid h-100">
                     <div className="row justify-content-center h-100">
-
                         <div className="col-md-4 col-xl-3 chat"><div className="card mb-sm-3 mb-md-0 contacts_card">
 
                             <div className="card-header">
@@ -148,14 +147,14 @@ class listUser extends Component {
                                 </div>
                                 <div className="icon-messenger"><i class="fab fa-facebook-messenger icon"></i>
                                     <div className="btn-group dropleft">
-                                        <button type="button" className="btn btn-secondary " id="action_menu_btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <button type="button" className="btn btn-secondary " id="action_menu_btn1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <i className="fas fa-ellipsis-v drop" />
                                         </button>
                                         <div className="dropdown-menu action_menu" id="action_menu">
                                             <div className="ul">
-                                                <div style={{ color: "red" }} onClick={() => { this.deleteMessenger() }} className="li"  >Xóa Tin   &ensp; <i class="fas fa-trash delete"></i> </div>
+                                                <div style={{ color: "red" }} onClick={() => {  }} className="li"  >Xóa Tin   &ensp; <i class="fas fa-trash delete"></i> </div>
                                                 <hr style={{ width: "80%", margin: "0px", marginLeft: "17px ", backgroundColor: "white" }}></hr>
-                                                <div className="li" onClick={() => { this.signOut() }} >Đăng Xuất<i class="fas fa-sign-out-alt signout"></i> </div>
+                                                <div className="li" onClick={() => {  }} >Đăng Xuất<i class="fas fa-sign-out-alt signout"></i> </div>
                                             </div>
 
                                         </div>
