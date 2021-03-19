@@ -3,6 +3,11 @@ import Cookies from 'js-cookie';
 import axios from 'axios';
 import friend from './friend';
 import { Button, Modal } from 'react-bootstrap'
+import io from 'socket.io-client'
+var socket =
+    //io("https://messenger-sever.herokuapp.com/");
+    io("http://localhost:4000/");
+
 class modal extends Component {
     constructor(props) {
         super(props);
@@ -12,12 +17,16 @@ class modal extends Component {
         }
     }
 
-    addFriend = (element, massage) => {
-        const user = JSON.parse(Cookies.get("user"))
-        console.log(massage);
-        if (massage === "Gửi lời mời") {
-            console.log(element);
 
+    addFriend = async (element, massage) => {
+        const user = JSON.parse(Cookies.get("user"))
+        if (massage === "Gửi lời mời") {
+            const values = {
+                to: element.username + "s",
+                send: user.fullname
+
+            }
+            this.props.socket.emit("send-invatition", values)
             const values_user = {
                 userId: user.id,
                 friendId: element.id,
@@ -28,22 +37,46 @@ class modal extends Component {
                 friendId: user.id,
                 send: user.id
             }
-
-
-            axios.post("/user/addFriend", [values_user, values_friend]).then(
-                alert("Gửi thành công lời mời kết bạn ...")
+            const value_upload =
+            {
+                userId: user.id,
+                friendId: element.id,
+                toMe: user.username + "s",
+                toYou: element.username + "s"
+            }
+            axios.post("/user/addFriend", [values_user, values_friend]).then( results =>{
+                console.log(results);
+                this.props.socket.emit("upload-message", value_upload)
+            }
+              
             )
+
+
         }
         if (massage === "Chấp Nhận") {
-            console.log(element);
+            const value_upload =
+            {
+                userId: user.id,
+                friendId: element.id,
+                toMe: user.username + "s",
+                toYou: element.username + "s"
+            }
+            this.props.socket.emit("upload-message", value_upload)
+
             const values = {
                 userId: user.id,
                 friendId: element.id
             }
+
             axios.post("/user/acceptFriend", values)
                 .then(
-                    alert("Chấp Nhận Thành Công")
+                    () =>{
+                        this.props.socket.emit("upload-friend", value_upload)
+                    }
+                
+
                 )
+
 
         }
 
@@ -55,9 +88,6 @@ class modal extends Component {
             friendId: friend
         }
         axios.post("/user/acceptFriend", value)
-        console.log("element", user);
-        console.log("element", friend);
-
     }
 
     render() {
@@ -73,9 +103,6 @@ class modal extends Component {
                 const user = JSON.parse(Cookies.get("user"));
                 return this.props.listSearch.map(element => {
                     return this.props.checkAddFriend.map(results => {
-                        console.log("search", element);
-                        console.log("check", results);
-                        console.log(element.id === results.friendId);
                         if (element.id === results.friendId) {
                             if (user.fullname !== element.fullname) {
                                 if (results.message === "Đã Gửi Lời Mời") {

@@ -25,7 +25,6 @@ class login extends Component {
                     if (results.data.status === "error") {
                         alert(results.data.message)
                     } else {
-                        console.log(results);
                         const values = {
                             id: results.data.id,
                             fullname: results.data.fullname,

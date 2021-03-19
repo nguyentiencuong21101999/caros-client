@@ -5,7 +5,10 @@ import { Redirect } from 'react-router';
 import Modal from './modal'
 import Friend from './friend.js'
 import User from './user'
-
+import io from 'socket.io-client'
+var socket =
+    io("https://messenger-servers.herokuapp.com/");
+    //io("http://localhost:4000/");
 class listUser extends Component {
     constructor(props) {
         super(props);
@@ -16,26 +19,66 @@ class listUser extends Component {
             listFriend: [],
             checkAddFriend: [],
             listAcceptFriend: [],
-            user: JSON.parse(Cookies.get("user")),
+            user: {},
             massage_errors: ""
 
         }
     }
     componentDidMount() {
+        if (Cookies.get("user")) {
+            var user = JSON.parse(Cookies.get("user"));
+            this.setState({
+                user: user
+            });
+            axios.post("/user/getFriend", { userId: user.id }).then(
+                results => {
+                    this.setState({
+                        listFriend: results.data
+                    });
+                }
+            )
+            socket.on('connect', () => {
+                const rooms = this.state.user.username + "s";
+                socket.emit("rooms-addfriend", rooms);
 
-        var user = JSON.parse(Cookies.get("user"));
-        this.setState({
-            user: user
-        });
+                socket.on("request-invation", results => {
+                    alert(results);
+                })
+                socket.on("request-upload-massage", data => {
+                    let checkAddFriend = [];
+                    const values = {
+                        friendId: data.userId,
+                        message: data.message
+                    }
+                    checkAddFriend.push(values);
 
-        axios.post("/user/getFriend", { userId: user.id }).then(
-            results => {
+                    if (this.state.checkAddFriend.length < 1) {
+                        this.setState({
+                            checkAddFriend: checkAddFriend
+                        });
+                    } else {
+                        const pos = this.state.checkAddFriend.map(function (e) { return e.friendId; }).indexOf(checkAddFriend[0].friendId);
+                        if (pos < 0) {
+                            this.state.checkAddFriend.push(checkAddFriend[0])
+                            this.setState({
+                                checkAddFriend: this.state.checkAddFriend
+                            });
+                        } else {
+                            this.state.checkAddFriend.splice(pos, 1)
+                            this.state.checkAddFriend.push(checkAddFriend[0])
+                            this.setState({
+                                checkAddFriend: this.state.checkAddFriend
+                            });
+                        }
 
-                this.setState({
-                    listFriend: results.data
-                });
-            }
-        )
+                    }
+                })
+
+                socket.on("request-upload-friend", data => {
+                    this.setState({ listFriend: data });
+                })
+            })
+        }
 
     }
 
@@ -69,14 +112,11 @@ class listUser extends Component {
                                     checkAddFriend.push(values);
 
                                     if (this.state.checkAddFriend.length < 1) {
-                                        console.log("chua co gi");
                                         this.setState({
                                             checkAddFriend: checkAddFriend
                                         });
                                     } else {
-                                        console.log(checkAddFriend[0]);
                                         const pos = this.state.checkAddFriend.map(function (e) { return e.friendId; }).indexOf(checkAddFriend[0].friendId);
-                                        console.log(pos);
                                         if (pos < 0) {
                                             this.state.checkAddFriend.push(checkAddFriend[0])
                                             this.setState({
@@ -100,9 +140,7 @@ class listUser extends Component {
                 })
     }
     render() {
-        if (!Cookies.get("user")) {
-            return <Redirect to="/" />
-        }
+
 
         const btnSearch = () => {
             if (this.state.txtSearch !== "") {
@@ -121,6 +159,10 @@ class listUser extends Component {
             }
 
         }
+        if (!Cookies.get("user")) {
+            console.log("a");
+            return <Redirect to="/" />
+        }
         return (
             <div>
                 <div className="container-fluid h-100">
@@ -131,6 +173,8 @@ class listUser extends Component {
                                 {/* Modal */}
                                 <Modal listSearch={this.state.listSearch}
                                     checkAddFriend={this.state.checkAddFriend}
+                                    socket={socket}
+                                    txtSearch={this.state.txtSearch}
                                 />
                                 {/* end Modal */}
 
@@ -159,10 +203,6 @@ class listUser extends Component {
 
                                         </div>
                                     </div>
-
-
-
-
 
                                 </div>
                             </div>
