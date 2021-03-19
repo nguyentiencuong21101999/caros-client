@@ -12,11 +12,27 @@
 .role{
     font-size: 13px;
 }
+.add-friend1{
+    padding: 4px;
+    border: 1px solid;
+    position: absolute;
+    margin-top: -5px;
+    margin-left: 290px;
+    border-radius: 10px;
+}
 .add-friend{
     padding: 4px;
     border: 1px solid;
     position: absolute;
     margin-top: -5px;
-    margin-left: 200px;
+    margin-left: 190px;
+    border-radius: 10px;
+}
+.add-friend3{
+    padding: 4px;
+    border: 1px solid;
+    position: absolute;
+    margin-top: -5px;
+    margin-left: 166px;
     border-radius: 10px;
 }

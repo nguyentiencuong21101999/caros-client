@@ -7,8 +7,8 @@ import Friend from './friend.js'
 import User from './user'
 import io from 'socket.io-client'
 var socket =
-    io("https://messengers-server.herokuapp.com/");
-    //io("http://localhost:4000/");
+    //io("https://messengers-server.herokuapp.com/");
+    io("http://localhost:4000/");
 class listUser extends Component {
     constructor(props) {
         super(props);
@@ -194,11 +194,21 @@ class listUser extends Component {
                                         <button type="button" className="btn btn-secondary " id="action_menu_btn1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <i className="fas fa-ellipsis-v drop1" />
                                         </button>
-                                        <div className="dropdown-menu action_menu1   " id="action_menu">
+                                        <div className="dropdown-menu action_menu1" id="action_menu">
                                             <div className="ul">
                                                 <div style={{ color: "red" }} onClick={() => { }} className="li"  >Xóa Tin   &ensp; <i class="fas fa-trash delete"></i> </div>
                                                 <hr style={{ width: "80%", margin: "0px", marginLeft: "17px ", backgroundColor: "white" }}></hr>
-                                                <div className="li" onClick={() => { }} >Đăng Xuất<i class="fas fa-sign-out-alt signout"></i> </div>
+                                                <div className="li"
+                                                    onClick={() => {
+                                                        Cookies.remove('user')
+                                                        this.setState({
+                                                            txtSearch: "",
+                                                           
+                                                        });
+                                                    }}>
+                                                    Đăng Xuất
+                                                    <i class="fas fa-sign-out-alt signout"></i>
+                                                </div>
                                             </div>
 
                                         </div>
