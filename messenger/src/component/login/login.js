@@ -14,12 +14,12 @@ class login extends Component {
         }
     }
 
-    submitLogin = () => {
+    submitLogin = async() => {
         const values = {
             username: this.state.username,
             password: this.state.password
         }
-        axios.post("/user/login", values)
+        await axios.post("/user/login", values)
             .then(
                 results => {
                     if (results.data.status === "error") {
@@ -32,7 +32,7 @@ class login extends Component {
                             image: results.data.image
                         }
                         Cookies.set("user", values)
-                        this.setState({
+                         this.setState({
                             username: "",
                             password: "",
                             user: {},

@@ -9,7 +9,7 @@ import io from 'socket.io-client'
 import Messenger from './messenger'
 var socket =
     io("https://messengers-server.herokuapp.com/");
-   // io("http://localhost:4000/");
+// io("http://localhost:4000/");
 class listUser extends Component {
     constructor(props) {
         super(props);
@@ -29,65 +29,65 @@ class listUser extends Component {
         }
     }
     componentDidMount() {
-        if (Cookies.get("user")) {
-            var user = JSON.parse(Cookies.get("user"));
-            this.setState({
-                user: user
-            });
-            axios.post("/user/getFriend", { userId: user.id }).then(
-                results => {
-                    this.setState({
-                        listFriend: results.data
-                    });
+
+        var user = JSON.parse(Cookies.get("user"));
+        this.setState({
+            user: user
+        });
+        axios.post("/user/getFriend", { userId: user.id }).then(
+            results => {
+                this.setState({
+                    listFriend: results.data
+                });
+            }
+        )
+        socket.on('connect', () => {
+            const rooms = this.state.user.username;
+            socket.emit("rooms-addfriend", rooms);
+
+            socket.on("request-invation", results => {
+                alert(results);
+            })
+            socket.on("request-upload-massage", data => {
+                let checkAddFriend = [];
+                const values = {
+                    friendId: data.userId,
+                    message: data.message
                 }
-            )
-            socket.on('connect', () => {
-                const rooms = this.state.user.username;
-                socket.emit("rooms-addfriend", rooms);
+                checkAddFriend.push(values);
 
-                socket.on("request-invation", results => {
-                    alert(results);
-                })
-                socket.on("request-upload-massage", data => {
-                    let checkAddFriend = [];
-                    const values = {
-                        friendId: data.userId,
-                        message: data.message
-                    }
-                    checkAddFriend.push(values);
-
-                    if (this.state.checkAddFriend.length < 1) {
+                if (this.state.checkAddFriend.length < 1) {
+                    this.setState({
+                        checkAddFriend: checkAddFriend
+                    });
+                } else {
+                    const pos = this.state.checkAddFriend.map(function (e) { return e.friendId; }).indexOf(checkAddFriend[0].friendId);
+                    if (pos < 0) {
+                        this.state.checkAddFriend.push(checkAddFriend[0])
                         this.setState({
-                            checkAddFriend: checkAddFriend
+                            checkAddFriend: this.state.checkAddFriend
                         });
                     } else {
-                        const pos = this.state.checkAddFriend.map(function (e) { return e.friendId; }).indexOf(checkAddFriend[0].friendId);
-                        if (pos < 0) {
-                            this.state.checkAddFriend.push(checkAddFriend[0])
-                            this.setState({
-                                checkAddFriend: this.state.checkAddFriend
-                            });
-                        } else {
-                            this.state.checkAddFriend.splice(pos, 1)
-                            this.state.checkAddFriend.push(checkAddFriend[0])
-                            this.setState({
-                                checkAddFriend: this.state.checkAddFriend
-                            });
-                        }
-
+                        this.state.checkAddFriend.splice(pos, 1)
+                        this.state.checkAddFriend.push(checkAddFriend[0])
+                        this.setState({
+                            checkAddFriend: this.state.checkAddFriend
+                        });
                     }
-                })
 
-                socket.on("request-upload-friend", data => {
-                    this.setState({ listFriend: data });
-                })
-
-                socket.on("request-send-messenger",data =>{
-                    alert(data)
-                })
-
+                }
             })
-        }
+
+            socket.on("request-upload-friend", data => {
+                this.setState({ listFriend: data });
+            })
+
+            socket.on("request-send-messenger", data => {
+                alert(data)
+            })
+
+        })
+
 
     }
 
