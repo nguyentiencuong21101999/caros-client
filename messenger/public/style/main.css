@@ -6,7 +6,29 @@ html {
     background: -webkit-linear-gradient(to right, #91eae4, #86a8e7, #7f7fd5);
     background: linear-gradient(to right, #91eae4, #86a8e7, #7f7fd5);
 }
-.back{
+.a{
+    position: absolute;
+    transform: rotate(-90deg);
+    margin-left: 343px;
+    font-size: 30px;
+    margin-top: -44px;
+}
+.fa-paperclip {
+    font-size: 23px;
+    margin-top: 1168px;
+    z-index: 999;
+    padding-left: 104px;
+    position: absolute;
+}
+.txt_messenger {
+    width: 200px !important;
+    height: 35px !important;
+    wordwrap: break-word;
+}
+.inputFile {
+    display: none;
+}
+.back {
     position: absolute;
     position: absolute;
     margin-top: 14px;
@@ -41,10 +63,11 @@ action_menu_2 {
     margin-top: 48px !important;
 }
 .input-group {
-    width: 83% !important;
+    width: 90% !important;
 }
 .form-control {
-    border-radius: 30px !important;
+    border-radius: 19px !important;
+    margin-left: 30px !important;
 }
 .search {
     height: 35px !important;
@@ -159,12 +182,16 @@ action_menu_2 {
 }
 .attach_btn {
     border-radius: 15px 0 0 15px !important;
-    background-color: rgba(0, 0, 0, 0.3) !important;
+    background-color: rgb(143 222 228) !important;
     border: 0 !important;
     color: white !important;
     cursor: pointer;
+    position: absolute;
+    margin-left: -100px;
 }
 .send_btn {
+    height: 35px;
+    position: absolute;
     border-radius: 0 15px 15px 0 !important;
     background-color: rgba(0, 0, 0, 0.3) !important;
     border: 0 !important;
@@ -207,7 +234,7 @@ action_menu_2 {
     left: 15px;
     top: 6px;
 }
-.bd-highlight{
+.bd-highlight {
     margin-top: -17px !important;
 }
 .img_cont_msg {
@@ -215,7 +242,7 @@ action_menu_2 {
     width: 23px;
     margin-left: -10px;
 }
-.online_icon1{
+.online_icon1 {
     position: absolute;
     height: 9px;
     width: 9px;
@@ -339,7 +366,7 @@ margin-bottom: auto; */
     border: 1px solid rgba(0, 0, 0, 0.03);
     position: absolute;
     margin-left: 328px;
-    margin-top: -112px;;
+    margin-top: -112px;
     color: white;
     cursor: pointer;
     font-size: 20px;

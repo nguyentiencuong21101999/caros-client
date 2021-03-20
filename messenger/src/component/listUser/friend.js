@@ -5,7 +5,7 @@ class friend extends Component {
 
     submitFriend = (element) => {
         const user = JSON.parse(Cookies.get("user"))
-        console.log(element);
+
         this.props.showMessenger(true, element);
         this.props.socket.emit("join-rooms", {user:user.username,friend:element.username})
     }
