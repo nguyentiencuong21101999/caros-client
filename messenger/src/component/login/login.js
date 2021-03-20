@@ -22,9 +22,11 @@ class login extends Component {
         await axios.post("/user/login", values)
             .then(
                 results => {
+                    console.log(results);
                     if (results.data.status === "error") {
                         alert(results.data.message)
                     } else {
+                        alert("Dang nhap thanh cong")
                         const values = {
                             id: results.data.id,
                             fullname: results.data.fullname,
@@ -38,6 +40,7 @@ class login extends Component {
                             user: {},
                             redirect: true
                         })
+                      
                     }
                 }
             )

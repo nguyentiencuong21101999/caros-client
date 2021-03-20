@@ -9,7 +9,7 @@ import io from 'socket.io-client'
 import Messenger from './messenger'
 var socket =
     io("https://messengers-server.herokuapp.com/");
-// io("http://localhost:4000/");
+    //io("http://localhost:4000/");
 class listUser extends Component {
     constructor(props) {
         super(props);
@@ -24,11 +24,13 @@ class listUser extends Component {
             firend: {},
             value_messenger: [],
             show_messenger: false,
-            massage_errors: ""
+            massage_errors: "",
+            currentRooms: ""
 
         }
     }
     componentDidMount() {
+        console.log("b");
         if (Cookies.get("user")) {
             var user = JSON.parse(Cookies.get("user"));
             this.setState({
@@ -43,14 +45,22 @@ class listUser extends Component {
             )
 
         }
-        socket.on('connect', () => {
-            const rooms = this.state.user.username;
+        // socket.on('connect', () => {
+
+            const rooms = JSON.parse(Cookies.get("user")).username;
             socket.emit("rooms-addfriend", rooms);
+
+            // socket.on("request-rooms-addfriend", data => {
+            //     this.setState({
+            //         currentRooms: data
+            //     });
+            // })
 
             socket.on("request-invation", results => {
                 alert(results);
             })
-            socket.on("request-upload-massage", data => {
+            socket.on("request-upload-massage", async data => {
+
                 let checkAddFriend = [];
                 const values = {
                     friendId: data.userId,
@@ -59,19 +69,27 @@ class listUser extends Component {
                 checkAddFriend.push(values);
 
                 if (this.state.checkAddFriend.length < 1) {
+                    console.log("trong");
                     this.setState({
                         checkAddFriend: checkAddFriend
                     });
+                    console.log(this.state.checkAddFriend);
                 } else {
+
                     const pos = this.state.checkAddFriend.map(function (e) { return e.friendId; }).indexOf(checkAddFriend[0].friendId);
+
                     if (pos < 0) {
+                        console.log("khong co trong mang");
                         this.state.checkAddFriend.push(checkAddFriend[0])
                         this.setState({
                             checkAddFriend: this.state.checkAddFriend
                         });
                     } else {
+                        console.log("co trong mang");
                         this.state.checkAddFriend.splice(pos, 1)
+
                         this.state.checkAddFriend.push(checkAddFriend[0])
+                        console.log(this.state.checkAddFriend);
                         this.setState({
                             checkAddFriend: this.state.checkAddFriend
                         });
@@ -88,16 +106,18 @@ class listUser extends Component {
                 alert(data)
             })
 
-        })
+        // }
+        // )
     }
 
     postTxtSearch = async (event) => {
         var user = JSON.parse(Cookies.get("user"));
 
         const values = {
+            userId: JSON.parse(Cookies.get("user")).id,
             txtSearch: this.state.txtSearch
         }
-
+        console.log(values);
         await axios.post("/user/getUserByFullname", values)
             .then(
 
@@ -150,7 +170,7 @@ class listUser extends Component {
     }
     render() {
 
-
+        console.log("a");
         const btnSearch = () => {
             if (this.state.txtSearch !== "") {
                 return (
@@ -252,12 +272,24 @@ class listUser extends Component {
         if (!Cookies.get("user")) {
             return <Redirect to="/" />
         }
+
+        const all = () => {
+            if (!this.state.rooms) {
+                return (
+
+                    <div>
+                        {messenger()}
+                        {listUser()}
+                    </div>
+                )
+            }
+        }
         return (
             <div>
-                {messenger()}
-                {listUser()}
+                {all()}
             </div>
         )
+
     }
 }
 

@@ -27,6 +27,7 @@ class modal extends Component {
 
             }
             this.props.socket.emit("send-invatition", values)
+
             const values_user = {
                 userId: user.id,
                 friendId: element.id,
@@ -46,7 +47,51 @@ class modal extends Component {
             }
             await axios.post("/user/addFriend", [values_user, values_friend]).then(results => {
                 console.log(results);
-                 this.props.socket.emit("upload-message", value_upload)
+                if (results.data.status === "success") {
+                    console.log("a");
+                    this.props.socket.emit("upload-message", value_upload)
+
+                    this.props.socket.on("request-upload-massage",async data => {
+             
+                        let checkAddFriend = [];
+                        const values = {
+                            friendId: data.userId,
+                            message: data.message
+                        }
+                        checkAddFriend.push(values);
+                     
+                        if (this.props.checkAddFriend.length < 1) {
+                        console.log("trong");
+                            this.setState({
+                                checkAddFriend: checkAddFriend
+                            });
+                            console.log(this.props.checkAddFriend);
+                        } else {
+                            
+                            const pos =  this.props.checkAddFriend.map(function (e) { return e.friendId; }).indexOf(checkAddFriend[0].friendId);
+                           
+                            if (pos < 0) {
+                                console.log("khong co trong mang");
+                                this.props.checkAddFriend.push(checkAddFriend[0])
+                                this.setState({
+                                    checkAddFriend: this.state.checkAddFriend
+                                });
+                            } else {
+                              
+                                this.props.checkAddFriend.splice(pos, 1)
+        
+                                this.props.checkAddFriend.push(checkAddFriend[0])
+                                console.log(this.props.checkAddFriend);
+                                this.setState({
+                                    checkAddFriend: this.props.checkAddFriend
+                                });
+                                console.log("co trong mang");
+                            }
+        
+                        }
+                    })
+                }
+
             }
 
             )
@@ -84,7 +129,7 @@ class modal extends Component {
     //     }
     //     axios.post("/user/acceptFriend", value)
     // }
-    cancleFriend = async(element) => {
+    cancleFriend = async (element) => {
         const user = JSON.parse(Cookies.get("user"));
         const values = {
             userId: user.id,
