@@ -44,9 +44,9 @@ class modal extends Component {
                 toMe: user.username + "s",
                 toYou: element.username + "s"
             }
-            axios.post("/user/addFriend", [values_user, values_friend]).then(results => {
+            await axios.post("/user/addFriend", [values_user, values_friend]).then(results => {
                 console.log(results);
-                this.props.socket.emit("upload-message", value_upload)
+                 this.props.socket.emit("upload-message", value_upload)
             }
 
             )
@@ -68,7 +68,7 @@ class modal extends Component {
                 friendId: element.id
             }
 
-            axios.post("/user/acceptFriend", values)
+            await axios.post("/user/acceptFriend", values)
                 .then(
                     () => {
                         this.props.socket.emit("upload-friend", value_upload)
@@ -84,7 +84,7 @@ class modal extends Component {
     //     }
     //     axios.post("/user/acceptFriend", value)
     // }
-    cancleFriend = (element) => {
+    cancleFriend = async(element) => {
         const user = JSON.parse(Cookies.get("user"));
         const values = {
             userId: user.id,
@@ -97,7 +97,7 @@ class modal extends Component {
             toMe: user.username + "s",
             toYou: element.username + "s"
         }
-        axios.post("/user/cancleFriend", values)
+        await axios.post("/user/cancleFriend", values)
             .then(
                 () => {
                     console.log("delete thanh cong");
