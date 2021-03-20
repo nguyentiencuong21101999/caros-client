@@ -1,10 +1,13 @@
+import Cookies from 'js-cookie';
 import React, { Component } from 'react';
+import user from './user';
 
 
 class messenger extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            txt_messenger: ""
         }
     }
     // componentDidMount() {
@@ -34,8 +37,36 @@ class messenger extends Component {
 
     // }
     leaveRooms = (element) => {
+        const user = JSON.parse(Cookies.get("user"));
         this.props.showMessenger(element)
-        //  this.props.socket.emit("leave-rooms",this.props.friend.username)
+        const values = {
+            user: user.username,
+            friend: this.props.friend.username
+
+        }
+        this.props.socket.emit("leave-rooms", values)
+    }
+
+    sendMessenger = () => {
+        const user = JSON.parse(Cookies.get("user"));
+        // if (!this.state.auth) {
+        //     this.scrollToBottom();
+        // }
+        const value = document.getElementById("messenger").value;
+        const date = new Date().toLocaleDateString();
+        const time = new Date().toLocaleTimeString();
+        const value_messenger = this.state.value_messenger;
+
+        const values = {
+            dateTime: date + " " + time,
+            messenger: value,
+
+            user:user.username,
+            friend:this.props.friend.username
+
+
+        }
+        this.props.socket.emit("send-messenger",values)
     }
     render() {
         const value_messenger = () => {
@@ -81,7 +112,7 @@ class messenger extends Component {
                             <div className="card">
                                 <div className="card-header msg_head">
                                     <div className="d-flex bd-highlight">
-                                        <i onClick={() =>{ this.leaveRooms(false)}} class="fas fa-chevron-left back"></i>
+                                        <i onClick={() => { this.leaveRooms(false) }} class="fas fa-chevron-left back"></i>
                                         <div className="img_cont">
                                             <img src={this.props.friend.image} className="rounded-circle user_img1" alt="" />
                                             <span className="online_icon1" />
@@ -128,7 +159,7 @@ class messenger extends Component {
                                         <div className="input-group-append">
                                             <span className="input-group-text attach_btn"><i className="fas fa-paperclip" /></span>
                                         </div>
-                                        <textarea autoComplete="off" onChange={(event) => { this.getValue(event) }} style={{ width: "200px", height: "35px", wordWrap: "break-word" }} id="messenger" value={this.state.txt_messenger} name="txt_messenger" type="text" className="form-control" />
+                                        <textarea autoComplete="off" onChange={(event) => { this.setState({ txt_messenger: event.target.value }); }} style={{ width: "200px", height: "35px", wordWrap: "break-word" }} id="messenger" value={this.state.txt_messenger} name="txt_messenger" type="text" className="form-control" />
                                         <div className="input-group-append">
                                             {/* <i className="fas fa-location-arrow" /> */}
                                             <div onClick={(event) => { this.sendMessenger(event) }} value=">" className="input-group-text send_btn"><i style={{ transform: "rotate(-90deg)" }} class="fab fa-vuejs"></i></div>

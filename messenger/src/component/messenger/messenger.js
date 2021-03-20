@@ -1,8 +1,8 @@
 // import React, { Component } from 'react';
-// import io from 'socket.io-client'
-// var socket =
-//     io("https://messengers-server.herokuapp.com/");
-//     io("http://localhost:4000/");
+// // import io from 'socket.io-client'
+// // var socket =
+// //     io("https://messengers-server.herokuapp.com/");
+// //     io("http://localhost:4000/");
 
 // class messenger extends Component {
 //     constructor(props) {
@@ -51,55 +51,55 @@
 //         //#endregion
 
 
-//         socket.on('connect', () => {
+//         // socket.on('connect', () => {
 
-//             const values = {
-//                 name: this.state.txt_name,
-//                 password: this.state.txt_password,
-//                 currentRoom: 0
-//             }
-//             socket.emit("create-rooms", values)
+//         //     const values = {
+//         //         name: this.state.txt_name,
+//         //         password: this.state.txt_password,
+//         //         currentRoom: 0
+//         //     }
+//         //     socket.emit("create-rooms", values)
 
-//             socket.on("upload-rooms", (results) => {
-//                 console.log(results);
-//                 this.setState({
-//                     rooms: results,
-//                     value_messenger: results[0].data
+//         //     socket.on("upload-rooms", (results) => {
+//         //         console.log(results);
+//         //         this.setState({
+//         //             rooms: results,
+//         //             value_messenger: results[0].data
 
-//                 });
-//                 if (!this.state.auth) {
-//                     this.scrollToBottom()
-//                 }
-//             })
+//         //         });
+//         //         if (!this.state.auth) {
+//         //             this.scrollToBottom()
+//         //         }
+//         //     })
 
-//             socket.on("value-messenger", results => {
-//                 console.log(results);
-//                 this.setState({
-//                     value_messenger: results
-//                 });
-//                 if (!this.state.auth) {
-//                     this.scrollToBottom()
-//                 }
-//             })
-//             socket.on("leave-rooms-success", data => {
-//                 if (data) {
-//                     this.setState({
-//                         auth: true,
-//                         txt_name: "",
-//                         txt_password: "",
-//                         name: "",
-//                         rooms: [],
-//                         currentRoom: -1,
-//                         txt_messenger: ""
+//         //     socket.on("value-messenger", results => {
+//         //         console.log(results);
+//         //         this.setState({
+//         //             value_messenger: results
+//         //         });
+//         //         if (!this.state.auth) {
+//         //             this.scrollToBottom()
+//         //         }
+//         //     })
+//         //     socket.on("leave-rooms-success", data => {
+//         //         if (data) {
+//         //             this.setState({
+//         //                 auth: true,
+//         //                 txt_name: "",
+//         //                 txt_password: "",
+//         //                 name: "",
+//         //                 rooms: [],
+//         //                 currentRoom: -1,
+//         //                 txt_messenger: ""
 
-//                     });
-//                 }
-//             })
-//             socket.on("out-rooms", data => {
-//                 alert(data)
-//             })
-//         }
-//         )
+//         //             });
+//         //         }
+//         //     })
+//         //     socket.on("out-rooms", data => {
+//         //         alert(data)
+//         //     })
+//         // }
+//         // )
 
 //     }
 //     scrollToBottom() {
@@ -128,7 +128,7 @@
 //                 value_messenger:this.state.value_messenger
 //             }
 //         ]
-//             socket.emit("send-messenger", values)
+//             // socket.emit("send-messenger", values)
 //             this.setState({
 //                 txt_messenger: ""
 //             });
@@ -138,14 +138,14 @@
 //         const values = {
 //             currentRoom: 0
 //         }
-//         socket.emit("remove-messenger", values)
+//         // socket.emit("remove-messenger", values)
 //     }
 //     signOut = () => {
 //         const values = {
 //             currentRoom: 0,
 //             name: this.state.name
 //         }
-//         socket.emit("leave-rooms", values)
+//         // socket.emit("leave-rooms", values)
 //     }
 //     getValue = (event) => {
 //         const { name, value } = event.target;
@@ -172,7 +172,7 @@
 //                     password: this.state.txt_password,
 //                     currentRoom: currentRoom
 //                 }
-//                 socket.emit("create-rooms", values)
+//                 // socket.emit("create-rooms", values)
 //                 this.setState({
 //                     name: this.state.txt_name,
 //                     auth: false,

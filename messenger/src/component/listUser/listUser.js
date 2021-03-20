@@ -8,8 +8,8 @@ import User from './user'
 import io from 'socket.io-client'
 import Messenger from './messenger'
 var socket =
-    //io("https://messengers-server.herokuapp.com/");
-    io("http://localhost:4000/");
+    io("https://messengers-server.herokuapp.com/");
+    //io("http://localhost:4000/");
 class listUser extends Component {
     constructor(props) {
         super(props);
@@ -22,6 +22,7 @@ class listUser extends Component {
             listAcceptFriend: [],
             user: {},
             firend: {},
+            value_messenger: [],
             show_messenger: false,
             massage_errors: ""
 
@@ -80,6 +81,11 @@ class listUser extends Component {
                 socket.on("request-upload-friend", data => {
                     this.setState({ listFriend: data });
                 })
+
+                socket.on("request-send-messenger",data =>{
+                    alert(data)
+                })
+
             })
         }
 
@@ -163,7 +169,7 @@ class listUser extends Component {
                         showMessenger={(element, results) => {
                             this.setState({
                                 show_messenger: element,
-                               friend: results
+                                friend: results
                             })
                         }}
                     />
@@ -174,6 +180,7 @@ class listUser extends Component {
         const messenger = () => {
             if (this.state.show_messenger) {
                 return <Messenger
+                    value_messenger={this.state.value_messenger}
                     socket={socket}
                     showMessenger={(element,) => { this.setState({ show_messenger: element }); }}
                     friend={this.state.friend}
