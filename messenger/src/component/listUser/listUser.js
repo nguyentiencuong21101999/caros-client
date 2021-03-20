@@ -29,18 +29,20 @@ class listUser extends Component {
         }
     }
     componentDidMount() {
+        if (Cookies.get("user")) {
+            var user = JSON.parse(Cookies.get("user"));
+            this.setState({
+                user: user
+            });
+            axios.post("/user/getFriend", { userId: user.id }).then(
+                results => {
+                    this.setState({
+                        listFriend: results.data
+                    });
+                }
+            )
 
-        var user = JSON.parse(Cookies.get("user"));
-        this.setState({
-            user: user
-        });
-        axios.post("/user/getFriend", { userId: user.id }).then(
-            results => {
-                this.setState({
-                    listFriend: results.data
-                });
-            }
-        )
+        }
         socket.on('connect', () => {
             const rooms = this.state.user.username;
             socket.emit("rooms-addfriend", rooms);
@@ -87,8 +89,6 @@ class listUser extends Component {
             })
 
         })
-
-
     }
 
     postTxtSearch = async (event) => {
