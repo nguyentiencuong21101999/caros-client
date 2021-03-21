@@ -44,9 +44,6 @@ class listUser extends Component {
                 }
             )
 
-        }
-        // socket.on('connect', () => {
-
             const rooms = JSON.parse(Cookies.get("user")).username;
             socket.emit("rooms-addfriend", rooms);
 
@@ -103,8 +100,18 @@ class listUser extends Component {
             })
 
             socket.on("request-send-messenger", data => {
-                alert(data)
+                    this.setState({
+                        value_messenger:data
+                    });
             })
+            
+
+
+
+        }
+        // socket.on('connect', () => {
+
+
 
         // }
         // )
@@ -200,7 +207,7 @@ class listUser extends Component {
         const messenger = () => {
             if (this.state.show_messenger) {
                 return <Messenger
-                    value_messenger={this.state.value_messenger}
+                    value_messenger={ this.state.value_messenger }
                     socket={socket}
                     showMessenger={(element,) => { this.setState({ show_messenger: element }); }}
                     friend={this.state.friend}

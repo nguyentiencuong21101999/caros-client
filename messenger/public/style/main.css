@@ -353,7 +353,6 @@ margin-bottom: auto; */
     border-radius: 10px;
     background-color: #78e08f;
     padding: 4px;
-
     position: relative;
 }
 .msg_cotainer_send:hover .msg_time_send {
@@ -363,6 +362,7 @@ margin-bottom: auto; */
     display: block;
 }
 .msg_time {
+    /* display: block; */
     display: none;
     position: absolute;
     left: 0;
@@ -373,6 +373,7 @@ margin-bottom: auto; */
     right: -16px;
 }
 .msg_time_send {
+    /* display: block; */
     display: none;
     width: 100px;
     position: absolute;
