@@ -68,11 +68,11 @@ class messenger extends Component {
     }
     changSize = (event) => {
         let textArea = document.getElementById("messenger");
-        
+
         if (textArea.value === "") {
             document.getElementById("hidden").style.display = "none";
             document.getElementById("hidden-icon").style.display = "block";
-        }else{
+        } else {
 
             document.getElementById("hidden").style.display = "block";
             document.getElementById("hidden-icon").style.display = "none";
@@ -85,7 +85,7 @@ class messenger extends Component {
         }
 
         function OnInput(event) {
-           this.style.height = '10px';
+            this.style.height = '10px';
             this.style.height = (this.scrollHeight) + 'px';
         }
     }
@@ -147,26 +147,29 @@ class messenger extends Component {
                                         <div className="video_cam">
                                             <span><i className="fas fa-video" /></span>
                                             <span><i className="fas fa-phone" /></span>
-                                        </div>
-                                    </div>
+                                            <div
+                                                //style={{ margin- left: 74%; margin-top: -50%;}} 
+                                                className="btn-group dropleft">
+                                                <button type="button" className="btn btn-secondary " id="action_menu_btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i className="fas fa-ellipsis-v drop" />
+                                                </button>
+                                                <div className="dropdown-menu action_menu" id="action_menu">
+                                                    <div className="ul">
+                                                        <div style={{ color: "red" }}
+                                                            //onClick={() => { this.deleteMessenger() }} 
+                                                            className="li"  >Xóa Tin   &ensp; <i class="fas fa-trash delete"></i> </div>
+                                                        <hr style={{ width: "80%", margin: "0px", marginLeft: "17px ", backgroundColor: "white" }}></hr>
+                                                        <div className="li"
+                                                            onClick={() => { this.signOut() }}
+                                                        >Đăng Xuất<i class="fas fa-sign-out-alt signout"></i> </div>
+                                                    </div>
 
-                                    <div className="btn-group dropleft">
-                                        <button type="button" className="btn btn-secondary " id="action_menu_btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i className="fas fa-ellipsis-v drop" />
-                                        </button>
-                                        <div className="dropdown-menu action_menu" id="action_menu">
-                                            <div className="ul">
-                                                <div style={{ color: "red" }}
-                                                    //onClick={() => { this.deleteMessenger() }} 
-                                                    className="li"  >Xóa Tin   &ensp; <i class="fas fa-trash delete"></i> </div>
-                                                <hr style={{ width: "80%", margin: "0px", marginLeft: "17px ", backgroundColor: "white" }}></hr>
-                                                <div className="li"
-                                                    onClick={() => { this.signOut() }}
-                                                >Đăng Xuất<i class="fas fa-sign-out-alt signout"></i> </div>
+                                                </div>
                                             </div>
-
                                         </div>
                                     </div>
+
+
 
                                 </div>
                                 <div className="card-body msg_card_body">
@@ -179,17 +182,19 @@ class messenger extends Component {
                                     {/* {this.scrollToBottom()} */}
                                 </div>
 
-                                <input id='img' className="inputFile" type='file'></input>
-                                <label for="img" className="input-group-text attach_btn">
-                                    <i className="fas fa-paperclip" />
-                                </label>
+
 
                                 <div className="card-footer">
+                                    <input id='img' className="inputFile" type='file'></input>
+                                    <label for="img" className="input-group-text-1 attach_btn">
+                                        <i className="fas fa-paperclip" />
+                                    </label>
                                     <di id="group" className=" input-group">
-                                       &ensp; &ensp;&ensp;<textarea autoComplete="off" onChange={(event) => { this.changSize(event) }} style={{ resize: "none", width: "200px", height: "35px", overflow:"hidden",marginLeft:"27px" }} id="messenger" value={this.state.txt_messenger} name="txt_messenger" type="text" className="form-control form1"  />
+                                        &ensp; &ensp;&ensp;<textarea autoComplete="off" onChange={(event) => { this.changSize(event) }} style={{ resize: "none", width: "200px", height: "35px", overflow: "hidden", marginLeft: "27px" }} id="messenger" value={this.state.txt_messenger} name="txt_messenger" type="text" className="form-control form1" />
                                     </di>
                                 </div>
-                                <div style={{display:'none'}} id="hidden" className="input-group-append1">
+
+                                <div style={{ display: 'none' }} id="hidden" className="input-group-append1">
                                     <div onClick={(event) => { this.sendMessenger(event) }} value=">" className=" send_btn a"><i style={{
                                         // transform: "rotate(-90deg)",
                                         position: "absolute",
@@ -206,7 +211,7 @@ class messenger extends Component {
                                         marginLeft: "-12px",
                                         fontSize: "30px",
                                         marginTop: "13px"
-                                    }}  class="fas fa-heart"></i></div>
+                                    }} class="fas fa-heart"></i></div>
                                 </div>
                             </div>
                         </div>

@@ -6,22 +6,20 @@ html {
     background: -webkit-linear-gradient(to right, #91eae4, #86a8e7, #7f7fd5);
     background: linear-gradient(to right, #91eae4, #86a8e7, #7f7fd5);
 }
-textarea.form-control{
+textarea.form-control {
     margin-right: -21px;
 }
-.a{
+.a {
     position: absolute;
     transform: rotate(-90deg);
-    margin-left: 343px;
+    margin-left: 89%;
     font-size: 30px;
     margin-top: -44px;
 }
 .fa-paperclip {
     font-size: 23px;
-    margin-top: 1168px;
     z-index: 999;
-    padding-left: 104px;
-    position: absolute;
+    margin-left: -15px;
 }
 .txt_messenger {
     width: 200px !important;
@@ -68,16 +66,15 @@ action_menu_2 {
 .input-group {
     width: 83% !important;
 }
-                                        
-.form1{
+
+.form1 {
     margin-left: 27px !important;
 }
 .form-control {
-   
     margin-left: 0px !important;
 }
-.search-name{
-    margin-right:;
+.search-name {
+    margin-right: ;
     margin-left: 3px !important;
 }
 .search {
@@ -193,12 +190,27 @@ action_menu_2 {
 }
 .attach_btn {
     border-radius: 15px 0 0 15px !important;
-    background-color: rgb(143 222 228) !important;
     border: 0 !important;
     color: white !important;
     cursor: pointer;
+}
+.input-group-text-1 {
     position: absolute;
-    margin-left: -100px;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 0.375rem 0.75rem;
+    margin-bottom: 0;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    text-align: center;
+    white-space: nowrap;
+    /* background-color: #e9ecef; */
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
 }
 .send_btn {
     height: 35px;
@@ -259,8 +271,8 @@ action_menu_2 {
     width: 9px;
     background-color: #4cd137;
     border-radius: 50%;
-    bottom: 2.2em;
-    right: 2.4em;
+    bottom: 2.3em;
+    right: 0.18em;
     border: 1.5px solid white;
 }
 .online_icon {
@@ -311,14 +323,15 @@ action_menu_2 {
     color: rgba(255, 255, 255, 0.6);
 }
 .video_cam {
-    margin-left: 178px;
-    margin-top: 9px;
+    width: 100%;
+    margin-left: 54%;
+    margin-top: 2%;
 }
 .video_cam span {
     color: white;
     font-size: 17px;
     cursor: pointer;
-    margin-right: 20px;
+    margin-right: 13%;
 }
 .msg_cotainer {
     /* margin-top: auto;
@@ -373,19 +386,15 @@ margin-bottom: auto; */
 }
 
 #action_menu_btn {
-    background-color: rgba(0, 0, 0, 0.03);
+    background-color: rgb(77 80 130);
     border: 1px solid rgba(0, 0, 0, 0.03);
-    position: absolute;
-    margin-left: 328px;
-    margin-top: -112px;
+    padding-top: 0px;
     color: white;
     cursor: pointer;
     font-size: 20px;
     z-index: 1;
 }
 #action_menu_btn i {
-    margin-top: 30px;
-    position: absolute;
 }
 #action_menu_btn:focus {
     background-color: rgba(0, 0, 0, 0.03) !important;
@@ -409,8 +418,8 @@ margin-bottom: auto; */
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
     border-radius: 15px;
-    top: 41px !important;
-    left: 16px !important;
+    top: 32px !important;
+    left: 15px !important;
     display: none;
 }
 .action_menu .ul {
