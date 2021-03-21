@@ -73,6 +73,7 @@ class messenger extends Component {
             document.getElementById("hidden").style.display = "none";
             document.getElementById("hidden-icon").style.display = "block";
         }else{
+
             document.getElementById("hidden").style.display = "block";
             document.getElementById("hidden-icon").style.display = "none";
         }
@@ -84,7 +85,7 @@ class messenger extends Component {
         }
 
         function OnInput(event) {
-            this.style.height = '20px';
+           this.style.height = '10px';
             this.style.height = (this.scrollHeight) + 'px';
         }
     }
@@ -184,9 +185,9 @@ class messenger extends Component {
                                 </label>
 
                                 <div className="card-footer">
-                                    <div className="input-group">
-                                        <textarea autoComplete="off" onChange={(event) => { this.changSize(event) }} style={{ width: "200px", height: "35px", wordWrap: "break-word" }} id="messenger" value={this.state.txt_messenger} name="txt_messenger" type="text" className="form-control" />
-                                    </div>
+                                    <di id="group" className=" input-group">
+                                       &ensp; &ensp;&ensp;<textarea autoComplete="off" onChange={(event) => { this.changSize(event) }} style={{ resize: "none", width: "200px", height: "35px", overflow:"hidden",marginLeft:"27px" }} id="messenger" value={this.state.txt_messenger} name="txt_messenger" type="text" className="form-control form1"  />
+                                    </di>
                                 </div>
                                 <div style={{display:'none'}} id="hidden" className="input-group-append1">
                                     <div onClick={(event) => { this.sendMessenger(event) }} value=">" className=" send_btn a"><i style={{

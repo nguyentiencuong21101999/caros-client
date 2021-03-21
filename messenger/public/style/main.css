@@ -6,6 +6,9 @@ html {
     background: -webkit-linear-gradient(to right, #91eae4, #86a8e7, #7f7fd5);
     background: linear-gradient(to right, #91eae4, #86a8e7, #7f7fd5);
 }
+textarea.form-control{
+    margin-right: -21px;
+}
 .a{
     position: absolute;
     transform: rotate(-90deg);
@@ -63,11 +66,19 @@ action_menu_2 {
     margin-top: 48px !important;
 }
 .input-group {
-    width: 90% !important;
+    width: 83% !important;
+}
+                                        
+.form1{
+    margin-left: 27px !important;
 }
 .form-control {
-    border-radius: 19px !important;
-    margin-left: 30px !important;
+   
+    margin-left: 0px !important;
+}
+.search-name{
+    margin-right:;
+    margin-left: 3px !important;
 }
 .search {
     height: 35px !important;
