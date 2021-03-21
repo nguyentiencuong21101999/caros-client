@@ -13,16 +13,6 @@ class messenger extends Component {
 
     }
     componentDidMount() {
-        if (this.props.value_messenger.length > 0) {
-            const sender = user.username + this.props.friend.username;
-                 return this.props.value_messenger.map(element => {
-                console.log(element);
-                if (element.sender === sender) {
-                    this.setState({current_value_messenger:element});
-                }
-
-            })
-        }
         //#region 
         // console.log(new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString());
         // navigator.serviceWorker.register('../../../public/index.html');

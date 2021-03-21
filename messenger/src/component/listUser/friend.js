@@ -8,6 +8,11 @@ class friend extends Component {
 
         this.props.showMessenger(true, element);
         this.props.socket.emit("join-rooms", {user:user.username,friend:element.username})
+        const values ={
+            user:user.username,
+            friend:element.username
+        }
+        this.props.socket.emit("upload-value-messenger",values)
     }
 
     render() {
