@@ -17,9 +17,6 @@ class register extends Component {
             username: this.state.username,
             password: this.state.password
         }
-        // axios("/user/register","POST",values).then(() =>{
-        //     console.log("data");
-        // })
         axios.post("/user/register", values)
             .then(
                 results => {
@@ -37,9 +34,7 @@ class register extends Component {
                     }
                 }
             )
-
     }
-
     render() {
         if(this.state.redirect){
             return <Redirect  to={"/"}></Redirect>
@@ -79,5 +74,4 @@ class register extends Component {
         );
     }
 }
-
 export default register;

@@ -9,6 +9,16 @@ html {
 textarea.form-control {
     margin-right: -21px;
 }
+.icons {
+    color: red;
+    font-size: 28px;
+    margin-left: -1px;
+}
+.icons-send {
+    color: red;
+    font-size: 28px;
+    margin-right: -2px;
+}
 .a {
     position: absolute;
     transform: rotate(-90deg);
@@ -333,26 +343,57 @@ action_menu_2 {
     cursor: pointer;
     margin-right: 13%;
 }
-.msg_cotainer {
-    /* margin-top: auto;
-margin-bottom: auto; */
+.msg_cotainer_1 {
     margin-bottom: 5px;
     margin-left: 7px;
     border-radius: 10px;
-    background-color: #82ccdd;
     padding: 4px;
     height: auto;
     position: relative;
     word-wrap: break-word;
 }
+.msg_cotainer {
+    /* margin-top: auto;
+margin-bottom: auto; */
+    font-size: 17px;
+    font-weight: 400;
+    margin-bottom: 5px;
+    margin-left: 7px;
+    border-radius: 10px;
+    background-color: #82ccdd;
+    padding: 3px;
+    height: auto;
+    min-width: 32px;
+    padding-left: 10px;
+    padding-right: 10px;
+    position: relative;
+    word-wrap: break-word;
+}
+.msg_cotainer_send_1 {
+    margin-bottom: 5px;
+    word-wrap: break-word;
+    margin-right: -10px;
+    border-radius: 10px;
+    padding: 4px;
+    position: relative;
+}
+.msg_cotainer_send_1:hover .msg_time_send {
+    display: block;
+}
 .msg_cotainer_send {
     /* margin-top: auto; */
+    font-size: 17px;
+    font-weight: 400;
+    min-width: 32px;
+    padding: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
     margin-bottom: 5px;
     word-wrap: break-word;
     margin-right: -10px;
     border-radius: 10px;
     background-color: #78e08f;
-    padding: 4px;
+
     position: relative;
 }
 .msg_cotainer_send:hover .msg_time_send {

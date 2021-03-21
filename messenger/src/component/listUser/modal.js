@@ -1,13 +1,6 @@
 import React, { Component } from 'react';
 import Cookies from 'js-cookie';
 import axios from 'axios';
-// import friend from './friend';
-// import { Button, Modal } from 'react-bootstrap'
-// import io from 'socket.io-client'
-// // var socket =
-// //     //io("https://messenger-sever.herokuapp.com/");
-// //     io("http://localhost:4000/");
-
 class modal extends Component {
     constructor(props) {
         super(props);
@@ -16,15 +9,12 @@ class modal extends Component {
             accept: 0,
         }
     }
-
-
     addFriend = async (element, massage, event) => {
         const user = JSON.parse(Cookies.get("user"))
         if (massage === "Gửi lời mời") {
             const values = {
                 to: element.username + "s",
                 send: user.fullname
-
             }
             this.props.socket.emit("send-invatition", values)
 
@@ -91,12 +81,8 @@ class modal extends Component {
                         }
                     })
                 }
-
             }
-
             )
-
-
         }
         if (massage === "Chấp Nhận") {
             const value_upload =
@@ -107,12 +93,10 @@ class modal extends Component {
                 toYou: element.username + "s"
             }
             this.props.socket.emit("upload-message", value_upload)
-
             const values = {
                 userId: user.id,
                 friendId: element.id
             }
-
             await axios.post("/user/acceptFriend", values)
                 .then(
                     () => {
@@ -120,15 +104,7 @@ class modal extends Component {
                     }
                 )
         }
-
     }
-    // acceptFriend = (user, friend) => {
-    //     const value = {
-    //         userId: user,
-    //         friendId: friend
-    //     }
-    //     axios.post("/user/acceptFriend", value)
-    // }
     cancleFriend = async (element) => {
         const user = JSON.parse(Cookies.get("user"));
         const values = {
@@ -150,9 +126,7 @@ class modal extends Component {
                 }
             )
     }
-
     render() {
-
         const infoUser = () => {
             if (this.props.listSearch.status === "error") {
                 return (
@@ -173,8 +147,7 @@ class modal extends Component {
                                             <div className="info">
                                                 <lable className="name">{element.fullname}</lable>
                                                 <div className="role">Bạn bè</div>
-                                            </div>
-                                            {/* {accept(element)} */}
+                                            </div>                                    
                                             <button onClick={() => { this.addFriend(element, results.message) }} className="add-friend">{results.message} </button>
                                             <button onClick={() => { this.cancleFriend(element) }} id="btnCancle" value="Hủy" className="add-friend1">Hủy</button>
                                         </div>
@@ -188,7 +161,6 @@ class modal extends Component {
                                                 <lable className="name">{element.fullname}</lable>
                                                 <div className="role">Bạn bè</div>
                                             </div>
-                                            {/* {accept(element)} */}
                                             <button className="add-friend3">{results.message} </button>
                                             <button onClick={() => { this.cancleFriend(element) }} className="add-friend1">Hủy </button>
                                         </div>
@@ -201,19 +173,14 @@ class modal extends Component {
                                                 <lable className="name">{element.fullname}</lable>
                                                 <div className="role">Bạn bè</div>
                                             </div>
-                                            {/* {accept(element)} */}
                                             <button onClick={() => { this.addFriend(element, results.message) }} className="add-friend">{results.message} </button>
                                         </div>
                                     )
                                 }
                             }
                         }
-
                         return null;
-
                     })
-
-
                 })
             }
         }

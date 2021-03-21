@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import Login from './component/login/login';
 import Register from './component/register/register';
-import Messenger from './component/messenger/messenger'
 import ListUser  from './component/listUser/listUser'
 class App extends Component {
 

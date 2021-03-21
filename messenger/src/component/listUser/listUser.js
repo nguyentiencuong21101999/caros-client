@@ -9,7 +9,7 @@ import io from 'socket.io-client'
 import Messenger from './messenger'
 var socket =
     io("https://messengers-server.herokuapp.com/");
-    //io("http://localhost:4000/");
+//io("http://localhost:4000/");
 class listUser extends Component {
     constructor(props) {
         super(props);
@@ -25,12 +25,12 @@ class listUser extends Component {
             value_messenger: [],
             show_messenger: false,
             massage_errors: "",
-            currentRooms: ""
+            currentRooms: "",
+            onScroll: false
 
         }
     }
     componentDidMount() {
-        console.log("b");
         if (Cookies.get("user")) {
             var user = JSON.parse(Cookies.get("user"));
             this.setState({
@@ -47,12 +47,6 @@ class listUser extends Component {
             const rooms = JSON.parse(Cookies.get("user")).username;
             socket.emit("rooms-addfriend", rooms);
 
-            // socket.on("request-rooms-addfriend", data => {
-            //     this.setState({
-            //         currentRooms: data
-            //     });
-            // })
-
             socket.on("request-invation", results => {
                 alert(results);
             })
@@ -66,55 +60,34 @@ class listUser extends Component {
                 checkAddFriend.push(values);
 
                 if (this.state.checkAddFriend.length < 1) {
-                    console.log("trong");
                     this.setState({
                         checkAddFriend: checkAddFriend
                     });
-                    console.log(this.state.checkAddFriend);
                 } else {
 
                     const pos = this.state.checkAddFriend.map(function (e) { return e.friendId; }).indexOf(checkAddFriend[0].friendId);
 
                     if (pos < 0) {
-                        console.log("khong co trong mang");
                         this.state.checkAddFriend.push(checkAddFriend[0])
                         this.setState({
-                            checkAddFriend: this.state.checkAddFriend
+                            checkAddFriend: this.state.checkAddFriend,
+                            onScroll: true
                         });
                     } else {
-                        console.log("co trong mang");
                         this.state.checkAddFriend.splice(pos, 1)
 
                         this.state.checkAddFriend.push(checkAddFriend[0])
-                        console.log(this.state.checkAddFriend);
                         this.setState({
-                            checkAddFriend: this.state.checkAddFriend
+                            checkAddFriend: this.state.checkAddFriend,
+                            onScroll: true
                         });
                     }
-
                 }
             })
-
             socket.on("request-upload-friend", data => {
                 this.setState({ listFriend: data });
             })
-
-            socket.on("request-send-messenger", data => {
-                    this.setState({
-                        value_messenger:data
-                    });
-            })
-            
-
-
-
         }
-        // socket.on('connect', () => {
-
-
-
-        // }
-        // )
     }
 
     postTxtSearch = async (event) => {
@@ -124,16 +97,14 @@ class listUser extends Component {
             userId: JSON.parse(Cookies.get("user")).id,
             txtSearch: this.state.txtSearch
         }
-        console.log(values);
         await axios.post("/user/getUserByFullname", values)
             .then(
-
                 async results => {
                     this.setState({
                         listSearch: results.data
                     })
                     if (!results.data.status) {
-                        results.data.map(element => {
+                         results.data.map(element => {
                             const value = {
                                 userId: user.id,
                                 friendId: element.id
@@ -170,14 +141,14 @@ class listUser extends Component {
                                 }
                             )
                         })
-
+                        return null;
                     }
+                    return null;
 
                 })
     }
     render() {
 
-        console.log("a");
         const btnSearch = () => {
             if (this.state.txtSearch !== "") {
                 return (
@@ -199,6 +170,8 @@ class listUser extends Component {
                                 friend: results
                             })
                         }}
+
+
                     />
                 )
             }
@@ -207,11 +180,11 @@ class listUser extends Component {
         const messenger = () => {
             if (this.state.show_messenger) {
                 return <Messenger
-                    value_messenger={ this.state.value_messenger }
+                    value_messenger={this.state.value_messenger}
                     socket={socket}
                     showMessenger={(element,) => { this.setState({ show_messenger: element }); }}
                     friend={this.state.friend}
-
+                    onScroll={this.state.onScroll}
                 />
             }
         }
@@ -279,7 +252,6 @@ class listUser extends Component {
         if (!Cookies.get("user")) {
             return <Redirect to="/" />
         }
-
         const all = () => {
             if (!this.state.rooms) {
                 return (
@@ -299,5 +271,4 @@ class listUser extends Component {
 
     }
 }
-
 export default listUser;

@@ -1,43 +1,34 @@
+import axios from 'axios';
 import Cookies from 'js-cookie';
 import React, { Component } from 'react';
-import user from './user';
-
 
 class messenger extends Component {
     constructor(props) {
         super(props);
         this.state = {
             txt_messenger: "",
-            current_value_messenger: []
+            current_value_messenger: [],
+            value_messenger: []
         }
-
     }
     componentDidMount() {
-        //#region 
-        // console.log(new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString());
-        // navigator.serviceWorker.register('../../../public/index.html');
-        // if (Notification.permission === 'granted') {
-        //     // navigator.serviceWorker.ready.then(function (registration) {
-        //     //     registration.showNotification('Notification with ServiceWorker');
-        //     // });
-        //     this.showNotication()
-        // } else if (Notification.permission !== 'denied') {
-        //     Notification.requestPermission().then(permission => {
-        //         console.log(permission);
-        //         // if (Notification.permission === 'granted') {
-        //         //     this.showNotication()
-        //         // }
-        //         if (permission === 'granted') {
-        //             navigator.serviceWorker.ready.then(function (registration) {
-        //                 registration.showNotification('Notification with ServiceWorker');
-        //             });
-        //         }
-
-        //     })
-        // }
-        //#endregion
-
-
+        const user = JSON.parse(Cookies.get("user"));
+        const val = { user: user.username, friend: this.props.friend.username };
+        axios.post("/user/upload-value-message", val)
+            .then(results => {
+                this.setState({
+                    value_messenger: results.data
+                });
+                this.scrollToBottom()
+            })
+        this.props.socket.on("request-send-messenger", async data => {
+            this.setState({
+                value_messenger: data
+            }); 
+        })
+    }
+    scrollToBottom() {
+        this.el.scrollIntoView({ behavior: 'smooth' });
     }
     leaveRooms = (element) => {
         const user = JSON.parse(Cookies.get("user"));
@@ -45,20 +36,14 @@ class messenger extends Component {
         const values = {
             user: user.username,
             friend: this.props.friend.username
-
         }
         this.props.socket.emit("leave-rooms", values)
     }
-
     sendMessenger = () => {
         const user = JSON.parse(Cookies.get("user"));
-        // if (!this.state.auth) {
-        //     this.scrollToBottom();
-        // }
         const value = document.getElementById("messenger").value;
         const date = new Date().toLocaleDateString();
         const time = new Date().toLocaleTimeString();
-        const current_value_messenger = this.props.value_messenger;
 
         const values = [{
             dateTime: date + " " + time,
@@ -67,11 +52,32 @@ class messenger extends Component {
             image: "",
             user: user.username,
             friend: this.props.friend.username
-        },
-            current_value_messenger
+        }
         ]
-        console.log(values);
         this.props.socket.emit("send-messenger", values)
+        this.setState({
+            txt_messenger: ""
+        });
+          this.scrollToBottom()
+    }
+    sendIcon = () => {
+        const user = JSON.parse(Cookies.get("user"));
+        const date = new Date().toLocaleDateString();
+        const time = new Date().toLocaleTimeString();
+
+        const values = [{
+            dateTime: date + " " + time,
+            value_messenger: "",
+            icon: "fas fa-heart",
+            image: "",
+            user: user.username,
+            friend: this.props.friend.username
+        }
+        ]
+        this.props.socket.emit("send-messenger", values)
+        this.setState({
+            txt_messenger: ""
+        });
     }
     setCurrentMessage = (element) => {
         this.setState({ current_value_messenger: element });
@@ -99,59 +105,74 @@ class messenger extends Component {
             this.style.height = (this.scrollHeight) + 'px';
         }
     }
+
     render() {
         const value_messenger = () => {
             const user = JSON.parse(Cookies.get("user"));
-            if (this.props.value_messenger.length > 0) {
+            if (this.state.value_messenger.length > 0) {
                 const sender = user.username + this.props.friend.username;
-                return this.props.value_messenger.map(element => {
-                    console.log(element);
-                    console.log(sender);
+                return this.state.value_messenger.map(element => {
                     if (element.sender === sender) {
                         return element.messenger.map(results => {
                             if (user.username === results.sender) {
-                                console.log(results.dateTime);
-                                return (
-                                    <div className="d-flex justify-content-end mb-2">
-                                        <div className="msg_cotainer_send">
-                                            {results.value_messenger}
-
-                                            <span className="msg_time_send">{results.dateTime}</span>
+                                if (results.icon === "" ) {
+                                    return (
+                                        <div className="d-flex justify-content-end mb-2">
+                                            <div className="msg_cotainer_send">
+                                                {results.value_messenger}
+                                                <span className="msg_time_send">{results.dateTime}</span>
+                                            </div>
                                         </div>
-                                        {/* <div className="img_cont_msg">
-                                                <img src="https://vcdn-ngoisao.vnecdn.net/2019/09/25/ANH-1-9778-1569408745.png" className="rounded-circle user_img_msg" />
-                                            </div> */}
-                                    </div>
-                                )
-                            } else {
-                                return (
-                                    <div className="d-flex justify-content-start mb-2">
-                                        <div className="img_cont_msg">
-                                            <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" className="rounded-circle user_img_msg" alt="" />
+                                    )
+                                } else {
+                                    return (
+                                        <div className="d-flex justify-content-end mb-2">
+                                            <div className="msg_cotainer_send_1">
+                                                <i   className="fas fa-heart icons-send" ></i>
+                                                <span className="msg_time_send">{results.dateTime}</span>
+                                            </div>
                                         </div>
-                                        <div className="msg_cotainer">
-                                            {results.value_messenger}
-                                            <span className="msg_time">{results.dateTime}</span>
+                                    )
+                                }
+                            }
+                            else {
+                                if (results.icon === "") {
+                                    return (
+                                        <div className="d-flex justify-content-start mb-2">
+                                            <div className="img_cont_msg">
+                                                <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" className="rounded-circle user_img_msg" alt="" />
+                                            </div>
+                                            <div className="msg_cotainer">
+                                                {results.value_messenger}
+                                                <span className="msg_time">{results.dateTime}</span>
 
+                                            </div>
                                         </div>
-                                    </div>
 
-                                )
+                                    )
+                                } else {
+                                    return (
+                                        <div className="d-flex justify-content-start mb-2">
+                                            <div className="img_cont_msg">
+                                                <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" className="rounded-circle user_img_msg" alt="" />
+                                            </div>
+                                            <div className="msg_cotainer_1">
+                                                <i class="fas fa-heart icons"></i>
+                                                <span className="msg_time">{results.dateTime}</span>
+
+                                            </div>
+                                        </div>
+
+                                    )
+                                }
                             }
                         })
                     }
-
-
-
-
-
-
                 })
             }
         }
-
-        const messenger = () => {
-            return (
+        return (
+            <div className="messenger" >
                 <div className="container-fluid h-100">
                     <div className="row justify-content-center h-100">
                         <div className="col-md-8 col-xl-6 chat">
@@ -192,17 +213,14 @@ class messenger extends Component {
                                             </div>
                                         </div>
                                     </div>
-
-
-
                                 </div>
                                 <div className="card-body msg_card_body">
                                     {value_messenger()}
                                     <br></br>
                                     <div style={{
-                                        marginTop: "-60px", clear: "both", height: "1px",
+                                         clear: "both", height: "1px",
                                         color: "rgba(0,0,0,.03)"
-                                    }} id="scroll" ref={el => { this.el = el; }} >.</div>
+                                    }} id="scroll" ref={el => { this.el = el; }} >12312312</div>
                                     {/* {this.scrollToBottom()} */}
                                 </div>
 
@@ -229,7 +247,7 @@ class messenger extends Component {
                                     }} class="fab fa-vuejs"></i></div>
                                 </div>
                                 <div id="hidden-icon" className="input-group-append1">
-                                    <div onClick={(event) => { this.sendMessenger(event) }} value=">" className=" send_btn a"><i style={{
+                                    <div onClick={(event) => { this.sendIcon(event) }} value=">" className=" send_btn a"><i style={{
                                         transform: "rotate(90deg)",
                                         position: "absolute",
                                         marginLeft: "-12px",
@@ -241,16 +259,6 @@ class messenger extends Component {
                         </div>
                     </div>
                 </div >
-            )
-
-
-        }
-
-        return (
-
-            <div className="messenger" >
-                {/* {password()} */}
-                { messenger()}
             </div >
         )
     }

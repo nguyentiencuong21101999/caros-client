@@ -2,30 +2,24 @@ import Cookies from 'js-cookie';
 import React, { Component } from 'react';
 
 class friend extends Component {
-
     submitFriend = (element) => {
         const user = JSON.parse(Cookies.get("user"))
-
         this.props.showMessenger(true, element);
-        this.props.socket.emit("join-rooms", {user:user.username,friend:element.username})
-        const values ={
-            user:user.username,
-            friend:element.username
+        this.props.socket.emit("join-rooms", { user: user.username, friend: element.username })
+        const values = {
+            user: user.username,
+            friend: element.username
         }
-        this.props.socket.emit("upload-value-messenger",values)
+        this.props.socket.emit("upload-value-messenger", values)
     }
-
     render() {
         const listFriend = () => {
             if (this.props.listFriend.length > 0) {
                 return this.props.listFriend.map(element => {
                     return (
-                        <li
-                        // className="active"
-                        >
+                        <li>
                             <div onClick={() => {
                                 this.submitFriend(element)
-                                //this.props.showMessenger(true, element);
                             }}
                                 className="d-flex bd-highlight">
                                 <div className="img_cont">

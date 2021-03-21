@@ -13,7 +13,6 @@ class login extends Component {
             redirect: false
         }
     }
-
     submitLogin = async() => {
         const values = {
             username: this.state.username,

@@ -9,5 +9,4 @@ class listMessenger extends Component {
         );
     }
 }
-
 export default listMessenger;
