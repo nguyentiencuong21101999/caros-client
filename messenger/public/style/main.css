@@ -7,21 +7,18 @@ html {
     background: linear-gradient(to right, #91eae4, #86a8e7, #7f7fd5);
 }
 .displayImg {
+   
     background: #a89c9c;
     float: right;
     width: auto;
-    /* height: 60px; */
-    /* background-color: red; */
-    margin-top: 30px;
     border-radius: 13px;
+    padding: 9px;
 }
 .displayImg img {
     float: right;
-
-    width: 50px;
-    height: 50px;
-    margin: 4px;
+    width: 14%;
     border-radius: 10px;
+    margin: 3%;
 }
 #textarea {
     -moz-appearance: textfield-multiline;

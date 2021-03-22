@@ -290,8 +290,7 @@ class messenger extends Component {
                                 </div>
                                 <div className="card-body msg_card_body">
                                     {value_messenger()}
-                                    <span className="displayImg" id="displayImg">
-                                    </span>
+
                                     <br></br>
                                     <div style={{
                                         clear: "both", height: "1px",
@@ -301,7 +300,8 @@ class messenger extends Component {
                                 </div>
 
 
-
+                                <span className="displayImg" id="displayImg">
+                                </span>
                                 <div className="card-footer">
 
                                     <input id='img' className="inputFile" type='file'
