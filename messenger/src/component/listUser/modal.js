@@ -2,12 +2,70 @@ import React, { Component } from 'react';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 class modal extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            listSearch: this.props.listSearch,
-            accept: 0,
-        }
+    componentDidMount() {
+        // this.props.socket.on("request-upload-massage", async data => {
+        //     // console.log(data);
+        //     // const pos = this.props.checkAddFriend.map(function (e) { return e.friendId; }).indexOf(data.userId);
+        //     // if (pos > 0) {
+        //     //     console.log("truoc", this.state.checkAddFriend)
+        //     //     this.props.checkAddFriend.splice(pos, 1)
+        //     //     this.props.checkAddFriend.push(data)
+        //     //     console.log("sau", this.state.checkAddFriend)
+        //     // }
+        //     // if (pos < 0) {
+        //     //     console.log("khong co trong mang");
+        //     //     this.props.checkAddFriend.push(checkAddFriend[0])
+        //     //     this.setState({
+        //     //         checkAddFriend: this.state.checkAddFriend
+        //     //     });
+        //     // } else {
+
+        //     //     this.props.checkAddFriend.splice(pos, 1)
+
+        //     //     this.props.checkAddFriend.push(checkAddFriend[0])
+        //     //     console.log(this.props.checkAddFriend);
+        //     //     this.setState({
+        //     //         checkAddFriend: this.props.checkAddFriend
+        //     //     });
+        //     //     console.log("co trong mang");
+        //     // }
+
+        //     // let checkAddFriend = [];
+        //     // const values = {
+        //     //     friendId: data.userId,
+        //     //     message: data.message
+        //     // }
+        //     // checkAddFriend.push(values);
+
+        //     // if (this.props.checkAddFriend.length < 1) {
+        //     //     this.setState({
+        //     //         checkAddFriend: checkAddFriend
+        //     //     });
+        //     //     console.log(this.props.checkAddFriend);
+        //     // } else {
+
+        //     //     const pos = this.props.checkAddFriend.map(function (e) { return e.friendId; }).indexOf(checkAddFriend[0].friendId);
+
+        //     //     if (pos < 0) {
+        //     //         console.log("khong co trong mang");
+        //     //         this.props.checkAddFriend.push(checkAddFriend[0])
+        //     //         this.setState({
+        //     //             checkAddFriend: this.state.checkAddFriend
+        //     //         });
+        //     //     } else {
+
+        //     //         this.props.checkAddFriend.splice(pos, 1)
+
+        //     //         this.props.checkAddFriend.push(checkAddFriend[0])
+        //     //         console.log(this.props.checkAddFriend);
+        //     //         this.setState({
+        //     //             checkAddFriend: this.props.checkAddFriend
+        //     //         });
+        //     //         console.log("co trong mang");
+        //     //     }
+
+        //     // }
+        // })
     }
     addFriend = async (element, massage, event) => {
         const user = JSON.parse(Cookies.get("user"))
@@ -36,50 +94,8 @@ class modal extends Component {
                 toYou: element.username + "s"
             }
             await axios.post("/user/addFriend", [values_user, values_friend]).then(results => {
-                console.log(results);
                 if (results.data.status === "success") {
-                    console.log("a");
                     this.props.socket.emit("upload-message", value_upload)
-
-                    this.props.socket.on("request-upload-massage",async data => {
-             
-                        let checkAddFriend = [];
-                        const values = {
-                            friendId: data.userId,
-                            message: data.message
-                        }
-                        checkAddFriend.push(values);
-                     
-                        if (this.props.checkAddFriend.length < 1) {
-                        console.log("trong");
-                            this.setState({
-                                checkAddFriend: checkAddFriend
-                            });
-                            console.log(this.props.checkAddFriend);
-                        } else {
-                            
-                            const pos =  this.props.checkAddFriend.map(function (e) { return e.friendId; }).indexOf(checkAddFriend[0].friendId);
-                           
-                            if (pos < 0) {
-                                console.log("khong co trong mang");
-                                this.props.checkAddFriend.push(checkAddFriend[0])
-                                this.setState({
-                                    checkAddFriend: this.state.checkAddFriend
-                                });
-                            } else {
-                              
-                                this.props.checkAddFriend.splice(pos, 1)
-        
-                                this.props.checkAddFriend.push(checkAddFriend[0])
-                                console.log(this.props.checkAddFriend);
-                                this.setState({
-                                    checkAddFriend: this.props.checkAddFriend
-                                });
-                                console.log("co trong mang");
-                            }
-        
-                        }
-                    })
                 }
             }
             )
@@ -121,7 +137,6 @@ class modal extends Component {
         await axios.post("/user/cancleFriend", values)
             .then(
                 () => {
-                    console.log("delete thanh cong");
                     this.props.socket.emit("upload-message", value_upload)
                 }
             )
@@ -147,7 +162,7 @@ class modal extends Component {
                                             <div className="info">
                                                 <lable className="name">{element.fullname}</lable>
                                                 <div className="role">Bạn bè</div>
-                                            </div>                                    
+                                            </div>
                                             <button onClick={() => { this.addFriend(element, results.message) }} className="add-friend">{results.message} </button>
                                             <button onClick={() => { this.cancleFriend(element) }} id="btnCancle" value="Hủy" className="add-friend1">Hủy</button>
                                         </div>
@@ -200,7 +215,7 @@ class modal extends Component {
                     </div>
                 </div>
             </div>
-        );
+        )
     }
 }
 
