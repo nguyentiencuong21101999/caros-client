@@ -8,8 +8,8 @@ import User from './user'
 import io from 'socket.io-client'
 import Messenger from './messenger'
 var socket =
-      io("https://messengers-server.herokuapp.com/");
-    //io("http://localhost:4000/");
+     // io("https://messengers-server.herokuapp.com/");
+    io("http://localhost:4000/");
 class listUser extends Component {
     constructor(props) {
         super(props);
@@ -215,8 +215,12 @@ class listUser extends Component {
                                     {/* end Modal */}
 
                                     <div className="input-group">
-                                        <User user={this.state.user} />
 
+                                        {/* USER */}
+                                        <User 
+                                        user={this.state.user}
+                                        socket = {socket}
+                                        />
                                         <input onChange={(event) => { this.setState({ txtSearch: event.target.value }); }} type="text" placeholder="Search..." name className="form-control search  " />
                                         <div className="input-group-prepend">
                                             {btnSearch()}
@@ -232,14 +236,13 @@ class listUser extends Component {
                                             </button>
                                             <div className="dropdown-menu action_menu1" id="action_menu">
                                                 <div className="ul">
-                                                    <div style={{ color: "red" }} onClick={() => { }} className="li"  >Xóa Tin   &ensp; <i class="fas fa-trash delete"></i> </div>
+                                                    <div style={{ color: "red" }} onClick={() => { }} className="li"  >Danh Sách Kết Bạn &ensp; <i class="fas fa-trash delete"></i> </div>
                                                     <hr style={{ width: "80%", margin: "0px", marginLeft: "17px ", backgroundColor: "white" }}></hr>
                                                     <div className="li"
                                                         onClick={() => {
                                                             Cookies.remove('user')
                                                             this.setState({
                                                                 txtSearch: "",
-
                                                             });
                                                         }}>
                                                         Đăng Xuất

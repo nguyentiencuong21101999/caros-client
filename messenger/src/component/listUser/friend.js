@@ -10,7 +10,7 @@ class friend extends Component {
             user: user.username,
             friend: element.username
         }
-        this.props.socket.emit("upload-value-messenger", values)
+        //this.props.socket.emit("upload-value-messenger", values)
     }
     render() {
         const listFriend = () => {

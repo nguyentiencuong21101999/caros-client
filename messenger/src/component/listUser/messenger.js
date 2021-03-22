@@ -1,7 +1,7 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import React, { Component } from 'react';
-
+import {showImage} from   './showImage'
 class messenger extends Component {
     constructor(props) {
         super(props);
@@ -16,6 +16,7 @@ class messenger extends Component {
     componentDidMount() {
         const user = JSON.parse(Cookies.get("user"));
         const val = { user: user.username, friend: this.props.friend.username };
+
         axios.post("/user/upload-value-message", val)
             .then(results => {
                 this.setState({
@@ -23,14 +24,20 @@ class messenger extends Component {
                 });
                 this.scrollToBottom()
             })
+
         this.props.socket.on("request-send-messenger", async data => {
+            this.scrollToBottom()
             this.setState({
                 value_messenger: data
             });
+
         })
+
     }
     scrollToBottom() {
-        this.el.scrollIntoView({ behavior: 'smooth' });
+        const value = document.getElementById("scroll")
+        value.scrollIntoView();
+
     }
     leaveRooms = (element) => {
         const user = JSON.parse(Cookies.get("user"));
@@ -109,10 +116,11 @@ class messenger extends Component {
     }
 
     getFile = (event) => {
-        console.log(event.target.files);
+        const display = document.getElementById("displayImg");
         // const fileImage = []
         const fileImages = event.target.files
         if (fileImages.length > 0) {
+            display.style.display = "block";
             const fileImage = [];
             let arr_selectImg = event.target.files;
             for (let i = 0; i < arr_selectImg.length; i++) {
@@ -121,34 +129,11 @@ class messenger extends Component {
             this.setState({
                 fileImage: fileImage
             });
-            this.show_Img(event)
+            showImage(event,"displayImg")
         }
         this.setState({
             txt_messenger: "a"
         });
-
-    }
-    show_Img = (event) => {
-        var file = document.getElementById('img').files
-        var myNode = document.getElementById("displayImg");
-        myNode.innerHTML = '';
-        for (let i = 0; i < file.length; i++) {
-            if (file.length > 0) {
-                var fileToLoad = event.target.files[i] // lay hinh dau tien
-                var fileReder = new FileReader();
-                fileReder.onload = (fileLoaderEvent) => {
-                    console.log(fileLoaderEvent.target);
-                    var srcData = fileLoaderEvent.target.result // chueyn sang dang base 64
-                    var newImg = document.createElement('img');
-                    newImg.src = srcData;
-                    document.getElementById("displayImg").innerHTML += newImg.outerHTML;
-                    this.scrollToBottom()
-                }
-                fileReder.readAsDataURL(fileToLoad);
-            }
-
-        }
-
 
     }
     render() {
@@ -185,7 +170,7 @@ class messenger extends Component {
                                     return (
                                         <div className="d-flex justify-content-start mb-2">
                                             <div className="img_cont_msg">
-                                                <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" className="rounded-circle user_img_msg" alt="" />
+                                                <img src={this.props.friend.image} className="rounded-circle user_img_msg" alt="" />
                                             </div>
                                             <div className="msg_cotainer">
                                                 {results.value_messenger}
@@ -199,7 +184,7 @@ class messenger extends Component {
                                     return (
                                         <div className="d-flex justify-content-start mb-2">
                                             <div className="img_cont_msg">
-                                                <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" className="rounded-circle user_img_msg" alt="" />
+                                                <img src={this.props.friend.image} className="rounded-circle user_img_msg" alt="" />
                                             </div>
                                             <div className="msg_cotainer_1">
                                                 <i class="fas fa-heart icons"></i>

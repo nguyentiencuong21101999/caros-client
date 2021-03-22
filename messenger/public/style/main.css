@@ -6,13 +6,14 @@ html {
     background: -webkit-linear-gradient(to right, #91eae4, #86a8e7, #7f7fd5);
     background: linear-gradient(to right, #91eae4, #86a8e7, #7f7fd5);
 }
+
 .displayImg {
-   
     background: #a89c9c;
     float: right;
     width: auto;
     border-radius: 13px;
     padding: 9px;
+    display: none;
 }
 .displayImg img {
     float: right;

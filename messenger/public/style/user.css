@@ -1,4 +1,4 @@
-.user{
+.user {
     /* position: absolute;
     height: 50px;
     width: 100%;
@@ -6,31 +6,87 @@
     background: -webkit-linear-gradient(left, #c3bba2, #caa5b6, #9dd4a9)!important;
     z-index: 99; */
 }
-.avatar{
+.background img {
+    width: 100%;
+    height: 136px;
+}
+.avatars img {
+    border-radius: 50%;
+    width: 48%;
+    height: 152px;
+    margin-left: 26%;
+    border: 1px solid white;
+    margin-top: -21%;
+}
+#displayImg {
+    display: none;
+}
+.cancle {
+    background-color: #bbb9b9;
+    padding: 1%;
+    border: 1px solid white;
+    position: absolute;
+    border-radius: 11px;
+    margin-left: 60%;
+    margin-top: -35%;
+    position: absolute;
+}
+.displayImgs img {
+    border-radius: 50%;
+    width: 48%;
+    height: 150px;
+    margin-left: 23%;
+    border: 1px solid white;
+    margin-top: -151px;
+    position: absolute;
+}
+.photo {
+    background-color: #bbb9b9;
+    padding: 1%;
+    border: 1px solid white;
+    position: absolute;
+    border-radius: 11px;
+    margin-left: 61%;
+    margin-top: -12%;
+}
+.fullname {
+    text-align: center;
+    font-weight: 600;
+    font-size: 24px;
+}
+.changeAvatar {
+    opacity: 0.1px !important;
+    position: absolute;
+    width: 35px;
+    height: 35px;
+    border-radius: 30px !important;
+    margin-left: -10px;
+    margin-right: 5px;
+}
+.avatar {
     width: 40px;
     height: 40px;
-    border: solid 1px ;
+    border: solid 1px;
     border-radius: 50px;
 }
-.chat{
+.chat {
 }
-.card-header{
+.card-header {
     margin-top: 10px;
 }
 
-
 /* iconmessenger */
-.icon-messenger{
+.icon-messenger {
     float: right;
     margin-top: -38px;
-   height: 38px;
-   width: 38px;
+    height: 38px;
+    width: 38px;
     color: white;
     font-size: 20px;
     background-color: #5a6588;
     border-radius: 25px;
     margin-right: 10px;
 }
-.icon{
-    padding: 9px ;
+.icon {
+    padding: 9px;
 }
