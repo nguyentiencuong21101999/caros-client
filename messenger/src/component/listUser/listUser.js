@@ -69,7 +69,7 @@ class listUser extends Component {
                 }
             })
             socket.on("request-change-avatar", data => {
-                alert(data)
+                alert("Thay đổi ảnh thành công")
                 Cookies.set("user", data)
                 this.setState({
                     info: data
