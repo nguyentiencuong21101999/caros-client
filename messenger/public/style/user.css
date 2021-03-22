@@ -6,6 +6,12 @@
     background: -webkit-linear-gradient(left, #c3bba2, #caa5b6, #9dd4a9)!important;
     z-index: 99; */
 }
+.avatar img {
+    width: 35px;
+    height: 35px;
+    border-radius: 30px;
+    margin-right: 5px;
+}
 .background img {
     width: 100%;
     height: 136px;
@@ -63,12 +69,12 @@
     margin-left: -10px;
     margin-right: 5px;
 }
-.avatar {
+/* .avatar {
     width: 40px;
     height: 40px;
     border: solid 1px;
     border-radius: 50px;
-}
+} */
 .chat {
 }
 .card-header {

@@ -41,17 +41,17 @@ class user extends Component {
                     const img = res.data.secure_url;
                     const value ={
                         userId:user.id,
-                        img:img
+                        img:img,
+                        username:user.username
                     }
                     this.props.socket.emit("change-avatar",value)
-                    console.log(res);
+
                 }
             )
        
     }
     render() {
         const btnCancle = () => {
-          
             if (this.state.selectedFile) {
                 return (
                     <i onClick={() => { this.btnCancle() }} class="fas fa-times-circle cancle"></i>
@@ -78,7 +78,7 @@ class user extends Component {
                                         <img src="https://inlonggia.com/wp-content/uploads/hinh-nen-hoa-dep.jpg" alt=""></img>
                                     </div >
                                     <div className="avatars" >
-                                    <Image cloudName="cuong" publicId={this.props.user.image} />
+                                    <Image cloudName="cuong" publicId={this.props.info.image} />
                                     </div>
                                     <div className="displayImgs" id="displayImgs"></div>
                                     {btnCancle()}
@@ -86,7 +86,7 @@ class user extends Component {
                                     <label for="displayImg">  <i for="displayImage" class="fas fa-camera photo"></i></label>
 
                                 </div>
-                                <div className="fullname">{this.props.user.fullname}</div>
+                                <div className="fullname">{this.props.info.fullname}</div>
                             </div>
                             <div class="modal-footer">
                                 <button onClick={() => { this.btnCancle() }} type="button" class="btn btn-secondary" data-dismiss="modal">Bỏ</button>
@@ -95,7 +95,11 @@ class user extends Component {
                         </div>
                     </div>
                 </div>
-                <img className="avatar" style={{ width: "35px", height: "35px", borderRadius: "30px", marginLeft: "-10px", marginRight: "5px" }} alt="" src={this.props.user.image} ></img>
+                <div className="avatar" style={{ width: "35px", height: "35px", borderRadius: "30px", marginLeft: "-10px", marginRight: "5px" }}>
+                    <Image cloudName="cuong" publicId={this.props.info.image} />
+                </div>
+                
+                {/* <img className="avatar" style={{ width: "35px", height: "35px", borderRadius: "30px", marginLeft: "-10px", marginRight: "5px" }} alt="" src={this.props.info.image} ></img> */}
             </div>
         );
     }
