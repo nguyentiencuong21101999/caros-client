@@ -8,7 +8,9 @@ class messenger extends Component {
         this.state = {
             txt_messenger: "",
             current_value_messenger: [],
-            value_messenger: []
+            value_messenger: [],
+            icon: false,
+            fileImage: []
         }
     }
     componentDidMount() {
@@ -24,7 +26,7 @@ class messenger extends Component {
         this.props.socket.on("request-send-messenger", async data => {
             this.setState({
                 value_messenger: data
-            }); 
+            });
         })
     }
     scrollToBottom() {
@@ -58,7 +60,7 @@ class messenger extends Component {
         this.setState({
             txt_messenger: ""
         });
-          this.scrollToBottom()
+        this.scrollToBottom()
     }
     sendIcon = () => {
         const user = JSON.parse(Cookies.get("user"));
@@ -78,20 +80,20 @@ class messenger extends Component {
         this.setState({
             txt_messenger: ""
         });
+        this.scrollToBottom()
     }
     setCurrentMessage = (element) => {
         this.setState({ current_value_messenger: element });
     }
     changSize = (event) => {
-        let textArea = document.getElementById("messenger");
-
-        if (textArea.value === "") {
-            document.getElementById("hidden").style.display = "none";
-            document.getElementById("hidden-icon").style.display = "block";
+        if (this.state.txt_messenger === "") {
+            this.setState({
+                icon: true
+            });
         } else {
-
-            document.getElementById("hidden").style.display = "block";
-            document.getElementById("hidden-icon").style.display = "none";
+            this.setState({
+                icon: false
+            });
         }
         this.setState({ txt_messenger: event.target.value });
         var tx = document.getElementsByTagName('textarea');
@@ -106,6 +108,49 @@ class messenger extends Component {
         }
     }
 
+    getFile = (event) => {
+        console.log(event.target.files);
+        // const fileImage = []
+        const fileImages = event.target.files
+        if (fileImages.length > 0) {
+            const fileImage = [];
+            let arr_selectImg = event.target.files;
+            for (let i = 0; i < arr_selectImg.length; i++) {
+                fileImage.push(arr_selectImg[i])
+            }
+            this.setState({
+                fileImage: fileImage
+            });
+            this.show_Img(event)
+        }
+        this.setState({
+            txt_messenger: "a"
+        });
+
+    }
+    show_Img = (event) => {
+        var file = document.getElementById('img').files
+        var myNode = document.getElementById("displayImg");
+        myNode.innerHTML = '';
+        for (let i = 0; i < file.length; i++) {
+            if (file.length > 0) {
+                var fileToLoad = event.target.files[i] // lay hinh dau tien
+                var fileReder = new FileReader();
+                fileReder.onload = (fileLoaderEvent) => {
+                    console.log(fileLoaderEvent.target);
+                    var srcData = fileLoaderEvent.target.result // chueyn sang dang base 64
+                    var newImg = document.createElement('img');
+                    newImg.src = srcData;
+                    document.getElementById("displayImg").innerHTML += newImg.outerHTML;
+                    this.scrollToBottom()
+                }
+                fileReder.readAsDataURL(fileToLoad);
+            }
+
+        }
+
+
+    }
     render() {
         const value_messenger = () => {
             const user = JSON.parse(Cookies.get("user"));
@@ -115,7 +160,7 @@ class messenger extends Component {
                     if (element.sender === sender) {
                         return element.messenger.map(results => {
                             if (user.username === results.sender) {
-                                if (results.icon === "" ) {
+                                if (results.icon === "") {
                                     return (
                                         <div className="d-flex justify-content-end mb-2">
                                             <div className="msg_cotainer_send">
@@ -128,7 +173,7 @@ class messenger extends Component {
                                     return (
                                         <div className="d-flex justify-content-end mb-2">
                                             <div className="msg_cotainer_send_1">
-                                                <i   className="fas fa-heart icons-send" ></i>
+                                                <i className="fas fa-heart icons-send" ></i>
                                                 <span className="msg_time_send">{results.dateTime}</span>
                                             </div>
                                         </div>
@@ -169,6 +214,35 @@ class messenger extends Component {
                         })
                     }
                 })
+            }
+        }
+        const icon = () => {
+            if (this.state.txt_messenger !== "") {
+                return (
+                    <div id="hidden" className="input-group-append1">
+                        <div onClick={(event) => { this.sendMessenger(event) }} value=">" className=" send_btn a"><i style={{
+                            // transform: "rotate(-90deg)",
+                            position: "absolute",
+                            marginLeft: "-8px",
+                            fontSize: "30px",
+                            marginTop: "15px",
+
+                        }} class="fab fa-vuejs"></i></div>
+                    </div>
+
+                )
+            } else {
+                return (
+                    <div id="hidden-icon" className="input-group-append1">
+                        <div onClick={(event) => { this.sendIcon(event) }} value=">" className=" send_btn a"><i style={{
+                            transform: "rotate(90deg)",
+                            position: "absolute",
+                            marginLeft: "-12px",
+                            fontSize: "30px",
+                            marginTop: "13px"
+                        }} class="fas fa-heart"></i></div>
+                    </div>
+                )
             }
         }
         return (
@@ -216,9 +290,11 @@ class messenger extends Component {
                                 </div>
                                 <div className="card-body msg_card_body">
                                     {value_messenger()}
+                                    <span className="displayImg" id="displayImg">
+                                    </span>
                                     <br></br>
                                     <div style={{
-                                         clear: "both", height: "1px",
+                                        clear: "both", height: "1px",
                                         color: "rgba(0,0,0,.03)"
                                     }} id="scroll" ref={el => { this.el = el; }} >12312312</div>
                                     {/* {this.scrollToBottom()} */}
@@ -227,34 +303,28 @@ class messenger extends Component {
 
 
                                 <div className="card-footer">
-                                    <input id='img' className="inputFile" type='file'></input>
+
+                                    <input id='img' className="inputFile" type='file'
+                                        onChange={(event) => { this.getFile(event) }}
+                                        name="fileImage"
+                                        multiple
+                                    ></input>
                                     <label for="img" className="input-group-text-1 attach_btn">
                                         <i className="fas fa-paperclip" />
                                     </label>
                                     <di id="group" className=" input-group">
-                                        &ensp; &ensp;&ensp;<textarea autoComplete="off" onChange={(event) => { this.changSize(event) }} style={{ resize: "none", width: "200px", height: "35px", overflow: "hidden", marginLeft: "27px" }} id="messenger" value={this.state.txt_messenger} name="txt_messenger" type="text" className="form-control form1" />
+                                        &ensp; &ensp;&ensp;<textarea autoComplete="off"
+                                            onChange={(event) => { this.changSize(event) }}
+                                            style={{ resize: "none", width: "200px", height: "35px", overflow: "hidden", marginLeft: "27px" }}
+                                            id="messenger"
+                                            value={this.state.txt_messenger}
+                                            name="txt_messenger" type="text"
+                                            className="form-control form1"
+                                        />
                                     </di>
                                 </div>
 
-                                <div style={{ display: 'none' }} id="hidden" className="input-group-append1">
-                                    <div onClick={(event) => { this.sendMessenger(event) }} value=">" className=" send_btn a"><i style={{
-                                        // transform: "rotate(-90deg)",
-                                        position: "absolute",
-                                        marginLeft: "-8px",
-                                        fontSize: "30px",
-                                        marginTop: "15px",
-
-                                    }} class="fab fa-vuejs"></i></div>
-                                </div>
-                                <div id="hidden-icon" className="input-group-append1">
-                                    <div onClick={(event) => { this.sendIcon(event) }} value=">" className=" send_btn a"><i style={{
-                                        transform: "rotate(90deg)",
-                                        position: "absolute",
-                                        marginLeft: "-12px",
-                                        fontSize: "30px",
-                                        marginTop: "13px"
-                                    }} class="fas fa-heart"></i></div>
-                                </div>
+                                {icon()}
                             </div>
                         </div>
                     </div>

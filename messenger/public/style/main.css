@@ -6,9 +6,40 @@ html {
     background: -webkit-linear-gradient(to right, #91eae4, #86a8e7, #7f7fd5);
     background: linear-gradient(to right, #91eae4, #86a8e7, #7f7fd5);
 }
+.displayImg {
+    background: #a89c9c;
+    float: right;
+    width: auto;
+    /* height: 60px; */
+    /* background-color: red; */
+    margin-top: 30px;
+    border-radius: 13px;
+}
+.displayImg img {
+    float: right;
+
+    width: 50px;
+    height: 50px;
+    margin: 4px;
+    border-radius: 10px;
+}
+#textarea {
+    -moz-appearance: textfield-multiline;
+    -webkit-appearance: textarea;
+    border: 1px solid gray;
+    font: medium -moz-fixed;
+    font: -webkit-small-control;
+    height: 28px;
+    overflow: auto;
+    padding: 2px;
+    resize: both;
+    width: 400px;
+}
+
 textarea.form-control {
     margin-right: -21px;
 }
+
 .icons {
     color: red;
     font-size: 28px;
