@@ -8,8 +8,8 @@ import User from './user'
 import io from 'socket.io-client'
 import Messenger from './messenger'
 var socket =
-    // io("https://messengers-server.herokuapp.com/");
-    io("http://localhost:4000/");
+    io("https://messengers-server.herokuapp.com/");
+    //io("http://localhost:4000/");
 class listUser extends Component {
     constructor(props) {
         super(props);
@@ -27,7 +27,8 @@ class listUser extends Component {
             massage_errors: "",
             currentRooms: "",
             onScroll: false,
-            info: {}
+            info: {},
+            userOnline: []
 
         }
     }
@@ -51,9 +52,13 @@ class listUser extends Component {
                     });
                 }
             )
-            const rooms = JSON.parse(Cookies.get("user")).username;
-            socket.emit("rooms-addfriend", rooms);
-
+            const rooms = JSON.parse(Cookies.get("user"));
+            socket.emit("rooms-addfriend", rooms.username);
+            socket.on("request-rooms-addfriend",data =>{    
+                this.setState({
+                    userOnline:data
+                });
+            })   
             socket.on("request-invation", results => {
                 alert(results);
             })
@@ -84,8 +89,13 @@ class listUser extends Component {
                     }
                 )
             })
-               socket.on("request-upload-friend", data => {
+            socket.on("request-upload-friend", data => {
                 this.setState({ listFriend: data });
+            })
+            socket.on("request-update-online", data => {
+                this.setState({
+                    userOnline: data
+                });
             })
         }
     }
@@ -170,6 +180,7 @@ class listUser extends Component {
                                 friend: results
                             })
                         }}
+                        userOnline={this.state.userOnline}
 
 
                     />
@@ -185,6 +196,7 @@ class listUser extends Component {
                     showMessenger={(element,) => { this.setState({ show_messenger: element }); }}
                     friend={this.state.friend}
                     onScroll={this.state.onScroll}
+                    userOnline={this.state.userOnline}
                 />
             }
         }

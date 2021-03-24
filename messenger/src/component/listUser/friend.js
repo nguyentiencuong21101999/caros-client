@@ -13,25 +13,49 @@ class friend extends Component {
         //this.props.socket.emit("upload-value-messenger", values)
     }
     render() {
+        const status = (element) => {
+            console.log(element);
+            console.log(this.props.userOnline);
+            let pos = this.props.userOnline.map(function (e) { return e.name; }).indexOf(element.username);
+            console.log(pos);
+            if (pos >= 0) {
+                return (
+                    <div>
+                        <span className="online_icon" />
+                        <p> online</p>
+                    </div>
+                )
+            }
+
+        }
         const listFriend = () => {
             if (this.props.listFriend.length > 0) {
                 return this.props.listFriend.map(element => {
                     return (
-                        <li>
-                            <div onClick={() => {
-                                this.submitFriend(element)
-                            }}
-                                className="d-flex bd-highlight">
-                                <div className="img_cont">
-                                    <img alt="" src={element.image} className="rounded-circle user_img" />
-                                    <span className="online_icon" />
+                        <div>
+                            <li>
+                                <div onClick={() => {
+                                    this.submitFriend(element)
+                                }}
+                                    className="d-flex bd-highlight">
+                                    <div className="img_cont">
+                                        <img alt="" src={element.image} className="rounded-circle user_img" />
+
+
+                                        <div className="user_info1">
+                                            <span>{element.fullname}</span>
+
+                                            {status(element)}
+                                        </div>
+                                    </div>
+
                                 </div>
-                                <div className="user_info1">
-                                    <span>{element.fullname}</span>
-                                    <p> online</p>
-                                </div>
-                            </div>
-                        </li>
+
+
+                            </li>
+
+                        </div>
+
                     )
                 })
             }

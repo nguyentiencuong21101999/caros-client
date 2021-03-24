@@ -1,7 +1,7 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import React, { Component } from 'react';
-import {showImage} from   './showImage'
+import { showImage } from './showImage'
 class messenger extends Component {
     constructor(props) {
         super(props);
@@ -129,7 +129,7 @@ class messenger extends Component {
             this.setState({
                 fileImage: fileImage
             });
-            showImage(event,"displayImg")
+            showImage(event, "displayImg")
         }
         this.setState({
             txt_messenger: "a"
@@ -230,6 +230,15 @@ class messenger extends Component {
                 )
             }
         }
+        const icon_online = () => {
+            let pos = this.props.userOnline.map(function (e) { return e.name; }).indexOf(this.props.friend.username);
+            if (pos >= 0) {
+                return (
+                    <span className="online_icon1" />
+                )
+            }
+
+        }
         return (
             <div className="messenger" >
                 <div className="container-fluid h-100">
@@ -241,7 +250,7 @@ class messenger extends Component {
                                         <i onClick={() => { this.leaveRooms(false) }} class="fas fa-chevron-left back"></i>
                                         <div className="img_cont">
                                             <img src={this.props.friend.image} className="rounded-circle user_img1" alt="" />
-                                            <span className="online_icon1" />
+                                                {icon_online()}
                                         </div>
                                         <div className="user_info">
                                             {this.props.friend.fullname}

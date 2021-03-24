@@ -320,8 +320,8 @@ action_menu_2 {
     width: 11px;
     background-color: #4cd137;
     border-radius: 50%;
-    bottom: 1.8em;
-    right: 1.78em;
+    bottom: 0.3em;
+    right: 12.3em;
     border: 1.5px solid white;
 }
 .offline {
@@ -345,9 +345,9 @@ action_menu_2 {
     color: rgba(255, 255, 255, 0.6);
 }
 .user_info1 {
-    margin-top: 6px;
+    margin-top: -44px;
     margin-bottom: auto;
-    margin-left: 67px;
+    margin-left: 54px;
     color: white;
     width: 212px;
     position: absolute;

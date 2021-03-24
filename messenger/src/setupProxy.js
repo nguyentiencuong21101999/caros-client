@@ -1,7 +1,7 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
-let    url_host  ="http://localhost:4000"
-let url_local  = "https://messengers-server.herokuapp.com"
-module.exports = function(app) {
+let url_local = "http://localhost:4000"
+let url_host = "https://messengers-server.herokuapp.com"
+module.exports = function (app) {
   //Register
   app.use(
     "/user/register",
@@ -94,7 +94,7 @@ module.exports = function(app) {
       changeOrigin: true,
     })
   );
- 
+
   app.use(
     "/user/upload-value-message",
     createProxyMiddleware({
