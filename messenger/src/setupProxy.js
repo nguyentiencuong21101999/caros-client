@@ -1,6 +1,6 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
-let  url_local    ="http://localhost:4000"
-let url_host  = "https://messengers-server.herokuapp.com"
+let    url_host  ="http://localhost:4000"
+let url_local  = "https://messengers-server.herokuapp.com"
 module.exports = function(app) {
   //Register
   app.use(

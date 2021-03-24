@@ -8,8 +8,8 @@ import User from './user'
 import io from 'socket.io-client'
 import Messenger from './messenger'
 var socket =
-    io("https://messengers-server.herokuapp.com/");
-//io("http://localhost:4000/");
+    // io("https://messengers-server.herokuapp.com/");
+    io("http://localhost:4000/");
 class listUser extends Component {
     constructor(props) {
         super(props);
@@ -84,7 +84,7 @@ class listUser extends Component {
                     }
                 )
             })
-            socket.on("request-upload-friend", data => {
+               socket.on("request-upload-friend", data => {
                 this.setState({ listFriend: data });
             })
         }

@@ -25,7 +25,7 @@ class login extends Component {
                     if (results.data.status === "error") {
                         alert(results.data.message)
                     } else {
-                        alert("Dang nhap thanh cong")
+                        alert("Đăng nhập thành công")
                         const values = {
                             id: results.data.id,
                             fullname: results.data.fullname,
