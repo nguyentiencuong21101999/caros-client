@@ -38,6 +38,7 @@ class listUser extends Component {
             this.setState({
                 user: user
             });
+          
             axios.post("/user/getInfo", { userId: user.id }).then(
                 results => {
                     this.setState({
@@ -74,7 +75,6 @@ class listUser extends Component {
                 }
             })
             socket.on("request-change-avatar", data => {
-                alert("Thay đổi ảnh thành công")
                 Cookies.set("user", data)
                 this.setState({
                     info: data
