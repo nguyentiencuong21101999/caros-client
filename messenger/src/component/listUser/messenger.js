@@ -1,7 +1,8 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import React, { Component } from 'react';
-import { showImage } from './showImage'
+import { showImageAvatar } from './showImage'
+import { Image } from 'cloudinary-react';
 class messenger extends Component {
     constructor(props) {
         super(props);
@@ -10,7 +11,8 @@ class messenger extends Component {
             current_value_messenger: [],
             value_messenger: [],
             icon: false,
-            fileImage: []
+            fileImage: [],
+            selectedFile: null
         }
     }
     componentDidMount() {
@@ -32,6 +34,10 @@ class messenger extends Component {
             });
 
         })
+        if (this.state.selectedFile) {
+            console.log("co");
+            this.scrollToBottom()
+        }
 
     }
     scrollToBottom() {
@@ -48,26 +54,73 @@ class messenger extends Component {
         }
         this.props.socket.emit("leave-rooms", values)
     }
-    sendMessenger = () => {
+    sendMessenger = async () => {
         const user = JSON.parse(Cookies.get("user"));
         const value = document.getElementById("messenger").value;
         const date = new Date().toLocaleDateString();
         const time = new Date().toLocaleTimeString();
 
-        const values = [{
-            dateTime: date + " " + time,
-            value_messenger: value,
-            icon: "",
-            image: "",
-            user: user.username,
-            friend: this.props.friend.username
+        if (this.state.selectedFile) {
+            const fd = new FormData();
+            console.log(fd);
+            fd.append('file', this.state.selectedFile)
+            fd.append('folder', "messenger")
+            fd.append("upload_preset", 'xku7xge7');
+            const option = {
+                onUploadProgress: (ProgressEvent) => {
+                    const { loaded, total } = ProgressEvent;
+                    let percent = Math.floor((loaded * 100) / total)
+                    if (percent < 100) {
+                        this.setState({
+                            progress: percent
+                        });
+                    }
+
+
+                }
+            }
+            await axios.post('https://api.cloudinary.com/v1_1/cuong/image/upload/', fd, option)
+                .then(
+                    (res) => {
+                        console.log(res);
+                        //cloud tra ve`
+                        const values = [{
+                            dateTime: date + " " + time,
+                            value_messenger: value,
+                            icon: "",
+                            image: res.data.secure_url,
+                            user: user.username,
+                            friend: this.props.friend.username
+                        }]
+                        console.log();
+                        this.props.socket.emit("send-messenger", values)
+                        const displayImgs = document.getElementById("displayImg");
+                        displayImgs.style.display = "none"
+                        this.setState({
+                            txt_messenger: "",
+                            selectedFile: null
+                        });
+                        this.scrollToBottom()
+                    }
+                )
+
+        } else {
+            const values = [{
+                dateTime: date + " " + time,
+                value_messenger: value,
+                icon: "",
+                image: "",
+                user: user.username,
+                friend: this.props.friend.username
+            }]
+            this.props.socket.emit("send-messenger", values)
+            this.setState({
+                txt_messenger: "",
+            });
+            this.scrollToBottom()
         }
-        ]
-        this.props.socket.emit("send-messenger", values)
-        this.setState({
-            txt_messenger: ""
-        });
-        this.scrollToBottom()
+
+
     }
     sendIcon = () => {
         const user = JSON.parse(Cookies.get("user"));
@@ -87,7 +140,7 @@ class messenger extends Component {
         this.setState({
             txt_messenger: ""
         });
-        this.scrollToBottom()
+
     }
     setCurrentMessage = (element) => {
         this.setState({ current_value_messenger: element });
@@ -117,24 +170,25 @@ class messenger extends Component {
 
     getFile = (event) => {
         const display = document.getElementById("displayImg");
-        // const fileImage = []
-        const fileImages = event.target.files
-        if (fileImages.length > 0) {
-            display.style.display = "block";
-            const fileImage = [];
-            let arr_selectImg = event.target.files;
-            for (let i = 0; i < arr_selectImg.length; i++) {
-                fileImage.push(arr_selectImg[i])
-            }
-            this.setState({
-                fileImage: fileImage
-            });
-            showImage(event, "displayImg")
-        }
+        const scroll = document.getElementById("scroll");
+        scroll.scrollIntoView({ block: "end" });
+        display.style.display = "block"
         this.setState({
-            txt_messenger: "a"
+            selectedFile: event.target.files[0]
+        });
+        showImageAvatar(event, "img", "displayImg")
+        this.setState({
+            txt_messenger: ""
         });
 
+
+    }
+    btnCancle = () => {
+        const displayImgs = document.getElementById("displayImg");
+        displayImgs.style.display = "none"
+        this.setState({
+            selectedFile: null
+        });
     }
     render() {
         const value_messenger = () => {
@@ -145,15 +199,48 @@ class messenger extends Component {
                     if (element.sender === sender) {
                         return element.messenger.map(results => {
                             if (user.username === results.sender) {
+                                console.log(results);
                                 if (results.icon === "") {
-                                    return (
-                                        <div className="d-flex justify-content-end mb-2">
-                                            <div className="msg_cotainer_send">
-                                                {results.value_messenger}
-                                                <span className="msg_time_send">{results.dateTime}</span>
+                                    if (results.image !== "" && results.value_messenger !== "") {
+                                        return (
+                                            <div>
+                                                <div className="image-messenger">
+                                                    <Image cloudName="cuong" publicId={results.image} />
+                                                </div>
+                                                <div className="d-flex justify-content-end mb-2">
+
+                                                    <div className="msg_cotainer_send">
+                                                        {results.value_messenger}
+
+                                                        <span className="msg_time_send">{results.dateTime}</span>
+
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    )
+                                        )
+                                    } else {
+                                        if (results.image !== "" && results.value_messenger === "") {
+                                            return (
+                                                <div className="image-messenger">
+                                                    <Image cloudName="cuong" publicId={results.image} />
+                                                </div>
+                                            )
+
+
+                                        }
+                                        else {
+                                            return (
+                                                <div className="d-flex justify-content-end mb-2">
+                                                    <div className="msg_cotainer_send">
+                                                        {results.value_messenger}
+                                                        <span className="msg_time_send">{results.dateTime}</span>
+
+                                                    </div>
+                                                </div>
+                                            )
+
+                                        }
+                                    }
                                 } else {
                                     return (
                                         <div className="d-flex justify-content-end mb-2">
@@ -167,19 +254,50 @@ class messenger extends Component {
                             }
                             else {
                                 if (results.icon === "") {
-                                    return (
-                                        <div className="d-flex justify-content-start mb-2">
-                                            <div className="img_cont_msg">
-                                                <img src={this.props.friend.image} className="rounded-circle user_img_msg" alt="" />
-                                            </div>
-                                            <div className="msg_cotainer">
-                                                {results.value_messenger}
-                                                <span className="msg_time">{results.dateTime}</span>
 
-                                            </div>
-                                        </div>
+                                    if (results.image !== "" && results.value_messenger !== "") {
+                                        return (
+                                            <div>
+                                                <div className="image-messenger1">
+                                                    <Image cloudName="cuong" publicId={results.image} />
+                                                </div>
+                                                <div className="d-flex justify-content-start mb-2">
+                                                    <div className="img_cont_msg">
+                                                        <img src={this.props.friend.image} className="rounded-circle user_img_msg" alt="" />
+                                                    </div>
+                                                    <div className="msg_cotainer">
+                                                        {results.value_messenger}
+                                                        <span className="msg_time">{results.dateTime}</span>
 
-                                    )
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )
+                                    } else {
+                                        if (results.image !== "" && results.value_messenger === "") {
+                                            return (
+                                                <div className="image-messenger1">
+                                                    <Image cloudName="cuong" publicId={results.image} />
+                                                </div>
+                                            )
+
+
+                                        }
+                                        else {
+                                            return (
+                                                <div className="d-flex justify-content-start mb-2">                                              
+                                                    <div className="msg_cotainer">
+                                                        {results.value_messenger}
+                                                        <span className="msg_time">{results.dateTime}</span>
+
+                                                    </div>
+                                                </div>
+                                            )
+
+                                        }
+
+                                    }
+
                                 } else {
                                     return (
                                         <div className="d-flex justify-content-start mb-2">
@@ -202,7 +320,7 @@ class messenger extends Component {
             }
         }
         const icon = () => {
-            if (this.state.txt_messenger !== "") {
+            if (this.state.txt_messenger !== "" || this.state.selectedFile) {
                 return (
                     <div id="hidden" className="input-group-append1">
                         <div onClick={(event) => { this.sendMessenger(event) }} value=">" className=" send_btn a"><i style={{
@@ -239,6 +357,14 @@ class messenger extends Component {
             }
 
         }
+        const btnCancle = () => {
+            if (this.state.selectedFile) {
+                this.scrollToBottom()
+                return (
+                    <i onClick={() => { this.btnCancle() }} class="fas fa-times-circle cancle_messenger"></i>
+                )
+            }
+        }
         return (
             <div className="messenger" >
                 <div className="container-fluid h-100">
@@ -250,7 +376,7 @@ class messenger extends Component {
                                         <i onClick={() => { this.leaveRooms(false) }} class="fas fa-chevron-left back"></i>
                                         <div className="img_cont">
                                             <img src={this.props.friend.image} className="rounded-circle user_img1" alt="" />
-                                                {icon_online()}
+                                            {icon_online()}
                                         </div>
                                         <div className="user_info">
                                             {this.props.friend.fullname}
@@ -285,6 +411,7 @@ class messenger extends Component {
                                 <div className="card-body msg_card_body">
                                     {value_messenger()}
 
+
                                     <br></br>
                                     <div style={{
                                         clear: "both", height: "1px",
@@ -294,10 +421,13 @@ class messenger extends Component {
                                 </div>
 
 
-                                <span className="displayImg" id="displayImg">
-                                </span>
-                                <div className="card-footer">
 
+                                <div className="card-footer">
+                                    {btnCancle()}
+                                    <div className="displayImg" id="displayImg">
+
+                                        {/* <i onClick={() => { this.btnCancle() }} class="fas fa-times-circle cancle"></i> */}
+                                    </div>
                                     <input id='img' className="inputFile" type='file'
                                         onChange={(event) => { this.getFile(event) }}
                                         name="fileImage"

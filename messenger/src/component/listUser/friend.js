@@ -6,18 +6,15 @@ class friend extends Component {
         const user = JSON.parse(Cookies.get("user"))
         this.props.showMessenger(true, element);
         this.props.socket.emit("join-rooms", { user: user.username, friend: element.username })
-        const values = {
-            user: user.username,
-            friend: element.username
-        }
+        // const values = {
+        //     user: user.username,
+        //     friend: element.username
+        // }
         //this.props.socket.emit("upload-value-messenger", values)
     }
     render() {
         const status = (element) => {
-            console.log(element);
-            console.log(this.props.userOnline);
             let pos = this.props.userOnline.map(function (e) { return e.name; }).indexOf(element.username);
-            console.log(pos);
             if (pos >= 0) {
                 return (
                     <div>

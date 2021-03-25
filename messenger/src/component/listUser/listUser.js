@@ -8,8 +8,8 @@ import User from './user'
 import io from 'socket.io-client'
 import Messenger from './messenger'
 var socket =
-    io("https://messengers-server.herokuapp.com/");
-    //io("http://localhost:4000/");
+   // io("https://messengers-server.herokuapp.com/");
+    io("http://localhost:4000/");
 class listUser extends Component {
     constructor(props) {
         super(props);
@@ -27,8 +27,8 @@ class listUser extends Component {
             massage_errors: "",
             currentRooms: "",
             onScroll: false,
-            info: {},
-            userOnline: []
+            userOnline: [],
+            progress:0
 
         }
     }
@@ -39,13 +39,7 @@ class listUser extends Component {
                 user: user
             });
           
-            axios.post("/user/getInfo", { userId: user.id }).then(
-                results => {
-                    this.setState({
-                        info: results.data
-                    });
-                }
-            )
+          
             axios.post("/user/getFriend", { userId: user.id }).then(
                 results => {
                     this.setState({
@@ -74,12 +68,7 @@ class listUser extends Component {
                     });
                 }
             })
-            socket.on("request-change-avatar", data => {
-                Cookies.set("user", data)
-                this.setState({
-                    info: data
-                });
-            })
+           
             socket.on("request-update-avatar", data => {
                 axios.post("/user/getFriend", { userId: user.id }).then(
                     results => {
@@ -112,8 +101,9 @@ class listUser extends Component {
                     this.setState({
                         listSearch: results.data
                     })
+                    console.log(results.data);
                     if (!results.data.status) {
-                        results.data.map(element => {
+                        results.data.map( element => {
                             const value = {
                                 userId: user.id,
                                 friendId: element.id
@@ -149,7 +139,7 @@ class listUser extends Component {
 
                                     }
                                 }
-                            )
+                            );
                         })
                         return null;
                     }
@@ -181,6 +171,7 @@ class listUser extends Component {
                             })
                         }}
                         userOnline={this.state.userOnline}
+                       
 
 
                     />
@@ -224,6 +215,7 @@ class listUser extends Component {
                                             user={this.state.user}
                                             socket={socket}
                                             onScroll={this.state.onScroll}
+                                            progress={this.state.progress}
                                         />
                                         <input onChange={(event) => { this.setState({ txtSearch: event.target.value }); }} type="text" placeholder="Search..." name className="form-control search  " />
                                         <div className="input-group-prepend">

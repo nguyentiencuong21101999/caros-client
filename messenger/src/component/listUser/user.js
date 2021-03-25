@@ -4,13 +4,38 @@ import React, { Component } from 'react';
 import { showImageAvatar } from './showImage'
 import { Image } from 'cloudinary-react';
 import ProgressBar from 'react-bootstrap/ProgressBar'
+
 class user extends Component {
     constructor(props) {
         super(props);
         this.state = {
             selectedFile: null,
-            progress: 0
+            progress: 0,
+            info: {}
         }
+    }
+    componentDidMount() {
+        var user = JSON.parse(Cookies.get("user"));
+        axios.post("/user/getInfo", { userId: user.id }).then(
+            results => {
+                this.setState({
+                    info: results.data
+                });
+            }
+        )
+        this.props.socket.on("request-change-avatar", data => {
+            Cookies.set("user", data)
+            this.setState({
+                info: data,
+                progress: 100
+            }, () => {
+                setTimeout(() => {
+                    this.setState({
+                        progress: 0
+                    });
+                }, 2000)
+            });
+        })
     }
 
     getFile = (event) => {
@@ -60,18 +85,15 @@ class user extends Component {
                         img: img,
                         username: user.username
                     }
-                    this.setState({ progress: 100 }, () => {
-                        this.props.socket.emit("change-avatar", value)
-                        setTimeout(() => {
-                            this.setState({ progress: 0 });
-                        }, 1000)
-                    });
+                    this.props.socket.emit("change-avatar", value)
+
 
                 }
             )
 
     }
     render() {
+
         const btnCancle = () => {
             if (this.state.selectedFile) {
                 return (
@@ -79,14 +101,15 @@ class user extends Component {
                 )
             }
         }
-        // const progress = () => {
-        //     if (this.state.progress > 0) {
-        //         return (
-        //             <Progress percent={this.state.progress} />
-        //         )
-        //     }
+        const progress = () => {
+            if (this.state.progress >0) {
+                return (
+                    <ProgressBar striped variant="success" now={this.state.progress} />
 
-        // }
+                )
+            }
+
+        }
         return (
             <div>
                 <button style={{ opacity: "0.1" }} type="button" class="btn btn-primary changeAvatar" data-toggle="modal" data-target="#exampleModalUser">
@@ -102,35 +125,20 @@ class user extends Component {
                             </div>
                             <div class="modal-body">
                                 <div className="img">
+                                    {progress()}
                                     <div className="background">
                                         <img src="https://inlonggia.com/wp-content/uploads/hinh-nen-hoa-dep.jpg" alt=""></img>
                                     </div >
                                     <div className="avatars" >
-                                        <Image cloudName="cuong" publicId={this.props.info.image} />
+                                        <Image cloudName="cuong" publicId={this.state.info.image} />
                                     </div>
                                     <div className="displayImgs" id="displayImgs"></div>
                                     {btnCancle()}
                                     <input type="file" id="displayImg" onChange={(event) => { this.getFile(event) }} />
                                     <label for="displayImg">  <i for="displayImage" class="fas fa-camera photo"></i></label>
-                                    {this.state.progress > 0 &&
-                                        <ProgressBar striped variant="success" now={this.state.progress} />
-                                        // <CircularProgressbar
-                                        //     value={this.state.progress}
-                                        //     text={`${this.state.progress}%`}
-                                        //     styles={buildStyles({
-                                        //         rotation: 0.25,
-                                        //         strokeLinecap: 'butt',
-                                        //         textSize: '16px',
-                                        //         pathTransitionDuration: 0.5,
-                                        //         pathColor: `rgba(62, 152, 199, ${this.state.progress / 100})`,
-                                        //         textColor: '#f88',
-                                        //         trailColor: '#d6d6d6',
-                                        //         backgroundColor: '#3e98c7',
-                                        //     })}
-                                        //  />
-                                    }
+
                                 </div>
-                                <div className="fullname">{this.props.info.fullname}</div>
+                                <div className="fullname">{this.state.info.fullname}</div>
                             </div>
                             <div class="modal-footer">
                                 <button onClick={() => { this.btnCancle() }} type="button" class="btn btn-secondary" data-dismiss="modal">Bỏ</button>
@@ -140,7 +148,7 @@ class user extends Component {
                     </div>
                 </div>
                 <div className="avatar" style={{ width: "35px", height: "35px", borderRadius: "30px", marginLeft: "-10px", marginRight: "5px" }}>
-                    <Image cloudName="cuong" publicId={this.props.info.image} />
+                    <Image cloudName="cuong" publicId={this.state.info.image} />
                 </div>
 
                 {/* <img className="avatar" style={{ width: "35px", height: "35px", borderRadius: "30px", marginLeft: "-10px", marginRight: "5px" }} alt="" src={this.props.info.image} ></img> */}

@@ -18,7 +18,7 @@
 }
 .avatars img {
     border-radius: 50%;
-    width: 48%;
+    width: 50%;
     height: 152px;
     margin-left: 26%;
     border: 1px solid white;
@@ -33,13 +33,13 @@
     border: 1px solid white;
     position: absolute;
     border-radius: 11px;
-    margin-left: 60%;
-    margin-top: -35%;
+    margin-left: 58.5%;
+    margin-top: -39.5%;
     position: absolute;
 }
 .displayImgs img {
     border-radius: 50%;
-    width: 48%;
+    width: 49%;
     height: 150px;
     margin-left: 23%;
     border: 1px solid white;
@@ -95,4 +95,33 @@
 }
 .icon {
     padding: 9px;
+}
+.progress {
+    height: 3px;
+    color: white;
+}
+.cancle_messenger {
+    margin-left: 58%;
+    position: absolute;
+    /* float: right; */
+    /* margin-right: 63%; */
+    font-size: 27px;
+    color: white;
+    margin-top: -10px;
+}
+.image-messenger img {
+    width: 61%;
+    height: 262px;
+    margin-left: 40%;
+    object-fit: cover;
+    border-radius: 21px;
+    margin-bottom: 10px;
+}
+
+.image-messenger1 img {
+    width: 61%;
+    height: 262px;
+    object-fit: cover;
+    border-radius: 21px;
+    margin-bottom: 10px;
 }
