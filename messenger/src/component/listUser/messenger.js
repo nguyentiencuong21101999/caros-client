@@ -431,7 +431,7 @@ class messenger extends Component {
                                     <input id='img' className="inputFile" type='file'
                                         onChange={(event) => { this.getFile(event) }}
                                         name="fileImage"
-                                        multiple
+                                       // multiple
                                     ></input>
                                     <label for="img" className="input-group-text-1 attach_btn">
                                         <i className="fas fa-paperclip" />
