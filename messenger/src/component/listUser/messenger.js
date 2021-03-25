@@ -3,6 +3,7 @@ import Cookies from 'js-cookie';
 import React, { Component } from 'react';
 import { showImageAvatar } from './showImage'
 import { Image } from 'cloudinary-react';
+import ProgressBar from 'react-bootstrap/ProgressBar'
 class messenger extends Component {
     constructor(props) {
         super(props);
@@ -12,7 +13,8 @@ class messenger extends Component {
             value_messenger: [],
             icon: false,
             fileImage: [],
-            selectedFile: null
+            selectedFile: null,
+            progress: 0
         }
     }
     componentDidMount() {
@@ -30,7 +32,14 @@ class messenger extends Component {
         this.props.socket.on("request-send-messenger", async data => {
             this.scrollToBottom()
             this.setState({
-                value_messenger: data
+                value_messenger: data,
+                progress: 100
+            }, () => {
+                setTimeout(() => {
+                    this.setState({
+                        progress: 0
+                    });
+                }, 2000)
             });
 
         })
@@ -61,6 +70,12 @@ class messenger extends Component {
         const time = new Date().toLocaleTimeString();
 
         if (this.state.selectedFile) {
+            this.setState({
+                txt_messenger: "",
+                selectedFile: null
+            });
+            const displayImgs = document.getElementById("displayImg");
+            displayImgs.style.display = "none"
             const fd = new FormData();
             console.log(fd);
             fd.append('file', this.state.selectedFile)
@@ -94,12 +109,6 @@ class messenger extends Component {
                         }]
                         console.log();
                         this.props.socket.emit("send-messenger", values)
-                        const displayImgs = document.getElementById("displayImg");
-                        displayImgs.style.display = "none"
-                        this.setState({
-                            txt_messenger: "",
-                            selectedFile: null
-                        });
                         this.scrollToBottom()
                     }
                 )
@@ -169,19 +178,15 @@ class messenger extends Component {
     }
 
     getFile = (event) => {
-        const display = document.getElementById("displayImg");
-        const scroll = document.getElementById("scroll");
-        scroll.scrollIntoView({ block: "end" });
-        display.style.display = "block"
-        this.setState({
-            selectedFile: event.target.files[0]
-        });
-        showImageAvatar(event, "img", "displayImg")
-        this.setState({
-            txt_messenger: ""
-        });
 
-
+        if (event.target.files[0]) {
+            const display = document.getElementById("displayImg");
+            display.style.display = "block"
+            this.setState({
+                selectedFile: event.target.files[0]
+            });
+            showImageAvatar(event, "img", "displayImg")
+        }
     }
     btnCancle = () => {
         const displayImgs = document.getElementById("displayImg");
@@ -190,7 +195,16 @@ class messenger extends Component {
             selectedFile: null
         });
     }
+
     render() {
+        const progress = () => {
+            if (this.state.progress > 0) {
+                return (
+                    <ProgressBar striped variant="success" now={this.state.progress} />
+                )
+            }
+
+        }
         const value_messenger = () => {
             const user = JSON.parse(Cookies.get("user"));
             if (this.state.value_messenger.length > 0) {
@@ -285,7 +299,7 @@ class messenger extends Component {
                                         }
                                         else {
                                             return (
-                                                <div className="d-flex justify-content-start mb-2">                                              
+                                                <div className="d-flex justify-content-start mb-2">
                                                     <div className="msg_cotainer">
                                                         {results.value_messenger}
                                                         <span className="msg_time">{results.dateTime}</span>
@@ -421,17 +435,16 @@ class messenger extends Component {
                                 </div>
 
 
-
+                                    {progress()}
                                 <div className="card-footer">
                                     {btnCancle()}
                                     <div className="displayImg" id="displayImg">
-
                                         {/* <i onClick={() => { this.btnCancle() }} class="fas fa-times-circle cancle"></i> */}
                                     </div>
                                     <input id='img' className="inputFile" type='file'
                                         onChange={(event) => { this.getFile(event) }}
                                         name="fileImage"
-                                       // multiple
+                                        multiple
                                     ></input>
                                     <label for="img" className="input-group-text-1 attach_btn">
                                         <i className="fas fa-paperclip" />

@@ -27,6 +27,7 @@ class user extends Component {
             Cookies.set("user", data)
             this.setState({
                 info: data,
+                selectedFile: null,
                 progress: 100
             }, () => {
                 setTimeout(() => {
@@ -45,7 +46,11 @@ class user extends Component {
         this.setState({
             selectedFile: event.target.files[0]
         });
-        showImageAvatar(event, "displayImg", "displayImgs")
+        if (event.target.files[0]) {
+            console.log(event.target.files[0]);
+            showImageAvatar(event, "displayImg", "displayImgs")
+        }
+
     }
     btnCancle = () => {
         const displayImgs = document.getElementById("displayImgs");
@@ -102,7 +107,7 @@ class user extends Component {
             }
         }
         const progress = () => {
-            if (this.state.progress >0) {
+            if (this.state.progress > 0) {
                 return (
                     <ProgressBar striped variant="success" now={this.state.progress} />
 
