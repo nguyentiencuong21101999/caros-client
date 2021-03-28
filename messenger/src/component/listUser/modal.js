@@ -33,6 +33,7 @@ class modal extends Component {
             await axios.post("/user/addFriend", [values_user, values_friend]).then(results => {
                 if (results.data.status === "success") {
                     this.props.socket.emit("upload-message", value_upload)
+                    this.props.socket.emit("upload-list-accept",{userId:element.id,username:element.username})
                 }
             }
             )
@@ -54,6 +55,7 @@ class modal extends Component {
                 .then(
                     () => {
                         this.props.socket.emit("upload-friend", value_upload)
+                        
                     }
                 )
         }
@@ -74,6 +76,7 @@ class modal extends Component {
         await axios.post("/user/cancleFriend", values)
             .then(
                 () => {
+                    this.props.socket.emit("upload-list-accept",{userId:element.id,username:element.username})
                     this.props.socket.emit("upload-message", value_upload)
                 }
             )

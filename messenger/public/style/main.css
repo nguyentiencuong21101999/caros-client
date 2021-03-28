@@ -529,9 +529,10 @@ margin-bottom: auto; */
 }
 .action_menu1 .ul .li {
     color: red;
-    width: 100%;
+    width: 91%;
     padding: 10px 15px;
     margin: 5px;
+    border-radius: 5px;
 }
 .action_menu1 .ul .li .delete {
     padding-left: 28px;

@@ -7,9 +7,10 @@ import Friend from './friend.js'
 import User from './user'
 import io from 'socket.io-client'
 import Messenger from './messenger'
+import ListAcceptFriend from './listAcceptFriend'
 var socket =
-  io("https://messengers-server.herokuapp.com/");
-   // io("http://localhost:4000/");
+    io("https://messengers-server.herokuapp.com/");
+    //io("http://localhost:4000/");
 class listUser extends Component {
     constructor(props) {
         super(props);
@@ -28,7 +29,7 @@ class listUser extends Component {
             currentRooms: "",
             onScroll: false,
             userOnline: [],
-            progress:0
+            progress: 0
 
         }
     }
@@ -38,8 +39,8 @@ class listUser extends Component {
             this.setState({
                 user: user
             });
-          
-          
+
+
             axios.post("/user/getFriend", { userId: user.id }).then(
                 results => {
                     this.setState({
@@ -49,11 +50,11 @@ class listUser extends Component {
             )
             const rooms = JSON.parse(Cookies.get("user"));
             socket.emit("rooms-addfriend", rooms.username);
-            socket.on("request-rooms-addfriend",data =>{    
+            socket.on("request-rooms-addfriend", data => {
                 this.setState({
-                    userOnline:data
+                    userOnline: data
                 });
-            })   
+            })
             socket.on("request-invation", results => {
                 alert(results);
             })
@@ -68,7 +69,7 @@ class listUser extends Component {
                     });
                 }
             })
-           
+
             socket.on("request-update-avatar", data => {
                 axios.post("/user/getFriend", { userId: user.id }).then(
                     results => {
@@ -103,7 +104,7 @@ class listUser extends Component {
                     })
                     console.log(results.data);
                     if (!results.data.status) {
-                        results.data.map( element => {
+                        results.data.map(element => {
                             const value = {
                                 userId: user.id,
                                 friendId: element.id
@@ -171,7 +172,7 @@ class listUser extends Component {
                             })
                         }}
                         userOnline={this.state.userOnline}
-                       
+
 
 
                     />
@@ -197,8 +198,10 @@ class listUser extends Component {
                     <div className="container-fluid h-100">
                         <div className="row justify-content-center h-100">
                             <div className="col-md-4 col-xl-3 chat"><div className="card mb-sm-3 mb-md-0 contacts_card">
-
                                 <div className="card-header">
+                                    <ListAcceptFriend
+                                        socket={socket}
+                                    />
                                     {/* Modal */}
                                     <Modal listSearch={this.state.listSearch}
                                         checkAddFriend={this.state.checkAddFriend}
@@ -232,7 +235,10 @@ class listUser extends Component {
                                             </button>
                                             <div className="dropdown-menu action_menu1" id="action_menu">
                                                 <div className="ul">
-                                                    <div style={{ color: "red" }} onClick={() => { }} className="li"  >Danh Sách Kết Bạn &ensp; <i class="fas fa-trash delete"></i> </div>
+                                                    <span className="numberFriend">2</span>
+                                                    <button type="button" className="btn btn-primary acceptFriend" data-toggle="modal" data-target="#exampleModalListFriend">
+                                                        Danh Sách Kết Bạn
+                                                    </button>
                                                     <hr style={{ width: "80%", margin: "0px", marginLeft: "17px ", backgroundColor: "white" }}></hr>
                                                     <div className="li"
                                                         onClick={() => {
