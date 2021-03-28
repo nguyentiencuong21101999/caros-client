@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Cookies from 'js-cookie'
 import axios from 'axios'
 import { Redirect } from 'react-router';
+import { Link,  } from 'react-router-dom'
 import Modal from './modal'
 import Friend from './friend.js'
 import User from './user'
@@ -9,7 +10,7 @@ import io from 'socket.io-client'
 import Messenger from './messenger'
 import ListAcceptFriend from './listAcceptFriend'
 var socket =
-    io("https://messengers-server.herokuapp.com/");
+     io("https://messengers-server.herokuapp.com/");
     //io("http://localhost:4000/");
 class listUser extends Component {
     constructor(props) {
@@ -235,7 +236,12 @@ class listUser extends Component {
                                             </button>
                                             <div className="dropdown-menu action_menu1" id="action_menu">
                                                 <div className="ul">
-                                                    <span className="numberFriend">2</span>
+                                                    <div className="game">
+                                                        <Link to="/caro-online">
+                                                            Game Caro
+                                                        </Link>
+
+                                                    </div>
                                                     <button type="button" className="btn btn-primary acceptFriend" data-toggle="modal" data-target="#exampleModalListFriend">
                                                         Danh Sách Kết Bạn
                                                     </button>

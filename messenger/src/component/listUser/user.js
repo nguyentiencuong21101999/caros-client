@@ -117,7 +117,7 @@ class user extends Component {
         }
         return (
             <div>
-                {/* <button style={{ opacity: "0.1" }} type="button" class="btn btn-primary changeAvatar" data-toggle="modal" data-target="#exampleModalUser">
+                <button style={{ opacity: "0.1" }} type="button" class="btn btn-primary changeAvatar" data-toggle="modal" data-target="#exampleModalUser">
                 </button>
                 <div class="modal fade" id="exampleModalUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
@@ -151,7 +151,7 @@ class user extends Component {
                             </div>
                         </div>
                     </div>
-                </div> */}
+                </div>
                 <div className="avatar" style={{ width: "35px", height: "35px", borderRadius: "30px", marginLeft: "-10px", marginRight: "5px" }}>
                     <Image cloudName="cuong" publicId={this.state.info.image} />
                 </div>

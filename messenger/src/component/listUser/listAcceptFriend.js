@@ -12,7 +12,6 @@ class listAcceptFriend extends Component {
 
     componentDidMount() {
         this.props.socket.on("request-upload-list-accept", results => {
-            alert("nhan duoc roi")
             this.setState({
                 listAcceptFriend: results
             });
@@ -86,10 +85,10 @@ class listAcceptFriend extends Component {
                     )
                 })
 
-            }else{
-                return(
+            } else {
+                return (
                     <div>
-                        Chưa có lời Mời 
+                        Chưa có lời Mời
                     </div>
                 )
             }
