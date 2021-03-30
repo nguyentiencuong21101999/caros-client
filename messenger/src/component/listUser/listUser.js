@@ -10,8 +10,8 @@ import io from 'socket.io-client'
 import Messenger from './messenger'
 import ListAcceptFriend from './listAcceptFriend'
 var socket =
-     io("https://messengers-server.herokuapp.com/");
-    //io("http://localhost:4000/");
+    // io("https://messengers-server.herokuapp.com/");
+    io("http://localhost:4000/");
 class listUser extends Component {
     constructor(props) {
         super(props);

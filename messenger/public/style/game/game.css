@@ -92,4 +92,72 @@
     }
 
 }
+@media (min-width: 1295px) {
+    .game_name {
+        margin-top: 0%;
+        margin-bottom: 1%;
+        text-align: center;
+        font-size: 25px;
+        color: white;
+        font-family: serif;
+        font-weight: bolder;
+    }
+    .game_image img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 34%;
+    }
 
+}
+
+.wrapper {
+    margin-top: 15%;
+     width: 80%;
+    margin-left: auto;
+    margin-right: auto; 
+    flex-direction: row;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .wrapper .rows {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .wrapper .rows .cols {
+    border: solid 1px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+  }
+  
+  .wrapper .cols .value {
+    color: red;
+    font-weight: bold;
+  }
+  .backs{
+    position: absolute;
+    font-size: 26px;
+    color: white;
+    margin-top: -13%;
+    margin-left: 2%;
+  }
+  .user{
+      border: 1px solid black;
+      display: flex;
+      flex-direction: row;
+  }
+  .user1{
+      width: 50%;
+  }
+  .user1 img {
+      width: 5em;
+      height: 5em;
+      border: solid 1px white;
+  }
+  .user2{
+      width: 50%;
+  }
