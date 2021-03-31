@@ -3,7 +3,7 @@ import Cookies from 'js-cookie'
 import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
 import Chessboard from './chessboard'
-class caro extends Component {
+class start extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -41,26 +41,28 @@ class caro extends Component {
                                                         <br />
                                                         <span className="online_game">
                                                             Online
-                                </span>
+                                                     </span>
                                                     </span>
                                                 </label>
                                             </div>
                                             <div className="game_name">
                                                 Cờ Caro
-                    </div>
+                                             </div>
                                             <div className="game_image">
                                                 <img src="../../../style/game/image/lo-go-co-caro.png" alt=""></img>
                                             </div>
                                             <div className="game_text" >
                                                 Chơi Với Máy
-                    </div>
-                                            <div onClick={() => { this.setState({ loader: true }); }} className="game_text" >
-                                                Chơi Với Bạn
-                    </div>
+                                            </div>
+                                            <div className="game_text" >
+                                                <Link to="/room">
+                                                    Chơi Với Bạn
+                                                </Link>
+                                            </div>
                                             <div className="game_text" >
                                                 <Link to="/messenger">
                                                     Thoát
-                        </Link>
+                                                </Link>
 
                                             </div>
 
@@ -78,7 +80,7 @@ class caro extends Component {
             if (this.state.loader) {
                 return (
                     <div>
-                        <div onClick={() =>{this.setState({loader:false});}} className="backs">
+                        <div onClick={() => { this.setState({ loader: false }); }} className="backs">
                             <i class="fas fa-chevron-left"></i>
                         </div>
                         <div id="wrapper" className='wrapper'>
@@ -91,13 +93,11 @@ class caro extends Component {
         }
         return (
             <div>
-
                 {chessboard()}
-
                 {start()}
             </div>
         );
     }
 }
 
-export default caro;
+export default start;
