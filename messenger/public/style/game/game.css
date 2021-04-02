@@ -110,7 +110,7 @@
 }
 
 .wrapper {
-    margin-top: 15%;
+    margin-top: 5%;
     width: 80%;
     margin-left: auto;
     margin-right: auto;
@@ -140,24 +140,48 @@
     position: absolute;
     font-size: 26px;
     color: white;
-    margin-top: -13%;
+    margin-top: -4%;
     margin-left: 2%;
 }
 .user {
-    border: 1px solid black;
     display: flex;
     flex-direction: row;
+    margin-bottom: 4%;
 }
 .user1 {
+    padding-left: 3%;
     width: 50%;
 }
 .user1 img {
+    border-radius: 15px;
     width: 5em;
     height: 5em;
     border: solid 1px white;
 }
+.name-user1 {
+    font-weight: bold;
+    color: rgb(221, 187, 187);
+}
+.type {
+    margin-top: -2em;
+    position: absolute;
+    margin-left: 7em !important;
+}
 .user2 {
+    padding-left: 19%;
     width: 50%;
+}
+.user2 img {
+    border-radius: 15px;
+    width: 5em;
+    height: 5em;
+    border: solid 1px white;
+  
+}
+.type-user-2 {
+    position: absolute;
+    margin-top: 3em;
+    margin-left: 2.5em;
 }
 .chess {
     margin-top: 2em;
@@ -174,6 +198,9 @@
 }
 .rooms {
     width: 24%;
+}
+.rooms:hover {
+    cursor: pointer;
 }
 .room-name {
     font-size: 14px;
@@ -254,4 +281,23 @@
         margin-left: -0.8em;
         margin-top: -1.3em;
     }
+}
+.number-player {
+    position: absolute;
+    margin-left: 1.55em;
+    margin-top: -0.6em;
+    font-weight: bold;
+}
+.number-player i {
+    color: rgb(0 0 0 / 50%);
+}
+.number-player-2 {
+    position: absolute;
+    margin-left: 1.55em;
+    margin-top: 1.5em;
+    position: absolute;
+    font-weight: bold;
+}
+.number-player-2 i {
+    color: rgb(0 0 0 / 50%);
 }

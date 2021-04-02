@@ -55,9 +55,9 @@ class start extends Component {
                                                 Chơi Với Máy
                                             </div>
                                             <div className="game_text" >
-                                                <Link to="/room">
+                                                <a href="/room">
                                                     Chơi Với Bạn
-                                                </Link>
+                                                </a>
                                             </div>
                                             <div className="game_text" >
                                                 <Link to="/messenger">

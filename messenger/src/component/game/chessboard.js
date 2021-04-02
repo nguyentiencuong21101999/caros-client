@@ -11,6 +11,17 @@ class chessboard extends Component {
 
     componentDidMount() {
         this.createTable()
+        this.props.socket.on("request-set-value-chess", data => {
+            this.setState({ data: data });
+        })
+        this.props.socket.on("set-value-chess", data => {
+            console.log(data);
+            if (data === false) {
+                alert("Bên kia thoát ! Bạn Thắng")
+                this.createTable()
+            }
+
+        })
     }
     createTable = () => {
         let newData = [];
@@ -31,18 +42,20 @@ class chessboard extends Component {
         })
     }
     setValue = (rowIndex, colIndex, value) => {
-        let newData = this.state.data;
-        newData[rowIndex][colIndex].value = value;
-        this.setState({
-            data: newData
-        })
+        // if (this.props.rooms[this.props.currentRoom].player.length > 1) {
+            this.props.socket.emit("set-value-chess", {
+                row: rowIndex,
+                col: colIndex,
+                roomIndex: this.props.currentRoom
+            })
+        // }
     }
     cell = (rowData, rowIndex) => {
 
         return rowData.map((cell, colIndex) => {
             return (
                 <div onClick={() => { this.setValue(rowIndex, colIndex) }} className="cols">
-                    <div className="value">{cell.value}x</div>
+                    <div className="value">{cell.value}</div>
                 </div>
             )
         })
@@ -54,35 +67,141 @@ class chessboard extends Component {
                     { this.cell(rowData, rowIndex)}
                 </div>
             )
-
-
         })
 
     }
 
     render() {
         let user = JSON.parse(Cookies.get("user"));
-        let trim = user.fullname.trim().split((/[\s,]+/));
-        const username = trim[trim.length - 2] + " " + trim[trim.length - 1]
-        if (this.state.data.length > 0) {
-            return (
-                <div>
-
-                    <div className="user">
-                        <div className=" user1 ">
-                            <img src={user.image} alt="" />
-                            bac
-                        </div>
-                        <div className=" user2">
-                            asdads
-                        </div>
-                    </div>
-                    {this.rowData()}
-
-                </div>
-            );
+        let info = this.props.rooms[this.props.currentRoom].player;
+        let name_caro = (name) => {
+            let trim = name.trim().split((/[\s,]+/));
+            if (trim.length > 1) {
+                const username = trim[trim.length - 2] + " " + trim[trim.length - 1]
+                return (
+                    username
+                )
+            } else {
+                const username = trim[trim.length - 1];
+                return (username)
+            }
         }
-        return null;
+        let info_caro = () => {
+            if (this.state.data.length > 0) {
+                if (info.length === 1) {
+                    if (info[0].name === user.username) {
+                        return (
+                            <div>
+                                <div className="user">
+                                    <div className=" user1 ">
+                                        <span>
+                                            <img src={info[0].info.image} alt="" />
+                                        </span>
+                                        <span className="name-user1">
+                                            {name_caro(info[0].info.fullname)}
+                                        </span>
+                                        <div className="type">
+                                            {info[0].type}
+                                        </div>
+                                    </div>
+                                    <div className=" user2">
+                                        Mời Bạn
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    } else {
+                        return (
+                            <div>
+                                <div className="user">
+                                    <div className=" user1 ">
+                                        <img src={info[0].info.image} alt="" />
+                                        <span className="name-user1">
+                                            {name_caro(info[0].info.fullname)}
+                                        </span>
+                                        <div className="type">
+                                            {this.props.type}
+                                        </div>
+                                    </div>
+                                    <div className=" user2">
+                                        Mời Bạn
+                                    </div>
+                                </div>
+                            </div>
+                        )
+                    }
+                } else {
+                    if (info.length === 2) {
+                        if (info[0].name === user.username) {
+                            return (
+                                <div className="user">
+                                    <div className="user1">
+                                        <img src={info[0].info.image} alt="" />
+                                        <span className="name-user1">
+                                            {name_caro(info[0].info.fullname)}
+                                        </span>
+                                        <div className="type">
+
+                                            {info[0].type}
+                                        </div>
+                                    </div>
+                                    <div className="user2">
+                                        <div className="type-user-2">
+                                            {info[1].type}
+                                        </div>
+                                        <span className="name-user2">
+                                            {name_caro(info[1].info.fullname)}
+                                        </span>
+                                        <span>
+                                            <img src={info[1].info.image} alt="" />
+                                        </span>
+                                    </div>
+                                </div>
+                            );
+                        } else {
+                            return (
+                                <div>
+                                    <div className="user">
+                                        <div className=" user1 ">
+                                            <img src={info[1].info.image} alt="" />
+                                            <span className="name-user1">
+                                                {name_caro(info[1].info.fullname)}
+                                            </span>
+                                            <div className="type">
+                                                {info[1].type}
+                                            </div>
+                                        </div>
+                                        <div className=" user2 ">
+                                            <div className="type-user-2">
+                                                {info[0].type}
+                                            </div>
+                                            <span className="name-user2">
+                                                {name_caro(info[0].info.fullname)}
+                                            </span>
+                                            <span>
+                                                <img src={info[0].info.image} alt="" />
+                                            </span>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            )
+
+                        }
+                    }
+                }
+
+            }
+        }
+
+        return (
+            <div>
+                {info_caro()}
+                {this.rowData()}
+
+            </div>
+        )
     }
 }
 

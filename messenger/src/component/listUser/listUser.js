@@ -63,7 +63,6 @@ class listUser extends Component {
             })
             socket.on("request-upload-massage", async data => {
                 const pos = this.state.checkAddFriend.map(function (e) { return e.friendId; }).indexOf(data.userId);
-
                 if (pos >= 0) {
                     this.state.checkAddFriend.splice(pos, 1)
                     this.state.checkAddFriend.push({ friendId: data.userId, message: data.message })
