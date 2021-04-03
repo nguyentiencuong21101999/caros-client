@@ -6,7 +6,8 @@ class chessboard extends Component {
         super(props);
         this.state = {
             data: [],
-            ready: []
+            ready: [],
+            player: "x"
         }
     }
 
@@ -17,15 +18,22 @@ class chessboard extends Component {
         })
         this.props.socket.on("set-value-chess", data => {
             if (data === false) {
+                if (this.state.ready.length > 1) {
+                    alert("Bạn thắng ...")
+                }
+                console.log(this.state.ready);
                 this.createTable()
                 this.setState({
                     ready: []
                 });
-            }
 
+            }
         })
         this.props.socket.on("send-user-win", data => {
             alert(data.message)
+            this.setState({
+                ready: []
+            });
             this.createTable()
         })
         this.props.socket.on("request-ready", data => {
@@ -33,9 +41,15 @@ class chessboard extends Component {
             if (ready.indexOf(data) < 0) {
                 ready.push(data)
                 this.setState({
-                    ready: ready
+                    ready: ready,
+                    player: "x"
                 });
             }
+        })
+        this.props.socket.on("request-set-player", data => {
+            this.setState({
+                player: data
+            });
         })
     }
     createTable = () => {
@@ -57,13 +71,15 @@ class chessboard extends Component {
         })
     }
     setValue = (rowIndex, colIndex, value) => {
-        // if (this.props.rooms[this.props.currentRoom].player.length > 1) {
-        this.props.socket.emit("set-value-chess", {
-            row: rowIndex,
-            col: colIndex,
-            roomIndex: this.props.currentRoom
-        })
-        // }
+        console.log();
+        if (this.state.ready.length > 1 && this.state.player === this.props.type) {
+            this.props.socket.emit("set-value-chess", {
+                row: rowIndex,
+                col: colIndex,
+                roomIndex: this.props.currentRoom,
+                currentType: this.props.type
+            })
+        }
     }
     cell = (rowData, rowIndex) => {
 
@@ -89,8 +105,7 @@ class chessboard extends Component {
         let user = JSON.parse(Cookies.get("user"));
         const values = {
             roomIndex: this.props.currentRoom,
-            name: user.username
-
+            name: user.username,
         }
         this.props.socket.emit("ready", values)
     }
@@ -123,18 +138,22 @@ class chessboard extends Component {
                         )
                     } else {
                         return (
-                            <div onClick={() => { this.ready() }} className="ready"> Sẵn Sàng</div>
+                            <div className="left">
+                                <span onClick={() => { this.ready() }} className="ready"> Sẵn Sàng</span>
+                                <span className="ready-user2-success" ><i class="fas fa-check-double"></i></span>
+                            </div>
+
+
                         )
                     }
 
                 } else {
                     if (ready.indexOf(user.username) >= 0) {
                         return (
-                            <div onClick={() => { this.unReady() }} className="ready"><i class="fas fa-check-double"></i></div>
-                        )
-                    } else {
-                        return (
-                            <div onClick={() => { this.unReady() }} className="ready-user-2"><i class="fas fa-check-double"></i></div>
+                            <div className="left">
+                                <span onClick={() => { this.ready() }} className="ready"><i class="fas fa-check-double"></i></span>
+                                <span className="ready-user2-success" ><i class="fas fa-check-double"></i></span>
+                            </div>
                         )
                     }
                 }
@@ -170,7 +189,11 @@ class chessboard extends Component {
                                         </div>
                                     </div>
                                     <div className=" user2">
-                                        Mời Bạn
+                                        <div className="invite">
+                                            <i class="fas fa-plus-square"></i>
+                                            Mời Bạn
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -253,8 +276,6 @@ class chessboard extends Component {
                                             <span>
                                                 <img src={info[0].info.image} alt="" />
                                             </span>
-
-
                                         </div>
                                     </div>
                                 </div>
@@ -266,10 +287,26 @@ class chessboard extends Component {
 
             }
         }
+        const play = () => {
+            if (this.state.ready.length === 2) {
+                if (this.state.player === "x") {
+                    return (
+                        <div className="play"> X  đánh </div>
+                    )
 
+                } else {
+                    return (
+                        <div className="play"> O  đánh </div>
+                    )
+                }
+            }
+
+        }
         return (
             <div>
+                {play()}
                 {info_caro()}
+
                 {this.rowData()}
 
             </div>

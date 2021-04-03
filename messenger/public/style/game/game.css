@@ -168,11 +168,44 @@
     border-radius: 7px;
     background-color: green;
 }
-.ready:hover{
+.ready:hover {
     color: orange;
     cursor: pointer;
 }
-
+.left {
+    position: absolute;
+    width: 50% !important;
+}
+.ready-user2-success {
+    color: white;
+    border: solid 1px;
+    padding: 3px;
+    margin-left: 27em;
+    margin-top: -5.5em;
+    position: absolute;
+    border-radius: 7px;
+    background-color: green;
+}
+.play {
+    color: yellow;
+    text-align: center;
+    padding: 3px;
+    border: solid 1px white;
+    border-radius: 15px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 12%;
+    background-color: #559463;
+}
+.invite{
+    font-size: 15px;
+    text-align: center;
+    color: #9dd42efc;
+    margin-top: 2em;
+}
+.invite i{
+    margin-right: 10px;
+}
 .type {
     margin-top: -2em;
     position: absolute;

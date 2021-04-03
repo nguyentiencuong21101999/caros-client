@@ -4,8 +4,8 @@ import { Redirect } from 'react-router';
 import io from 'socket.io-client'
 import Chessboard from './chessboard'
 var socket =
-    // io("https://caros-server.herokuapp.com/");
-    io("http://localhost:1234/");
+     io("https://caros-server.herokuapp.com/");
+    //io("http://localhost:1234/");
 class room extends Component {
     constructor(props) {
         super(props);
