@@ -5,7 +5,8 @@ class chessboard extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: []
+            data: [],
+            ready: []
         }
     }
 
@@ -15,12 +16,26 @@ class chessboard extends Component {
             this.setState({ data: data });
         })
         this.props.socket.on("set-value-chess", data => {
-            console.log(data);
             if (data === false) {
-                alert("Bên kia thoát ! Bạn Thắng")
                 this.createTable()
+                this.setState({
+                    ready: []
+                });
             }
 
+        })
+        this.props.socket.on("send-user-win", data => {
+            alert(data.message)
+            this.createTable()
+        })
+        this.props.socket.on("request-ready", data => {
+            const ready = this.state.ready;
+            if (ready.indexOf(data) < 0) {
+                ready.push(data)
+                this.setState({
+                    ready: ready
+                });
+            }
         })
     }
     createTable = () => {
@@ -43,11 +58,11 @@ class chessboard extends Component {
     }
     setValue = (rowIndex, colIndex, value) => {
         // if (this.props.rooms[this.props.currentRoom].player.length > 1) {
-            this.props.socket.emit("set-value-chess", {
-                row: rowIndex,
-                col: colIndex,
-                roomIndex: this.props.currentRoom
-            })
+        this.props.socket.emit("set-value-chess", {
+            row: rowIndex,
+            col: colIndex,
+            roomIndex: this.props.currentRoom
+        })
         // }
     }
     cell = (rowData, rowIndex) => {
@@ -70,7 +85,15 @@ class chessboard extends Component {
         })
 
     }
+    ready = () => {
+        let user = JSON.parse(Cookies.get("user"));
+        const values = {
+            roomIndex: this.props.currentRoom,
+            name: user.username
 
+        }
+        this.props.socket.emit("ready", values)
+    }
     render() {
         let user = JSON.parse(Cookies.get("user"));
         let info = this.props.rooms[this.props.currentRoom].player;
@@ -84,6 +107,48 @@ class chessboard extends Component {
             } else {
                 const username = trim[trim.length - 1];
                 return (username)
+            }
+        }
+        let ready = () => {
+            const ready = this.state.ready;
+            if (ready.length < 1) {
+                return (
+                    <div onClick={() => { this.ready() }} className="ready"> Sẵn Sàng</div>
+                )
+            } else {
+                if (ready.length === 1) {
+                    if (ready.indexOf(user.username) >= 0) {
+                        return (
+                            <div onClick={() => { this.unReady() }} className="ready"><i class="fas fa-check-double"></i></div>
+                        )
+                    } else {
+                        return (
+                            <div onClick={() => { this.ready() }} className="ready"> Sẵn Sàng</div>
+                        )
+                    }
+
+                } else {
+                    if (ready.indexOf(user.username) >= 0) {
+                        return (
+                            <div onClick={() => { this.unReady() }} className="ready"><i class="fas fa-check-double"></i></div>
+                        )
+                    } else {
+                        return (
+                            <div onClick={() => { this.unReady() }} className="ready-user-2"><i class="fas fa-check-double"></i></div>
+                        )
+                    }
+                }
+            }
+
+        }
+        let ready_user_2 = () => {
+            const ready = this.state.ready;
+            if (ready.length === 1) {
+                if (ready.indexOf(user.username) < 0) {
+                    return (
+                        <div onClick={() => { this.unReady() }} className="ready-user-2"><i class="fas fa-check-double"></i></div>
+                    )
+                }
             }
         }
         let info_caro = () => {
@@ -116,6 +181,7 @@ class chessboard extends Component {
                                 <div className="user">
                                     <div className=" user1 ">
                                         <img src={info[0].info.image} alt="" />
+
                                         <span className="name-user1">
                                             {name_caro(info[0].info.fullname)}
                                         </span>
@@ -137,6 +203,7 @@ class chessboard extends Component {
                                 <div className="user">
                                     <div className="user1">
                                         <img src={info[0].info.image} alt="" />
+                                        {ready()}
                                         <span className="name-user1">
                                             {name_caro(info[0].info.fullname)}
                                         </span>
@@ -146,9 +213,11 @@ class chessboard extends Component {
                                         </div>
                                     </div>
                                     <div className="user2">
+                                        {ready_user_2}
                                         <div className="type-user-2">
                                             {info[1].type}
                                         </div>
+
                                         <span className="name-user2">
                                             {name_caro(info[1].info.fullname)}
                                         </span>
@@ -164,6 +233,8 @@ class chessboard extends Component {
                                     <div className="user">
                                         <div className=" user1 ">
                                             <img src={info[1].info.image} alt="" />
+                                            {ready()}
+                                            {/* <div onClick={() => { this.ready() }} className="ready"> Sẵn Sàng</div> */}
                                             <span className="name-user1">
                                                 {name_caro(info[1].info.fullname)}
                                             </span>
@@ -172,6 +243,7 @@ class chessboard extends Component {
                                             </div>
                                         </div>
                                         <div className=" user2 ">
+                                            {ready_user_2}
                                             <div className="type-user-2">
                                                 {info[0].type}
                                             </div>

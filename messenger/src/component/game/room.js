@@ -39,7 +39,7 @@ class room extends Component {
         })
         socket.on("update-rooms", data => {
             this.setState({
-                rooms: data
+                rooms: data 
             });
         })
        
