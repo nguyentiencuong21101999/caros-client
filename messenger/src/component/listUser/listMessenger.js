@@ -4,7 +4,7 @@ class listMessenger extends Component {
     render() {
         return (
             <div>
-                <input class="file" type='file' id="imgSel" />
+                <input className="file" type='file' id="imgSel" />
 
                 <div id="textarea" contenteditable>
                     <img alt="" contenteditable="false" style={{ width: "45px" }} id="myimg" />

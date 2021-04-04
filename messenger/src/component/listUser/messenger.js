@@ -319,7 +319,7 @@ class messenger extends Component {
                                                 <img src={this.props.friend.image} className="rounded-circle user_img_msg" alt="" />
                                             </div>
                                             <div className="msg_cotainer_1">
-                                                <i class="fas fa-heart icons"></i>
+                                                <i className="fas fa-heart icons"></i>
                                                 <span className="msg_time">{results.dateTime}</span>
 
                                             </div>
@@ -330,6 +330,7 @@ class messenger extends Component {
                             }
                         })
                     }
+                    return null;
                 })
             }
         }
@@ -344,7 +345,7 @@ class messenger extends Component {
                             fontSize: "30px",
                             marginTop: "15px",
 
-                        }} class="fab fa-vuejs"></i></div>
+                        }} className="fab fa-vuejs"></i></div>
                     </div>
 
                 )
@@ -357,7 +358,7 @@ class messenger extends Component {
                             marginLeft: "-12px",
                             fontSize: "30px",
                             marginTop: "13px"
-                        }} class="fas fa-heart"></i></div>
+                        }} className="fas fa-heart"></i></div>
                     </div>
                 )
             }
@@ -375,7 +376,7 @@ class messenger extends Component {
             if (this.state.selectedFile) {
                 this.scrollToBottom()
                 return (
-                    <i onClick={() => { this.btnCancle() }} class="fas fa-times-circle cancle_messenger"></i>
+                    <i onClick={() => { this.btnCancle() }} className="fas fa-times-circle cancle_messenger"></i>
                 )
             }
         }
@@ -387,7 +388,7 @@ class messenger extends Component {
                             <div className="card">
                                 <div className="card-header msg_head">
                                     <div className="d-flex bd-highlight">
-                                        <i onClick={() => { this.leaveRooms(false) }} class="fas fa-chevron-left back"></i>
+                                        <i onClick={() => { this.leaveRooms(false) }} className="fas fa-chevron-left back"></i>
                                         <div className="img_cont">
                                             <img src={this.props.friend.image} className="rounded-circle user_img1" alt="" />
                                             {icon_online()}
@@ -410,11 +411,11 @@ class messenger extends Component {
                                                     <div className="ul">
                                                         <div style={{ color: "red" }}
                                                             //onClick={() => { this.deleteMessenger() }} 
-                                                            className="li"  >Xóa Tin   &ensp; <i class="fas fa-trash delete"></i> </div>
+                                                            className="li"  >Xóa Tin   &ensp; <i className="fas fa-trash delete"></i> </div>
                                                         <hr style={{ width: "80%", margin: "0px", marginLeft: "17px ", backgroundColor: "white" }}></hr>
                                                         <div className="li"
                                                             onClick={() => { this.signOut() }}
-                                                        >Đăng Xuất<i class="fas fa-sign-out-alt signout"></i> </div>
+                                                        >Đăng Xuất<i className="fas fa-sign-out-alt signout"></i> </div>
                                                     </div>
 
                                                 </div>
@@ -439,7 +440,7 @@ class messenger extends Component {
                                 <div className="card-footer">
                                     {btnCancle()}
                                     <div className="displayImg" id="displayImg">
-                                        {/* <i onClick={() => { this.btnCancle() }} class="fas fa-times-circle cancle"></i> */}
+                                        {/* <i onClick={() => { this.btnCancle() }} className="fas fa-times-circle cancle"></i> */}
                                     </div>
                                     <input id='img' className="inputFile" type='file'
                                         onChange={(event) => { this.getFile(event) }}

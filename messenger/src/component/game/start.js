@@ -17,7 +17,7 @@ class start extends Component {
     render() {
 
         if (!Cookies.get("user")) {
-            return <Redirect to="/" />
+            return <Redirect to="/"/>
         }
         let user = JSON.parse(Cookies.get("user"));
         let trim = user.fullname.trim().split((/[\s,]+/));
@@ -55,9 +55,9 @@ class start extends Component {
                                                 Chơi Với Máy
                                             </div>
                                             <div className="game_text" >
-                                                <a href="/room">
+                                                <Link to="/room">
                                                     Chơi Với Bạn
-                                                </a>
+                                                </Link>
                                             </div>
                                             <div className="game_text" >
                                                 <Link to="/messenger">
@@ -81,7 +81,7 @@ class start extends Component {
                 return (
                     <div>
                         <div onClick={() => { this.setState({ loader: false }); }} className="backs">
-                            <i class="fas fa-chevron-left"></i>
+                            <i className="fas fa-chevron-left"></i>
                         </div>
                         <div id="wrapper" className='wrapper'>
                             <Chessboard />

@@ -5,7 +5,7 @@ import io from 'socket.io-client'
 import Chessboard from './chessboard'
 var socket =
      io("https://caros-server.herokuapp.com/");
-    //io("http://localhost:1234/");
+  //  io("http://localhost:1234/");
 class room extends Component {
     constructor(props) {
         super(props);
@@ -71,20 +71,20 @@ class room extends Component {
 
     render() {
         if (!Cookies.get("user")) {
-            return <Redirect to="/login" />
+            return <Redirect exact to="/" />
         }
         let numberPlayer = (roomIndex) => {
             const rooms = this.state.rooms;
             if (rooms[roomIndex].player.length === 1) {
                 return (
-                    <span className="number-player"><i class="fas fa-user"></i></span>
+                    <span className="number-player"><i className="fas fa-user"></i></span>
                 )
             } else {
                 if (rooms[roomIndex].player.length === 2) {
                     return (
                         <div>
-                            <span className="number-player"><i class="fas fa-user"></i></span>
-                            <span className="number-player-2"><i class="fas fa-user"></i></span>
+                            <span className="number-player"><i className="fas fa-user"></i></span>
+                            <span className="number-player-2"><i className="fas fa-user"></i></span>
                         </div>
                     )
 
@@ -117,7 +117,7 @@ class room extends Component {
                 return (
                     <div>
                         <div onClick={() => { this.leaveRooms() }} className="backs">
-                            <i class="fas fa-chevron-left"></i>
+                            <i className="fas fa-chevron-left"></i>
                         </div>
                         <div id="wrapper" className='wrapper'>
                             <Chessboard
@@ -146,7 +146,6 @@ class room extends Component {
                                         <div className="chess">
                                             <div className="border-chess"></div>
                                             {rooms()}
-
                                         </div>
                                     </div>
                                 </div>

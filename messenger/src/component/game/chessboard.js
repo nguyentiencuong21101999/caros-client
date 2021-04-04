@@ -21,7 +21,7 @@ class chessboard extends Component {
                 if (this.state.ready.length > 1) {
                     alert("Bạn thắng ...")
                 }
-                console.log(this.state.ready);
+
                 this.createTable()
                 this.setState({
                     ready: []
@@ -29,12 +29,15 @@ class chessboard extends Component {
 
             }
         })
-        this.props.socket.on("send-user-win", data => {
+        this.props.socket.on("send-user-win", async data => {
             alert(data.message)
             this.setState({
                 ready: []
             });
-            this.createTable()
+            setTimeout(() => {
+                this.createTable();
+            }, 2000)
+
         })
         this.props.socket.on("request-ready", data => {
             const ready = this.state.ready;
@@ -52,11 +55,11 @@ class chessboard extends Component {
             });
         })
     }
-    createTable = () => {
+    createTable = async () => {
         let newData = [];
         for (let row = 0; row < 15; row++) {
             let newRow = [];
-            for (let col = 0; col < 20; col++) {
+            for (let col = 0; col < 17; col++) {
                 newRow.push({
                     row: row,
                     col: col,
@@ -134,13 +137,13 @@ class chessboard extends Component {
                 if (ready.length === 1) {
                     if (ready.indexOf(user.username) >= 0) {
                         return (
-                            <div onClick={() => { this.unReady() }} className="ready"><i class="fas fa-check-double"></i></div>
+                            <div onClick={() => { this.unReady() }} className="ready"><i className="fas fa-check-double"></i></div>
                         )
                     } else {
                         return (
                             <div className="left">
                                 <span onClick={() => { this.ready() }} className="ready"> Sẵn Sàng</span>
-                                <span className="ready-user2-success" ><i class="fas fa-check-double"></i></span>
+                                <span className="ready-user2-success" ><i className="fas fa-check-double"></i></span>
                             </div>
 
 
@@ -151,8 +154,8 @@ class chessboard extends Component {
                     if (ready.indexOf(user.username) >= 0) {
                         return (
                             <div className="left">
-                                <span onClick={() => { this.ready() }} className="ready"><i class="fas fa-check-double"></i></span>
-                                <span className="ready-user2-success" ><i class="fas fa-check-double"></i></span>
+                                <span onClick={() => { this.ready() }} className="ready"><i className="fas fa-check-double"></i></span>
+                                <span className="ready-user2-success" ><i className="fas fa-check-double"></i></span>
                             </div>
                         )
                     }
@@ -165,7 +168,7 @@ class chessboard extends Component {
             if (ready.length === 1) {
                 if (ready.indexOf(user.username) < 0) {
                     return (
-                        <div onClick={() => { this.unReady() }} className="ready-user-2"><i class="fas fa-check-double"></i></div>
+                        <div onClick={() => { this.unReady() }} className="ready-user-2"><i className="fas fa-check-double"></i></div>
                     )
                 }
             }
@@ -190,7 +193,7 @@ class chessboard extends Component {
                                     </div>
                                     <div className=" user2">
                                         <div className="invite">
-                                            <i class="fas fa-plus-square"></i>
+                                            <i className="fas fa-plus-square"></i>
                                             Mời Bạn
                                         </div>
 
@@ -304,12 +307,17 @@ class chessboard extends Component {
         }
         return (
             <div>
-                {play()}
-                {info_caro()}
+                <div className="fullScreen">
+                    Quay ngang cái điện thoại lại
+                    <br></br>
+                    <i className="fas fa-mobile-alt"></i>
+                </div>
+                { play()}
+                { info_caro()}
 
-                {this.rowData()}
+                { this.rowData()}
 
-            </div>
+            </div >
         )
     }
 }

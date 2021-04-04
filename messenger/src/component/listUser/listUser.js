@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Cookies from 'js-cookie'
 import axios from 'axios'
 import { Redirect } from 'react-router';
-import { Link,  } from 'react-router-dom'
+import { Link, } from 'react-router-dom'
 import Modal from './modal'
 import Friend from './friend.js'
 import User from './user'
@@ -10,10 +10,10 @@ import io from 'socket.io-client'
 import Messenger from './messenger'
 import ListAcceptFriend from './listAcceptFriend'
 var socket =
-     io(
-          "https://messengers-server.herokuapp.com"
-         );
-    // io("http://localhost:4000/");
+    io(
+        "https://messengers-server.herokuapp.com"
+    );
+// io("http://localhost:4000/");
 class listUser extends Component {
     constructor(props) {
         super(props);
@@ -104,9 +104,8 @@ class listUser extends Component {
                     this.setState({
                         listSearch: results.data
                     })
-                    console.log(results.data);
                     if (!results.data.status) {
-                        results.data.map(element => {
+                        results.data.map((element) => {
                             const value = {
                                 userId: user.id,
                                 friendId: element.id
@@ -118,9 +117,7 @@ class listUser extends Component {
                                         friendId: JSON.parse(results.config.data).friendId,
                                         message: results.data.message
                                     }
-
                                     checkAddFriend.push(values);
-
                                     if (this.state.checkAddFriend.length < 1) {
                                         this.setState({
                                             checkAddFriend: checkAddFriend
@@ -140,11 +137,14 @@ class listUser extends Component {
                                             });
                                         }
 
+
                                     }
+
                                 }
+
                             );
-                        })
-                        return null;
+                        }
+                        )
                     }
                     return null;
 
@@ -230,7 +230,7 @@ class listUser extends Component {
                                         </div>
 
                                     </div>
-                                    <div className="icon-messenger"><i class="fab fa-facebook-messenger icon"></i>
+                                    <div className="icon-messenger"><i className="fab fa-facebook-messenger icon"></i>
                                         <div className="btn-group dropleft">
                                             <button type="button" className="btn btn-secondary " id="action_menu_btn1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <i className="fas fa-ellipsis-v drop1" />
@@ -255,7 +255,7 @@ class listUser extends Component {
                                                             });
                                                         }}>
                                                         Đăng Xuất
-                                                <i class="fas fa-sign-out-alt signout"></i>
+                                                <i className="fas fa-sign-out-alt signout"></i>
                                                     </div>
                                                 </div>
 

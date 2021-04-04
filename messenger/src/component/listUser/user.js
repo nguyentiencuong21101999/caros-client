@@ -102,7 +102,7 @@ class user extends Component {
         const btnCancle = () => {
             if (this.state.selectedFile) {
                 return (
-                    <i onClick={() => { this.btnCancle() }} class="fas fa-times-circle cancle"></i>
+                    <i onClick={() => { this.btnCancle() }} className="fas fa-times-circle cancle"></i>
                 )
             }
         }
@@ -117,18 +117,18 @@ class user extends Component {
         }
         return (
             <div>
-                <button style={{ opacity: "0.1" }} type="button" class="btn btn-primary changeAvatar" data-toggle="modal" data-target="#exampleModalUser">
+                <button style={{ opacity: "0.1" }} type="button" className="btn btn-primary changeAvatar" data-toggle="modal" data-target="#exampleModalUser">
                 </button>
-                <div class="modal fade" id="exampleModalUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Thay Đổi Tài Khoản</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <div className="modal fade" id="exampleModalUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div className="modal-dialog" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title" id="exampleModalLabel">Thay Đổi Tài Khoản</h5>
+                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <div class="modal-body">
+                            <div className="modal-body">
                                 <div className="img">
                                     {progress()}
                                     <div className="background">
@@ -140,14 +140,14 @@ class user extends Component {
                                     <div className="displayImgs" id="displayImgs"></div>
                                     {btnCancle()}
                                     <input type="file" id="displayImg" onChange={(event) => { this.getFile(event) }} />
-                                    <label for="displayImg">  <i for="displayImage" class="fas fa-camera photo"></i></label>
+                                    <label for="displayImg">  <i for="displayImage" className="fas fa-camera photo"></i></label>
 
                                 </div>
                                 <div className="fullname">{this.state.info.fullname}</div>
                             </div>
-                            <div class="modal-footer">
-                                <button onClick={() => { this.btnCancle() }} type="button" class="btn btn-secondary" data-dismiss="modal">Bỏ</button>
-                                <button onClick={() => { this.changeImage() }} type="button" class="btn btn-primary">Lưu</button>
+                            <div className="modal-footer">
+                                <button onClick={() => { this.btnCancle() }} type="button" className="btn btn-secondary" data-dismiss="modal">Bỏ</button>
+                                <button onClick={() => { this.changeImage() }} type="button" className="btn btn-primary">Lưu</button>
                             </div>
                         </div>
                     </div>
