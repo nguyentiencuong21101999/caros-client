@@ -20,7 +20,6 @@ class register extends Component {
         axios.post("/user/register", values)
             .then(
                 results => {
-                    console.log(results);
                     if (results.data.status === "error") {
                         alert(results.data.message)
                     } else {

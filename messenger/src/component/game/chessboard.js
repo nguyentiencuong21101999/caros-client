@@ -21,10 +21,10 @@ class chessboard extends Component {
                 if (this.state.ready.length > 1) {
                     alert("Bạn thắng ...")
                 }
-
-                this.createTable()
+                this.createTable();
                 this.setState({
-                    ready: []
+                    ready: [],
+                    type: "x"
                 });
 
             }
@@ -36,7 +36,7 @@ class chessboard extends Component {
             });
             setTimeout(() => {
                 this.createTable();
-            }, 2000)
+            }, 1000)
 
         })
         this.props.socket.on("request-ready", data => {
@@ -74,22 +74,40 @@ class chessboard extends Component {
         })
     }
     setValue = (rowIndex, colIndex, value) => {
-        console.log();
-        if (this.state.ready.length > 1 && this.state.player === this.props.type) {
-            this.props.socket.emit("set-value-chess", {
-                row: rowIndex,
-                col: colIndex,
-                roomIndex: this.props.currentRoom,
-                currentType: this.props.type
-            })
-        }
+        let user = JSON.parse(Cookies.get("user"));
+        const player = this.props.rooms[this.props.currentRoom].player;
+        player.map(element => {
+            if (element.name === user.username) {
+                if (this.state.ready.length > 1 && this.state.player === element.type) {
+                    this.props.socket.emit("set-value-chess", {
+                        row: rowIndex,
+                        col: colIndex,
+                        roomIndex: this.props.currentRoom,
+                        currentType: element.type
+                    })
+                }
+            }
+            return null;
+        })
+
     }
     cell = (rowData, rowIndex) => {
+        const value = (cell) => {
+            if (cell.value === "x") {
+                return (
+                    <div className="value x">{cell.value}</div>
+                )
+            } else {
+                return (
+                    <div className="value o">{cell.value}</div>
+                )
+            }
 
+        }
         return rowData.map((cell, colIndex) => {
             return (
                 <div onClick={() => { this.setValue(rowIndex, colIndex) }} className="cols">
-                    <div className="value">{cell.value}</div>
+                    {value(cell)}
                 </div>
             )
         })

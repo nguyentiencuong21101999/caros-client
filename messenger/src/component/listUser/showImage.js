@@ -1,5 +1,4 @@
 const  showImage= (event,idShow)=>{
-    console.log(event);
     var file = document.getElementById('img').files
     var myNode = document.getElementById(idShow);
     myNode.innerHTML = '';
@@ -8,7 +7,6 @@ const  showImage= (event,idShow)=>{
             var fileToLoad = event.target.files[i] // lay hinh dau tien
             var fileReder = new FileReader();
             fileReder.onload = (fileLoaderEvent) => {
-                console.log(fileLoaderEvent.target);
                 var srcData = fileLoaderEvent.target.result // chueyn sang dang base 64
                 var newImg = document.createElement('img');
                 newImg.src = srcData;

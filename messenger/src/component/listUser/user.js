@@ -47,7 +47,6 @@ class user extends Component {
             selectedFile: event.target.files[0]
         });
         if (event.target.files[0]) {
-            console.log(event.target.files[0]);
             showImageAvatar(event, "displayImg", "displayImgs")
         }
 
@@ -62,7 +61,6 @@ class user extends Component {
     changeImage = async () => {
         const user = JSON.parse(Cookies.get("user"));
         const fd = new FormData();
-        console.log(fd);
         fd.append('file', this.state.selectedFile)
         fd.append('folder', "messenger")
         fd.append("upload_preset", 'xku7xge7');

@@ -380,6 +380,9 @@
     display: none;
 }
 @media (max-width: 660px) {
+    .play{
+        display: none;
+    }
     .backs {
         display: none;
     }
@@ -403,4 +406,7 @@
         transform: rotate(90deg);
         color: #8f00ff;
     }
+}
+.o{
+    color: green  !important;
 }

@@ -21,7 +21,6 @@ class login extends Component {
         await axios.post("/user/login", values)
             .then(
                 results => {
-                    console.log(results);
                     if (results.data.status === "error") {
                         alert(results.data.message)
                     } else {

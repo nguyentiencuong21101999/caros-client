@@ -44,7 +44,6 @@ class messenger extends Component {
 
         })
         if (this.state.selectedFile) {
-            console.log("co");
             this.scrollToBottom()
         }
 
@@ -77,7 +76,6 @@ class messenger extends Component {
             const displayImgs = document.getElementById("displayImg");
             displayImgs.style.display = "none"
             const fd = new FormData();
-            console.log(fd);
             fd.append('file', this.state.selectedFile)
             fd.append('folder', "messenger")
             fd.append("upload_preset", 'xku7xge7');
@@ -97,7 +95,6 @@ class messenger extends Component {
             await axios.post('https://api.cloudinary.com/v1_1/cuong/image/upload/', fd, option)
                 .then(
                     (res) => {
-                        console.log(res);
                         //cloud tra ve`
                         const values = [{
                             dateTime: date + " " + time,
@@ -107,7 +104,6 @@ class messenger extends Component {
                             user: user.username,
                             friend: this.props.friend.username
                         }]
-                        console.log();
                         this.props.socket.emit("send-messenger", values)
                         this.scrollToBottom()
                     }
@@ -213,7 +209,6 @@ class messenger extends Component {
                     if (element.sender === sender) {
                         return element.messenger.map(results => {
                             if (user.username === results.sender) {
-                                console.log(results);
                                 if (results.icon === "") {
                                     if (results.image !== "" && results.value_messenger !== "") {
                                         return (
@@ -222,12 +217,9 @@ class messenger extends Component {
                                                     <Image cloudName="cuong" publicId={results.image} />
                                                 </div>
                                                 <div className="d-flex justify-content-end mb-2">
-
                                                     <div className="msg_cotainer_send">
                                                         {results.value_messenger}
-
                                                         <span className="msg_time_send">{results.dateTime}</span>
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -239,16 +231,19 @@ class messenger extends Component {
                                                     <Image cloudName="cuong" publicId={results.image} />
                                                 </div>
                                             )
-
-
                                         }
                                         else {
                                             return (
-                                                <div className="d-flex justify-content-end mb-2">
-                                                    <div className="msg_cotainer_send">
-                                                        {results.value_messenger}
-                                                        <span className="msg_time_send">{results.dateTime}</span>
+                                                <div>
+                                                    {/* <div className="image-messenger">
+                                                        <Image cloudName="cuong" publicId={results.image} />
+                                                    </div> */}
+                                                    <div className="d-flex justify-content-end mb-2">
+                                                        <div className="msg_cotainer_send">
+                                                            {results.value_messenger}
+                                                            <span className="msg_time_send">{results.dateTime}</span>
 
+                                                        </div>
                                                     </div>
                                                 </div>
                                             )
@@ -300,6 +295,9 @@ class messenger extends Component {
                                         else {
                                             return (
                                                 <div className="d-flex justify-content-start mb-2">
+                                                     <div className="img_cont_msg">
+                                                            <img src={this.props.friend.image} className="rounded-circle user_img_msg" alt="" />
+                                                        </div>
                                                     <div className="msg_cotainer">
                                                         {results.value_messenger}
                                                         <span className="msg_time">{results.dateTime}</span>
@@ -436,7 +434,7 @@ class messenger extends Component {
                                 </div>
 
 
-                                    {progress()}
+                                {progress()}
                                 <div className="card-footer">
                                     {btnCancle()}
                                     <div className="displayImg" id="displayImg">

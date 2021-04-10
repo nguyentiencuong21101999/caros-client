@@ -13,7 +13,7 @@ var socket =
     io(
         "https://messengers-server.herokuapp.com"
     );
-// io("http://localhost:4000/");
+   // io("http://localhost:4000/");
 class listUser extends Component {
     constructor(props) {
         super(props);
@@ -143,6 +143,7 @@ class listUser extends Component {
                                 }
 
                             );
+                            return null;
                         }
                         )
                     }
@@ -253,6 +254,7 @@ class listUser extends Component {
                                                             this.setState({
                                                                 txtSearch: "",
                                                             });
+                                                            socket.emit("off",true)
                                                         }}>
                                                         Đăng Xuất
                                                 <i className="fas fa-sign-out-alt signout"></i>
